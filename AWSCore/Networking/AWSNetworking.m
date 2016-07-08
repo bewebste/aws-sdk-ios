@@ -14,7 +14,7 @@
 //
 
 #import "AWSNetworking.h"
-#import <UIKit/UIKit.h>
+//#import <UIKit/UIKit.h>
 #import "AWSBolts.h"
 #import "AWSCategory.h"
 #import "AWSModel.h"

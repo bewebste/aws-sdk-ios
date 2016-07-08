@@ -630,22 +630,22 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
 
 #pragma mark - UIApplicationDelegate interceptor
 
-+ (void)interceptApplication:(UIApplication *)application
-handleEventsForBackgroundURLSession:(NSString *)identifier
-           completionHandler:(void (^)())completionHandler {
-    // For the default service client
-    if ([identifier isEqualToString:_defaultS3TransferUtility.sessionIdentifier]) {
-        _defaultS3TransferUtility.backgroundURLSessionCompletionHandler = completionHandler;
-    }
-
-    // For the SDK managed service clients
-    for (NSString *key in [_serviceClients allKeys]) {
-        AWSS3TransferUtility *transferUtility = [_serviceClients objectForKey:key];
-        if ([identifier isEqualToString:transferUtility.sessionIdentifier]) {
-            transferUtility.backgroundURLSessionCompletionHandler = completionHandler;
-        }
-    }
-}
+//+ (void)interceptApplication:(UIApplication *)application
+//handleEventsForBackgroundURLSession:(NSString *)identifier
+//           completionHandler:(void (^)())completionHandler {
+//    // For the default service client
+//    if ([identifier isEqualToString:_defaultS3TransferUtility.sessionIdentifier]) {
+//        _defaultS3TransferUtility.backgroundURLSessionCompletionHandler = completionHandler;
+//    }
+//
+//    // For the SDK managed service clients
+//    for (NSString *key in [_serviceClients allKeys]) {
+//        AWSS3TransferUtility *transferUtility = [_serviceClients objectForKey:key];
+//        if ([identifier isEqualToString:transferUtility.sessionIdentifier]) {
+//            transferUtility.backgroundURLSessionCompletionHandler = completionHandler;
+//        }
+//    }
+//}
 
 #pragma mark - NSURLSessionDelegate
 
