@@ -199,7 +199,7 @@ NSString *const AWSTaskMultipleExceptionsException = @"AWSMultipleExceptionsExce
     return tcs.task;
 }
 
-+ (instancetype)taskFromExecutor:(AWSExecutor *)executor withBlock:(nullable id (^)())block {
++ (instancetype)taskFromExecutor:(AWSExecutor *)executor withBlock:(nullable id (^)(void))block {
     return [[self taskWithResult:nil] continueWithExecutor:executor withBlock:^id(AWSTask *task) {
         return block();
     }];

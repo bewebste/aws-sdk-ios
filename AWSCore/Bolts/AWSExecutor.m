@@ -96,7 +96,7 @@ __attribute__((noinline)) static size_t remaining_stack_size(size_t *__nonnull r
     return mainThreadExecutor;
 }
 
-+ (instancetype)executorWithBlock:(void(^)(void(^block)()))block {
++ (instancetype)executorWithBlock:(void(^)(void(^block)(void)))block {
     return [[self alloc] initWithBlock:block];
 }
 
@@ -125,7 +125,7 @@ __attribute__((noinline)) static size_t remaining_stack_size(size_t *__nonnull r
 
 #pragma mark - Execution
 
-- (void)execute:(void(^)())block {
+- (void)execute:(void(^)(void))block {
     self.block(block);
 }
 

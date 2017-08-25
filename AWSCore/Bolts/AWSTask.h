@@ -107,7 +107,7 @@ typedef __nullable id(^AWSContinuationBlock)(AWSTask<ResultType> *task);
  If block returns a AWSTask, then the task returned from
  this method will not be completed until that task is completed.
  */
-+ (instancetype)taskFromExecutor:(AWSExecutor *)executor withBlock:(nullable id (^)())block;
++ (instancetype)taskFromExecutor:(AWSExecutor *)executor withBlock:(nullable id (^)(void))block;
 
 // Properties that will be set on the task once it is completed.
 
