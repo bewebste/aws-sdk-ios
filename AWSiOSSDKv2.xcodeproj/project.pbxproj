@@ -839,8 +839,6 @@
 		CE9DE9E61C6A7C5E0060793F /* AWSS3Resources.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9DE9DA1C6A7C5E0060793F /* AWSS3Resources.m */; };
 		CE9DE9E71C6A7C5E0060793F /* AWSS3Service.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9DE9DB1C6A7C5E0060793F /* AWSS3Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE9DE9E81C6A7C5E0060793F /* AWSS3Service.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9DE9DC1C6A7C5E0060793F /* AWSS3Service.m */; };
-		CE9DE9E91C6A7C5E0060793F /* AWSS3TransferManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9DE9DD1C6A7C5E0060793F /* AWSS3TransferManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE9DE9EA1C6A7C5E0060793F /* AWSS3TransferManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9DE9DE1C6A7C5E0060793F /* AWSS3TransferManager.m */; };
 		CE9DE9EB1C6A7C5E0060793F /* AWSS3TransferUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9DE9DF1C6A7C5E0060793F /* AWSS3TransferUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE9DE9EC1C6A7C5E0060793F /* AWSS3TransferUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9DE9E01C6A7C5E0060793F /* AWSS3TransferUtility.m */; };
 		CE9DE9EF1C6A7C7E0060793F /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0D416D1C6A66E5006B91B5 /* AWSCore.framework */; };
@@ -3803,8 +3801,6 @@
 		CE9DE9DA1C6A7C5E0060793F /* AWSS3Resources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSS3Resources.m; sourceTree = "<group>"; };
 		CE9DE9DB1C6A7C5E0060793F /* AWSS3Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSS3Service.h; sourceTree = "<group>"; };
 		CE9DE9DC1C6A7C5E0060793F /* AWSS3Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AWSS3Service.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		CE9DE9DD1C6A7C5E0060793F /* AWSS3TransferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSS3TransferManager.h; sourceTree = "<group>"; };
-		CE9DE9DE1C6A7C5E0060793F /* AWSS3TransferManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSS3TransferManager.m; sourceTree = "<group>"; };
 		CE9DE9DF1C6A7C5E0060793F /* AWSS3TransferUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSS3TransferUtility.h; sourceTree = "<group>"; };
 		CE9DE9E01C6A7C5E0060793F /* AWSS3TransferUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSS3TransferUtility.m; sourceTree = "<group>"; };
 		CE9DE9F11C6A7CA50060793F /* AWSS3PreSignedURLBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSS3PreSignedURLBuilderTests.m; sourceTree = "<group>"; };
@@ -6544,8 +6540,6 @@
 				18CDFB271D66561F0021B1DE /* AWSS3Serializer.m */,
 				CE9DE9DB1C6A7C5E0060793F /* AWSS3Service.h */,
 				CE9DE9DC1C6A7C5E0060793F /* AWSS3Service.m */,
-				CE9DE9DD1C6A7C5E0060793F /* AWSS3TransferManager.h */,
-				CE9DE9DE1C6A7C5E0060793F /* AWSS3TransferManager.m */,
 				CE9DE9DF1C6A7C5E0060793F /* AWSS3TransferUtility.h */,
 				CE9DE9E01C6A7C5E0060793F /* AWSS3TransferUtility.m */,
 				9A2562EA20E2E0D100D2451E /* AWSS3TransferUtility+HeaderHelper.h */,
@@ -7579,7 +7573,6 @@
 			files = (
 				CE9DE9E31C6A7C5E0060793F /* AWSS3PreSignedURL.h in Headers */,
 				9A2562EC20E2E0D100D2451E /* AWSS3TransferUtility+HeaderHelper.h in Headers */,
-				CE9DE9E91C6A7C5E0060793F /* AWSS3TransferManager.h in Headers */,
 				18CDFB281D66561F0021B1DE /* AWSS3Serializer.h in Headers */,
 				CE9DE9E11C6A7C5E0060793F /* AWSS3Model.h in Headers */,
 				9A2562F520E31B7A00D2451E /* AWSS3TransferUtilityTasks.h in Headers */,
@@ -11599,7 +11592,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE9DE9E61C6A7C5E0060793F /* AWSS3Resources.m in Sources */,
-				CE9DE9EA1C6A7C5E0060793F /* AWSS3TransferManager.m in Sources */,
 				9A2562ED20E2E0D100D2451E /* AWSS3TransferUtility+HeaderHelper.m in Sources */,
 				CE9DE9E21C6A7C5E0060793F /* AWSS3Model.m in Sources */,
 				CE9DE9E41C6A7C5E0060793F /* AWSS3PreSignedURL.m in Sources */,

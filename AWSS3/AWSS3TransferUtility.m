@@ -1952,14 +1952,14 @@ internalDictionaryToAddSubTaskTo: (NSMutableDictionary *) internalDictionaryToAd
 
 #pragma mark - NSURLSessionDelegate
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session {
-    AWSDDLogDebug(@"URLSessionDidFinishEventsForBackgroundURLSession called for NSURLSession %@", _sessionIdentifier);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.backgroundURLSessionCompletionHandler) {
-            self.backgroundURLSessionCompletionHandler();
-        }
-    });
-}
+//- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session {
+//    AWSDDLogDebug(@"URLSessionDidFinishEventsForBackgroundURLSession called for NSURLSession %@", _sessionIdentifier);
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        if (self.backgroundURLSessionCompletionHandler) {
+//            self.backgroundURLSessionCompletionHandler();
+//        }
+//    });
+//}
 
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error {
      AWSDDLogDebug(@"didBecomeInvalidWithError called for NSURLSession %@", _sessionIdentifier);
