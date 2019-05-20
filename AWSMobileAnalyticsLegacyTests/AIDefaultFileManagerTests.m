@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -209,6 +209,17 @@ NSString *const rootPath = @"/tmp/AmazonInsights-IOS/FileManagerTests";
     assertThatInteger([files count], is(equalToInt(1)));
     
     [self.rootFile deleteFile];
+}
+
+- (void)test_createFileAndTryWritingEmptyData
+{
+    AWSMobileAnalyticsDefaultFileManager *fileManager = [[AWSMobileAnalyticsDefaultFileManager alloc] initWithFileManager:self.nsFileManager withRootFile:self.rootFile];
+    NSError *error = nil;
+    AWSMobileAnalyticsFile *file = [fileManager createFileWithPath:[rootPath stringByAppendingPathComponent:@"emptyFileTest.txt"] error:&error];
+    NSString *fileContent = @"";
+    BOOL result = [fileManager writeData:[fileContent dataUsingEncoding:NSUTF8StringEncoding] toFile:file withFormat:JSON withError:&error];
+    XCTAssertFalse(result);
+    XCTAssertNil(error);
 }
 
 @end

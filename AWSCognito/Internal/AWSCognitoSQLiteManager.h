@@ -2,17 +2,7 @@
 // Copyright 2014-2016 Amazon.com,
 // Inc. or its affiliates. All Rights Reserved.
 //
-// Licensed under the Amazon Software License (the "License").
-// You may not use this file except in compliance with the
-// License. A copy of the License is located at
-//
-//     http://aws.amazon.com/asl/
-//
-// or in the "license" file accompanying this file. This file is
-// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-// CONDITIONS OF ANY KIND, express or implied. See the License
-// for the specific language governing permissions and
-// limitations under the License.
+// SPDX-License-Identifier: Apache-2.0
 //
 
 #import <Foundation/Foundation.h>
@@ -31,8 +21,8 @@
 - (void)deleteAllData;
 - (void)deleteSQLiteDatabase;
 
-- (NSArray *)getDatasets:(NSError **)error;
-- (void)loadDatasetMetadata:(AWSCognitoDatasetMetadata *)dataset error:(NSError **)error;
+- (NSArray<AWSCognitoDatasetMetadata *> *)getDatasets:(NSError **)error;
+- (BOOL)loadDatasetMetadata:(AWSCognitoDatasetMetadata *)dataset error:(NSError **)error;
 - (BOOL)putDatasetMetadata:(NSArray *)datasets error:(NSError **)error;
 - (BOOL)updateDatasetMetadata:(AWSCognitoDatasetMetadata *)dataset error:(NSError **)error;
 - (AWSCognitoRecord *)getRecordById:(NSString *)recordId datasetName:(NSString *)datasetName error:(NSError **)error;
@@ -47,10 +37,10 @@
 
 - (NSNumber *) numRecords:(NSString *)datasetName;
 
-- (NSArray *)getMergeDatasets:(NSString *)datasetName error:(NSError **)error;
+- (NSArray<NSString *> *)getMergeDatasets:(NSString *)datasetName error:(NSError **)error;
 - (BOOL)reparentDatasets:(NSString *)oldId withNewId:(NSString *)newId error:(NSError **)error;
 
-- (NSArray *)allRecords:(NSString *)datasetName;
+- (NSArray<AWSCognitoRecord *> *)allRecords:(NSString *)datasetName;
 - (NSDictionary *)recordsUpdatedAfterLastSync:(NSString *)datasetName error:(NSError **)error;
 
 - (NSNumber *)lastSyncCount:(NSString *)datasetName;

@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -20,8 +20,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+//! SDK version for AWSCognitoIdentityProvider
+FOUNDATION_EXPORT NSString *const AWSCognitoIdentityProviderSDKVersion;
+
 /**
- 
+ <p>Using the Amazon Cognito User Pools API, you can create a user pool to manage directories and users. You can authenticate a user to obtain tokens related to user identity and access policies.</p><p>This API reference provides information about user pools in Amazon Cognito User Pools.</p><p>For more information, see the Amazon Cognito Documentation.</p>
  */
 @interface AWSCognitoIdentityProvider : AWSService
 
@@ -39,13 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
  
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
-         let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
-         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
-
-         return true
-     }
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
+        let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = configuration
+ 
+        return true
+    }
 
  *Objective-C*
 
@@ -63,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  *Swift*
 
-     let CognitoIdentityProvider = AWSCognitoIdentityProvider.defaultCognitoIdentityProvider()
+     let CognitoIdentityProvider = AWSCognitoIdentityProvider.default()
 
  *Objective-C*
 
@@ -80,13 +83,13 @@ NS_ASSUME_NONNULL_BEGIN
 
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
-         let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
-         AWSCognitoIdentityProvider.registerCognitoIdentityProviderWithConfiguration(configuration, forKey: "USWest2CognitoIdentityProvider")
-
-         return true
-     }
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
+        let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
+        AWSCognitoIdentityProvider.register(with: configuration!, forKey: "USWest2CognitoIdentityProvider")
+ 
+        return true
+    }
 
  *Objective-C*
 
@@ -125,13 +128,13 @@ NS_ASSUME_NONNULL_BEGIN
 
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
-         let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
-         AWSCognitoIdentityProvider.registerCognitoIdentityProviderWithConfiguration(configuration, forKey: "USWest2CognitoIdentityProvider")
-
-         return true
-     }
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
+        let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
+        AWSCognitoIdentityProvider.register(with: configuration!, forKey: "USWest2CognitoIdentityProvider")
+ 
+        return true
+    }
 
  *Objective-C*
 
@@ -172,11 +175,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)removeCognitoIdentityProviderForKey:(NSString *)key;
 
 /**
- AddCustomAttributes
+ <p>Adds additional user attributes to the user pool schema.</p>
  
  @param request A container for the necessary parameters to execute the AddCustomAttributes service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAddCustomAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAddCustomAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserImportInProgress`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAddCustomAttributesRequest
  @see AWSCognitoIdentityProviderAddCustomAttributesResponse
@@ -184,12 +187,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAddCustomAttributesResponse *> *)addCustomAttributes:(AWSCognitoIdentityProviderAddCustomAttributesRequest *)request;
 
 /**
- AddCustomAttributes
+ <p>Adds additional user attributes to the user pool schema.</p>
  
  @param request A container for the necessary parameters to execute the AddCustomAttributes service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserImportInProgress`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAddCustomAttributesRequest
  @see AWSCognitoIdentityProviderAddCustomAttributesResponse
@@ -197,11 +200,33 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addCustomAttributes:(AWSCognitoIdentityProviderAddCustomAttributesRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAddCustomAttributesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminConfirmSignUp
+ <p>Adds the specified user to the specified group.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminAddUserToGroup service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminAddUserToGroupRequest
+ */
+- (AWSTask *)adminAddUserToGroup:(AWSCognitoIdentityProviderAdminAddUserToGroupRequest *)request;
+
+/**
+ <p>Adds the specified user to the specified group.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminAddUserToGroup service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminAddUserToGroupRequest
+ */
+- (void)adminAddUserToGroup:(AWSCognitoIdentityProviderAdminAddUserToGroupRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Confirms user registration as an admin without using a confirmation code. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminConfirmSignUp service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminConfirmSignUpResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminConfirmSignUpResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminConfirmSignUpRequest
  @see AWSCognitoIdentityProviderAdminConfirmSignUpResponse
@@ -209,12 +234,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminConfirmSignUpResponse *> *)adminConfirmSignUp:(AWSCognitoIdentityProviderAdminConfirmSignUpRequest *)request;
 
 /**
- AdminConfirmSignUp
+ <p>Confirms user registration as an admin without using a confirmation code. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminConfirmSignUp service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminConfirmSignUpRequest
  @see AWSCognitoIdentityProviderAdminConfirmSignUpResponse
@@ -222,33 +247,58 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminConfirmSignUp:(AWSCognitoIdentityProviderAdminConfirmSignUpRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminConfirmSignUpResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminDeleteUser
+ <p>Creates a new user in the specified user pool.</p><p>If <code>MessageAction</code> is not set, the default is to send a welcome message via email or phone (SMS).</p><note><p>This message is based on a template that you configured in your call to or . This template includes your custom sign-up instructions and placeholders for user name and temporary password.</p></note><p>Alternatively, you can call AdminCreateUser with “SUPPRESS” for the <code>MessageAction</code> parameter, and Amazon Cognito will not send any email. </p><p>In either case, the user will be in the <code>FORCE_CHANGE_PASSWORD</code> state until they sign in and change their password.</p><p>AdminCreateUser requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminCreateUser service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminCreateUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnsupportedUserState`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminCreateUserRequest
+ @see AWSCognitoIdentityProviderAdminCreateUserResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminCreateUserResponse *> *)adminCreateUser:(AWSCognitoIdentityProviderAdminCreateUserRequest *)request;
+
+/**
+ <p>Creates a new user in the specified user pool.</p><p>If <code>MessageAction</code> is not set, the default is to send a welcome message via email or phone (SMS).</p><note><p>This message is based on a template that you configured in your call to or . This template includes your custom sign-up instructions and placeholders for user name and temporary password.</p></note><p>Alternatively, you can call AdminCreateUser with “SUPPRESS” for the <code>MessageAction</code> parameter, and Amazon Cognito will not send any email. </p><p>In either case, the user will be in the <code>FORCE_CHANGE_PASSWORD</code> state until they sign in and change their password.</p><p>AdminCreateUser requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminCreateUser service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnsupportedUserState`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminCreateUserRequest
+ @see AWSCognitoIdentityProviderAdminCreateUserResponse
+ */
+- (void)adminCreateUser:(AWSCognitoIdentityProviderAdminCreateUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminCreateUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes a user as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminDeleteUser service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminDeleteUserRequest
  */
 - (AWSTask *)adminDeleteUser:(AWSCognitoIdentityProviderAdminDeleteUserRequest *)request;
 
 /**
- AdminDeleteUser
+ <p>Deletes a user as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminDeleteUser service method.
  @param completionHandler The completion handler to call when the load request is complete.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminDeleteUserRequest
  */
 - (void)adminDeleteUser:(AWSCognitoIdentityProviderAdminDeleteUserRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- AdminDeleteUserAttributes
+ <p>Deletes the user attributes in a user pool as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminDeleteUserAttributes service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminDeleteUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminDeleteUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminDeleteUserAttributesRequest
  @see AWSCognitoIdentityProviderAdminDeleteUserAttributesResponse
@@ -256,12 +306,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminDeleteUserAttributesResponse *> *)adminDeleteUserAttributes:(AWSCognitoIdentityProviderAdminDeleteUserAttributesRequest *)request;
 
 /**
- AdminDeleteUserAttributes
+ <p>Deletes the user attributes in a user pool as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminDeleteUserAttributes service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminDeleteUserAttributesRequest
  @see AWSCognitoIdentityProviderAdminDeleteUserAttributesResponse
@@ -269,11 +319,36 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminDeleteUserAttributes:(AWSCognitoIdentityProviderAdminDeleteUserAttributesRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminDeleteUserAttributesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminDisableUser
+ <p>Disables the user from signing in with the specified external (SAML or social) identity provider. If the user to disable is a Cognito User Pools native username + password user, they are not permitted to use their password to sign-in. If the user to disable is a linked external IdP user, any link between that user and an existing user is removed. The next time the external user (no longer attached to the previously linked <code>DestinationUser</code>) signs in, they must create a new user account. See .</p><p>This action is enabled only for admin access and requires developer credentials.</p><p>The <code>ProviderName</code> must match the value specified when creating an IdP for the pool. </p><p>To disable a native username + password user, the <code>ProviderName</code> value must be <code>Cognito</code> and the <code>ProviderAttributeName</code> must be <code>Cognito_Subject</code>, with the <code>ProviderAttributeValue</code> being the name that is used in the user pool for the user.</p><p>The <code>ProviderAttributeName</code> must always be <code>Cognito_Subject</code> for social identity providers. The <code>ProviderAttributeValue</code> must always be the exact subject that was used when the user was originally linked as a source user.</p><p>For de-linking a SAML identity, there are two scenarios. If the linked identity has not yet been used to sign-in, the <code>ProviderAttributeName</code> and <code>ProviderAttributeValue</code> must be the same values that were used for the <code>SourceUser</code> when the identities were originally linked in the call. (If the linking was done with <code>ProviderAttributeName</code> set to <code>Cognito_Subject</code>, the same applies here). However, if the user has already signed in, the <code>ProviderAttributeName</code> must be <code>Cognito_Subject</code> and <code>ProviderAttributeValue</code> must be the subject of the SAML assertion.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminDisableProviderForUser service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminDisableProviderForUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminDisableProviderForUserRequest
+ @see AWSCognitoIdentityProviderAdminDisableProviderForUserResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminDisableProviderForUserResponse *> *)adminDisableProviderForUser:(AWSCognitoIdentityProviderAdminDisableProviderForUserRequest *)request;
+
+/**
+ <p>Disables the user from signing in with the specified external (SAML or social) identity provider. If the user to disable is a Cognito User Pools native username + password user, they are not permitted to use their password to sign-in. If the user to disable is a linked external IdP user, any link between that user and an existing user is removed. The next time the external user (no longer attached to the previously linked <code>DestinationUser</code>) signs in, they must create a new user account. See .</p><p>This action is enabled only for admin access and requires developer credentials.</p><p>The <code>ProviderName</code> must match the value specified when creating an IdP for the pool. </p><p>To disable a native username + password user, the <code>ProviderName</code> value must be <code>Cognito</code> and the <code>ProviderAttributeName</code> must be <code>Cognito_Subject</code>, with the <code>ProviderAttributeValue</code> being the name that is used in the user pool for the user.</p><p>The <code>ProviderAttributeName</code> must always be <code>Cognito_Subject</code> for social identity providers. The <code>ProviderAttributeValue</code> must always be the exact subject that was used when the user was originally linked as a source user.</p><p>For de-linking a SAML identity, there are two scenarios. If the linked identity has not yet been used to sign-in, the <code>ProviderAttributeName</code> and <code>ProviderAttributeValue</code> must be the same values that were used for the <code>SourceUser</code> when the identities were originally linked in the call. (If the linking was done with <code>ProviderAttributeName</code> set to <code>Cognito_Subject</code>, the same applies here). However, if the user has already signed in, the <code>ProviderAttributeName</code> must be <code>Cognito_Subject</code> and <code>ProviderAttributeValue</code> must be the subject of the SAML assertion.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminDisableProviderForUser service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminDisableProviderForUserRequest
+ @see AWSCognitoIdentityProviderAdminDisableProviderForUserResponse
+ */
+- (void)adminDisableProviderForUser:(AWSCognitoIdentityProviderAdminDisableProviderForUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminDisableProviderForUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Disables the specified user as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminDisableUser service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminDisableUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminDisableUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminDisableUserRequest
  @see AWSCognitoIdentityProviderAdminDisableUserResponse
@@ -281,12 +356,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminDisableUserResponse *> *)adminDisableUser:(AWSCognitoIdentityProviderAdminDisableUserRequest *)request;
 
 /**
- AdminDisableUser
+ <p>Disables the specified user as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminDisableUser service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminDisableUserRequest
  @see AWSCognitoIdentityProviderAdminDisableUserResponse
@@ -294,11 +369,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminDisableUser:(AWSCognitoIdentityProviderAdminDisableUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminDisableUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminEnableUser
+ <p>Enables the specified user as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminEnableUser service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminEnableUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminEnableUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminEnableUserRequest
  @see AWSCognitoIdentityProviderAdminEnableUserResponse
@@ -306,12 +381,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminEnableUserResponse *> *)adminEnableUser:(AWSCognitoIdentityProviderAdminEnableUserRequest *)request;
 
 /**
- AdminEnableUser
+ <p>Enables the specified user as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminEnableUser service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminEnableUserRequest
  @see AWSCognitoIdentityProviderAdminEnableUserResponse
@@ -319,11 +394,58 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminEnableUser:(AWSCognitoIdentityProviderAdminEnableUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminEnableUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminGetUser
+ <p>Forgets the device, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminForgetDevice service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminForgetDeviceRequest
+ */
+- (AWSTask *)adminForgetDevice:(AWSCognitoIdentityProviderAdminForgetDeviceRequest *)request;
+
+/**
+ <p>Forgets the device, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminForgetDevice service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminForgetDeviceRequest
+ */
+- (void)adminForgetDevice:(AWSCognitoIdentityProviderAdminForgetDeviceRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Gets the device, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminGetDevice service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminGetDeviceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderAdminGetDeviceRequest
+ @see AWSCognitoIdentityProviderAdminGetDeviceResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminGetDeviceResponse *> *)adminGetDevice:(AWSCognitoIdentityProviderAdminGetDeviceRequest *)request;
+
+/**
+ <p>Gets the device, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminGetDevice service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderAdminGetDeviceRequest
+ @see AWSCognitoIdentityProviderAdminGetDeviceResponse
+ */
+- (void)adminGetDevice:(AWSCognitoIdentityProviderAdminGetDeviceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminGetDeviceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Gets the specified user by user name in a user pool as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminGetUser service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminGetUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminGetUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminGetUserRequest
  @see AWSCognitoIdentityProviderAdminGetUserResponse
@@ -331,12 +453,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminGetUserResponse *> *)adminGetUser:(AWSCognitoIdentityProviderAdminGetUserRequest *)request;
 
 /**
- AdminGetUser
+ <p>Gets the specified user by user name in a user pool as an administrator. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminGetUser service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminGetUserRequest
  @see AWSCognitoIdentityProviderAdminGetUserResponse
@@ -344,11 +466,158 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminGetUser:(AWSCognitoIdentityProviderAdminGetUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminGetUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminResetUserPassword
+ <p>Initiates the authentication flow, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminInitiateAuth service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminInitiateAuthResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`.
+ 
+ @see AWSCognitoIdentityProviderAdminInitiateAuthRequest
+ @see AWSCognitoIdentityProviderAdminInitiateAuthResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminInitiateAuthResponse *> *)adminInitiateAuth:(AWSCognitoIdentityProviderAdminInitiateAuthRequest *)request;
+
+/**
+ <p>Initiates the authentication flow, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminInitiateAuth service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`.
+ 
+ @see AWSCognitoIdentityProviderAdminInitiateAuthRequest
+ @see AWSCognitoIdentityProviderAdminInitiateAuthResponse
+ */
+- (void)adminInitiateAuth:(AWSCognitoIdentityProviderAdminInitiateAuthRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminInitiateAuthResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Links an existing user account in a user pool (<code>DestinationUser</code>) to an identity from an external identity provider (<code>SourceUser</code>) based on a specified attribute name and value from the external identity provider. This allows you to create a link from the existing user account to an external federated user identity that has not yet been used to sign in, so that the federated user identity can be used to sign in as the existing user account. </p><p> For example, if there is an existing user with a username and password, this API links that user to a federated user identity, so that when the federated user identity is used, the user signs in as the existing user account. </p><important><p>Because this API allows a user with an external federated identity to sign in as an existing user in the user pool, it is critical that it only be used with external identity providers and provider attributes that have been trusted by the application owner.</p></important><p>See also .</p><p>This action is enabled only for admin access and requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminLinkProviderForUser service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminLinkProviderForUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminLinkProviderForUserRequest
+ @see AWSCognitoIdentityProviderAdminLinkProviderForUserResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminLinkProviderForUserResponse *> *)adminLinkProviderForUser:(AWSCognitoIdentityProviderAdminLinkProviderForUserRequest *)request;
+
+/**
+ <p>Links an existing user account in a user pool (<code>DestinationUser</code>) to an identity from an external identity provider (<code>SourceUser</code>) based on a specified attribute name and value from the external identity provider. This allows you to create a link from the existing user account to an external federated user identity that has not yet been used to sign in, so that the federated user identity can be used to sign in as the existing user account. </p><p> For example, if there is an existing user with a username and password, this API links that user to a federated user identity, so that when the federated user identity is used, the user signs in as the existing user account. </p><important><p>Because this API allows a user with an external federated identity to sign in as an existing user in the user pool, it is critical that it only be used with external identity providers and provider attributes that have been trusted by the application owner.</p></important><p>See also .</p><p>This action is enabled only for admin access and requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminLinkProviderForUser service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminLinkProviderForUserRequest
+ @see AWSCognitoIdentityProviderAdminLinkProviderForUserResponse
+ */
+- (void)adminLinkProviderForUser:(AWSCognitoIdentityProviderAdminLinkProviderForUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminLinkProviderForUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists devices, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminListDevices service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminListDevicesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderAdminListDevicesRequest
+ @see AWSCognitoIdentityProviderAdminListDevicesResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminListDevicesResponse *> *)adminListDevices:(AWSCognitoIdentityProviderAdminListDevicesRequest *)request;
+
+/**
+ <p>Lists devices, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminListDevices service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderAdminListDevicesRequest
+ @see AWSCognitoIdentityProviderAdminListDevicesResponse
+ */
+- (void)adminListDevices:(AWSCognitoIdentityProviderAdminListDevicesRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminListDevicesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists the groups that the user belongs to.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminListGroupsForUser service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminListGroupsForUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminListGroupsForUserRequest
+ @see AWSCognitoIdentityProviderAdminListGroupsForUserResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminListGroupsForUserResponse *> *)adminListGroupsForUser:(AWSCognitoIdentityProviderAdminListGroupsForUserRequest *)request;
+
+/**
+ <p>Lists the groups that the user belongs to.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminListGroupsForUser service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminListGroupsForUserRequest
+ @see AWSCognitoIdentityProviderAdminListGroupsForUserResponse
+ */
+- (void)adminListGroupsForUser:(AWSCognitoIdentityProviderAdminListGroupsForUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminListGroupsForUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists a history of user activity and any risks detected as part of Amazon Cognito advanced security.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminListUserAuthEvents service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminListUserAuthEventsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminListUserAuthEventsRequest
+ @see AWSCognitoIdentityProviderAdminListUserAuthEventsResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminListUserAuthEventsResponse *> *)adminListUserAuthEvents:(AWSCognitoIdentityProviderAdminListUserAuthEventsRequest *)request;
+
+/**
+ <p>Lists a history of user activity and any risks detected as part of Amazon Cognito advanced security.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminListUserAuthEvents service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminListUserAuthEventsRequest
+ @see AWSCognitoIdentityProviderAdminListUserAuthEventsResponse
+ */
+- (void)adminListUserAuthEvents:(AWSCognitoIdentityProviderAdminListUserAuthEventsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminListUserAuthEventsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Removes the specified user from the specified group.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminRemoveUserFromGroup service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminRemoveUserFromGroupRequest
+ */
+- (AWSTask *)adminRemoveUserFromGroup:(AWSCognitoIdentityProviderAdminRemoveUserFromGroupRequest *)request;
+
+/**
+ <p>Removes the specified user from the specified group.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminRemoveUserFromGroup service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminRemoveUserFromGroupRequest
+ */
+- (void)adminRemoveUserFromGroup:(AWSCognitoIdentityProviderAdminRemoveUserFromGroupRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Resets the specified user's password in a user pool as an administrator. Works on any user.</p><p>When a developer calls this API, the current password is invalidated, so it must be changed. If a user tries to sign in after the API is called, the app will get a PasswordResetRequiredException exception back and should direct the user down the flow to reset the password, which is the same as the forgot password flow. In addition, if the user pool has phone verification selected and a verified phone number exists for the user, or if email verification is selected and a verified email exists for the user, calling this API will also result in sending a message to the end user with the code to change their password.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminResetUserPassword service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminResetUserPasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminResetUserPasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminResetUserPasswordRequest
  @see AWSCognitoIdentityProviderAdminResetUserPasswordResponse
@@ -356,12 +625,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminResetUserPasswordResponse *> *)adminResetUserPassword:(AWSCognitoIdentityProviderAdminResetUserPasswordRequest *)request;
 
 /**
- AdminResetUserPassword
+ <p>Resets the specified user's password in a user pool as an administrator. Works on any user.</p><p>When a developer calls this API, the current password is invalidated, so it must be changed. If a user tries to sign in after the API is called, the app will get a PasswordResetRequiredException exception back and should direct the user down the flow to reset the password, which is the same as the forgot password flow. In addition, if the user pool has phone verification selected and a verified phone number exists for the user, or if email verification is selected and a verified email exists for the user, calling this API will also result in sending a message to the end user with the code to change their password.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminResetUserPassword service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminResetUserPasswordRequest
  @see AWSCognitoIdentityProviderAdminResetUserPasswordResponse
@@ -369,11 +638,86 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminResetUserPassword:(AWSCognitoIdentityProviderAdminResetUserPasswordRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminResetUserPasswordResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminSetUserSettings
+ <p>Responds to an authentication challenge, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminRespondToAuthChallenge service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminRespondToAuthChallengeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`.
+ 
+ @see AWSCognitoIdentityProviderAdminRespondToAuthChallengeRequest
+ @see AWSCognitoIdentityProviderAdminRespondToAuthChallengeResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminRespondToAuthChallengeResponse *> *)adminRespondToAuthChallenge:(AWSCognitoIdentityProviderAdminRespondToAuthChallengeRequest *)request;
+
+/**
+ <p>Responds to an authentication challenge, as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminRespondToAuthChallenge service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`.
+ 
+ @see AWSCognitoIdentityProviderAdminRespondToAuthChallengeRequest
+ @see AWSCognitoIdentityProviderAdminRespondToAuthChallengeResponse
+ */
+- (void)adminRespondToAuthChallenge:(AWSCognitoIdentityProviderAdminRespondToAuthChallengeRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminRespondToAuthChallengeResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Sets the user's multi-factor authentication (MFA) preference.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminSetUserMFAPreference service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminSetUserMFAPreferenceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminSetUserMFAPreferenceRequest
+ @see AWSCognitoIdentityProviderAdminSetUserMFAPreferenceResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminSetUserMFAPreferenceResponse *> *)adminSetUserMFAPreference:(AWSCognitoIdentityProviderAdminSetUserMFAPreferenceRequest *)request;
+
+/**
+ <p>Sets the user's multi-factor authentication (MFA) preference.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminSetUserMFAPreference service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminSetUserMFAPreferenceRequest
+ @see AWSCognitoIdentityProviderAdminSetUserMFAPreferenceResponse
+ */
+- (void)adminSetUserMFAPreference:(AWSCognitoIdentityProviderAdminSetUserMFAPreferenceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminSetUserMFAPreferenceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ AdminSetUserPassword
+ 
+ @param request A container for the necessary parameters to execute the AdminSetUserPassword service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminSetUserPasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`.
+ 
+ @see AWSCognitoIdentityProviderAdminSetUserPasswordRequest
+ @see AWSCognitoIdentityProviderAdminSetUserPasswordResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminSetUserPasswordResponse *> *)adminSetUserPassword:(AWSCognitoIdentityProviderAdminSetUserPasswordRequest *)request;
+
+/**
+ AdminSetUserPassword
+ 
+ @param request A container for the necessary parameters to execute the AdminSetUserPassword service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`.
+ 
+ @see AWSCognitoIdentityProviderAdminSetUserPasswordRequest
+ @see AWSCognitoIdentityProviderAdminSetUserPasswordResponse
+ */
+- (void)adminSetUserPassword:(AWSCognitoIdentityProviderAdminSetUserPasswordRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminSetUserPasswordResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Sets all the user settings for a specified user name. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminSetUserSettings service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminSetUserSettingsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminSetUserSettingsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminSetUserSettingsRequest
  @see AWSCognitoIdentityProviderAdminSetUserSettingsResponse
@@ -381,12 +725,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminSetUserSettingsResponse *> *)adminSetUserSettings:(AWSCognitoIdentityProviderAdminSetUserSettingsRequest *)request;
 
 /**
- AdminSetUserSettings
+ <p>Sets all the user settings for a specified user name. Works on any user.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminSetUserSettings service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderAdminSetUserSettingsRequest
  @see AWSCognitoIdentityProviderAdminSetUserSettingsResponse
@@ -394,11 +738,61 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminSetUserSettings:(AWSCognitoIdentityProviderAdminSetUserSettingsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminSetUserSettingsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- AdminUpdateUserAttributes
+ <p>Provides feedback for an authentication event as to whether it was from a valid user. This feedback is used for improving the risk evaluation decision for the user pool as part of Amazon Cognito advanced security.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminUpdateAuthEventFeedback service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackRequest
+ @see AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackResponse *> *)adminUpdateAuthEventFeedback:(AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackRequest *)request;
+
+/**
+ <p>Provides feedback for an authentication event as to whether it was from a valid user. This feedback is used for improving the risk evaluation decision for the user pool as part of Amazon Cognito advanced security.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminUpdateAuthEventFeedback service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackRequest
+ @see AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackResponse
+ */
+- (void)adminUpdateAuthEventFeedback:(AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminUpdateAuthEventFeedbackResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates the device status as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminUpdateDeviceStatus service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminUpdateDeviceStatusResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminUpdateDeviceStatusRequest
+ @see AWSCognitoIdentityProviderAdminUpdateDeviceStatusResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAdminUpdateDeviceStatusResponse *> *)adminUpdateDeviceStatus:(AWSCognitoIdentityProviderAdminUpdateDeviceStatusRequest *)request;
+
+/**
+ <p>Updates the device status as an administrator.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the AdminUpdateDeviceStatus service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderAdminUpdateDeviceStatusRequest
+ @see AWSCognitoIdentityProviderAdminUpdateDeviceStatusResponse
+ */
+- (void)adminUpdateDeviceStatus:(AWSCognitoIdentityProviderAdminUpdateDeviceStatusRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminUpdateDeviceStatusResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates the specified user's attributes, including developer attributes, as an administrator. Works on any user.</p><p>For custom attributes, you must prepend the <code>custom:</code> prefix to the attribute name.</p><p>In addition to updating user attributes, this API can also be used to mark phone and email as verified.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminUpdateUserAttributes service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminUpdateUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminUpdateUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`.
  
  @see AWSCognitoIdentityProviderAdminUpdateUserAttributesRequest
  @see AWSCognitoIdentityProviderAdminUpdateUserAttributesResponse
@@ -406,12 +800,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderAdminUpdateUserAttributesResponse *> *)adminUpdateUserAttributes:(AWSCognitoIdentityProviderAdminUpdateUserAttributesRequest *)request;
 
 /**
- AdminUpdateUserAttributes
+ <p>Updates the specified user's attributes, including developer attributes, as an administrator. Works on any user.</p><p>For custom attributes, you must prepend the <code>custom:</code> prefix to the attribute name.</p><p>In addition to updating user attributes, this API can also be used to mark phone and email as verified.</p><p>Requires developer credentials.</p>
  
  @param request A container for the necessary parameters to execute the AdminUpdateUserAttributes service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`.
  
  @see AWSCognitoIdentityProviderAdminUpdateUserAttributesRequest
  @see AWSCognitoIdentityProviderAdminUpdateUserAttributesResponse
@@ -419,36 +813,61 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)adminUpdateUserAttributes:(AWSCognitoIdentityProviderAdminUpdateUserAttributesRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminUpdateUserAttributesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- Authenticate
+ <p>Signs out users from all devices, as an administrator.</p><p>Requires developer credentials.</p>
  
- @param request A container for the necessary parameters to execute the Authenticate service method.
+ @param request A container for the necessary parameters to execute the AdminUserGlobalSignOut service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAuthenticateResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAdminUserGlobalSignOutResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderAuthenticateRequest
- @see AWSCognitoIdentityProviderAuthenticateResponse
+ @see AWSCognitoIdentityProviderAdminUserGlobalSignOutRequest
+ @see AWSCognitoIdentityProviderAdminUserGlobalSignOutResponse
  */
-- (AWSTask<AWSCognitoIdentityProviderAuthenticateResponse *> *)authenticate:(AWSCognitoIdentityProviderAuthenticateRequest *)request;
+- (AWSTask<AWSCognitoIdentityProviderAdminUserGlobalSignOutResponse *> *)adminUserGlobalSignOut:(AWSCognitoIdentityProviderAdminUserGlobalSignOutRequest *)request;
 
 /**
- Authenticate
+ <p>Signs out users from all devices, as an administrator.</p><p>Requires developer credentials.</p>
  
- @param request A container for the necessary parameters to execute the Authenticate service method.
+ @param request A container for the necessary parameters to execute the AdminUserGlobalSignOut service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderAuthenticateRequest
- @see AWSCognitoIdentityProviderAuthenticateResponse
+ @see AWSCognitoIdentityProviderAdminUserGlobalSignOutRequest
+ @see AWSCognitoIdentityProviderAdminUserGlobalSignOutResponse
  */
-- (void)authenticate:(AWSCognitoIdentityProviderAuthenticateRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAuthenticateResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+- (void)adminUserGlobalSignOut:(AWSCognitoIdentityProviderAdminUserGlobalSignOutRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAdminUserGlobalSignOutResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ChangePassword
+ <p>Returns a unique generated shared secret key code for the user account. The request takes an access token or a session string, but not both.</p>
+ 
+ @param request A container for the necessary parameters to execute the AssociateSoftwareToken service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderAssociateSoftwareTokenResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`.
+ 
+ @see AWSCognitoIdentityProviderAssociateSoftwareTokenRequest
+ @see AWSCognitoIdentityProviderAssociateSoftwareTokenResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderAssociateSoftwareTokenResponse *> *)associateSoftwareToken:(AWSCognitoIdentityProviderAssociateSoftwareTokenRequest *)request;
+
+/**
+ <p>Returns a unique generated shared secret key code for the user account. The request takes an access token or a session string, but not both.</p>
+ 
+ @param request A container for the necessary parameters to execute the AssociateSoftwareToken service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`.
+ 
+ @see AWSCognitoIdentityProviderAssociateSoftwareTokenRequest
+ @see AWSCognitoIdentityProviderAssociateSoftwareTokenResponse
+ */
+- (void)associateSoftwareToken:(AWSCognitoIdentityProviderAssociateSoftwareTokenRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderAssociateSoftwareTokenResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Changes the password for a specified user in a user pool.</p>
  
  @param request A container for the necessary parameters to execute the ChangePassword service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderChangePasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderChangePasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderChangePasswordRequest
  @see AWSCognitoIdentityProviderChangePasswordResponse
@@ -456,12 +875,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderChangePasswordResponse *> *)changePassword:(AWSCognitoIdentityProviderChangePasswordRequest *)request;
 
 /**
- ChangePassword
+ <p>Changes the password for a specified user in a user pool.</p>
  
  @param request A container for the necessary parameters to execute the ChangePassword service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderChangePasswordRequest
  @see AWSCognitoIdentityProviderChangePasswordResponse
@@ -469,11 +888,36 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)changePassword:(AWSCognitoIdentityProviderChangePasswordRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderChangePasswordResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ConfirmForgotPassword
+ <p>Confirms tracking of the device. This API call is the call that begins device tracking.</p>
+ 
+ @param request A container for the necessary parameters to execute the ConfirmDevice service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderConfirmDeviceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderConfirmDeviceRequest
+ @see AWSCognitoIdentityProviderConfirmDeviceResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderConfirmDeviceResponse *> *)confirmDevice:(AWSCognitoIdentityProviderConfirmDeviceRequest *)request;
+
+/**
+ <p>Confirms tracking of the device. This API call is the call that begins device tracking.</p>
+ 
+ @param request A container for the necessary parameters to execute the ConfirmDevice service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderConfirmDeviceRequest
+ @see AWSCognitoIdentityProviderConfirmDeviceResponse
+ */
+- (void)confirmDevice:(AWSCognitoIdentityProviderConfirmDeviceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderConfirmDeviceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Allows a user to enter a confirmation code to reset a forgotten password.</p>
  
  @param request A container for the necessary parameters to execute the ConfirmForgotPassword service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderConfirmForgotPasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderConfirmForgotPasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderConfirmForgotPasswordRequest
  @see AWSCognitoIdentityProviderConfirmForgotPasswordResponse
@@ -481,12 +925,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderConfirmForgotPasswordResponse *> *)confirmForgotPassword:(AWSCognitoIdentityProviderConfirmForgotPasswordRequest *)request;
 
 /**
- ConfirmForgotPassword
+ <p>Allows a user to enter a confirmation code to reset a forgotten password.</p>
  
  @param request A container for the necessary parameters to execute the ConfirmForgotPassword service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderConfirmForgotPasswordRequest
  @see AWSCognitoIdentityProviderConfirmForgotPasswordResponse
@@ -494,11 +938,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)confirmForgotPassword:(AWSCognitoIdentityProviderConfirmForgotPasswordRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderConfirmForgotPasswordResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ConfirmSignUp
+ <p>Confirms registration of a user and handles the existing alias from a previous user.</p>
  
  @param request A container for the necessary parameters to execute the ConfirmSignUp service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderConfirmSignUpResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderConfirmSignUpResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderConfirmSignUpRequest
  @see AWSCognitoIdentityProviderConfirmSignUpResponse
@@ -506,12 +950,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderConfirmSignUpResponse *> *)confirmSignUp:(AWSCognitoIdentityProviderConfirmSignUpRequest *)request;
 
 /**
- ConfirmSignUp
+ <p>Confirms registration of a user and handles the existing alias from a previous user.</p>
  
  @param request A container for the necessary parameters to execute the ConfirmSignUp service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyFailedAttempts`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderConfirmSignUpRequest
  @see AWSCognitoIdentityProviderConfirmSignUpResponse
@@ -519,11 +963,111 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)confirmSignUp:(AWSCognitoIdentityProviderConfirmSignUpRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderConfirmSignUpResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- CreateUserPool
+ <p>Creates a new group in the specified user pool.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateGroup service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateGroupResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorGroupExists`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateGroupRequest
+ @see AWSCognitoIdentityProviderCreateGroupResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderCreateGroupResponse *> *)createGroup:(AWSCognitoIdentityProviderCreateGroupRequest *)request;
+
+/**
+ <p>Creates a new group in the specified user pool.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateGroup service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorGroupExists`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateGroupRequest
+ @see AWSCognitoIdentityProviderCreateGroupResponse
+ */
+- (void)createGroup:(AWSCognitoIdentityProviderCreateGroupRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderCreateGroupResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Creates an identity provider for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateIdentityProvider service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateIdentityProviderResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorDuplicateProvider`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateIdentityProviderRequest
+ @see AWSCognitoIdentityProviderCreateIdentityProviderResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderCreateIdentityProviderResponse *> *)createIdentityProvider:(AWSCognitoIdentityProviderCreateIdentityProviderRequest *)request;
+
+/**
+ <p>Creates an identity provider for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateIdentityProvider service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorDuplicateProvider`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateIdentityProviderRequest
+ @see AWSCognitoIdentityProviderCreateIdentityProviderResponse
+ */
+- (void)createIdentityProvider:(AWSCognitoIdentityProviderCreateIdentityProviderRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderCreateIdentityProviderResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Creates a new OAuth2.0 resource server and defines custom scopes in it.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateResourceServer service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateResourceServerResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateResourceServerRequest
+ @see AWSCognitoIdentityProviderCreateResourceServerResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderCreateResourceServerResponse *> *)createResourceServer:(AWSCognitoIdentityProviderCreateResourceServerRequest *)request;
+
+/**
+ <p>Creates a new OAuth2.0 resource server and defines custom scopes in it.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateResourceServer service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateResourceServerRequest
+ @see AWSCognitoIdentityProviderCreateResourceServerResponse
+ */
+- (void)createResourceServer:(AWSCognitoIdentityProviderCreateResourceServerRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderCreateResourceServerResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Creates the user import job.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateUserImportJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateUserImportJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateUserImportJobRequest
+ @see AWSCognitoIdentityProviderCreateUserImportJobResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderCreateUserImportJobResponse *> *)createUserImportJob:(AWSCognitoIdentityProviderCreateUserImportJobRequest *)request;
+
+/**
+ <p>Creates the user import job.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateUserImportJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateUserImportJobRequest
+ @see AWSCognitoIdentityProviderCreateUserImportJobResponse
+ */
+- (void)createUserImportJob:(AWSCognitoIdentityProviderCreateUserImportJobRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderCreateUserImportJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Creates a new Amazon Cognito user pool and sets the password policy for the pool.</p>
  
  @param request A container for the necessary parameters to execute the CreateUserPool service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateUserPoolResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorLimitExceeded`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateUserPoolResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolTagging`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderCreateUserPoolRequest
  @see AWSCognitoIdentityProviderCreateUserPoolResponse
@@ -531,12 +1075,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderCreateUserPoolResponse *> *)createUserPool:(AWSCognitoIdentityProviderCreateUserPoolRequest *)request;
 
 /**
- CreateUserPool
+ <p>Creates a new Amazon Cognito user pool and sets the password policy for the pool.</p>
  
  @param request A container for the necessary parameters to execute the CreateUserPool service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorLimitExceeded`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolTagging`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderCreateUserPoolRequest
  @see AWSCognitoIdentityProviderCreateUserPoolResponse
@@ -544,11 +1088,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createUserPool:(AWSCognitoIdentityProviderCreateUserPoolRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderCreateUserPoolResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- CreateUserPoolClient
+ <p>Creates the user pool client.</p>
  
  @param request A container for the necessary parameters to execute the CreateUserPoolClient service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateUserPoolClientResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateUserPoolClientResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorScopeDoesNotExist`, `AWSCognitoIdentityProviderErrorInvalidOAuthFlow`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderCreateUserPoolClientRequest
  @see AWSCognitoIdentityProviderCreateUserPoolClientResponse
@@ -556,12 +1100,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderCreateUserPoolClientResponse *> *)createUserPoolClient:(AWSCognitoIdentityProviderCreateUserPoolClientRequest *)request;
 
 /**
- CreateUserPoolClient
+ <p>Creates the user pool client.</p>
  
  @param request A container for the necessary parameters to execute the CreateUserPoolClient service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorScopeDoesNotExist`, `AWSCognitoIdentityProviderErrorInvalidOAuthFlow`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderCreateUserPoolClientRequest
  @see AWSCognitoIdentityProviderCreateUserPoolClientResponse
@@ -569,33 +1113,124 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createUserPoolClient:(AWSCognitoIdentityProviderCreateUserPoolClientRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderCreateUserPoolClientResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- DeleteUser
+ <p>Creates a new domain for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateUserPoolDomain service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderCreateUserPoolDomainResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderCreateUserPoolDomainResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderCreateUserPoolDomainResponse *> *)createUserPoolDomain:(AWSCognitoIdentityProviderCreateUserPoolDomainRequest *)request;
+
+/**
+ <p>Creates a new domain for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateUserPoolDomain service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderCreateUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderCreateUserPoolDomainResponse
+ */
+- (void)createUserPoolDomain:(AWSCognitoIdentityProviderCreateUserPoolDomainRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderCreateUserPoolDomainResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes a group. Currently only groups with no members can be deleted.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteGroup service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteGroupRequest
+ */
+- (AWSTask *)deleteGroup:(AWSCognitoIdentityProviderDeleteGroupRequest *)request;
+
+/**
+ <p>Deletes a group. Currently only groups with no members can be deleted.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteGroup service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteGroupRequest
+ */
+- (void)deleteGroup:(AWSCognitoIdentityProviderDeleteGroupRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes an identity provider for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteIdentityProvider service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnsupportedIdentityProvider`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteIdentityProviderRequest
+ */
+- (AWSTask *)deleteIdentityProvider:(AWSCognitoIdentityProviderDeleteIdentityProviderRequest *)request;
+
+/**
+ <p>Deletes an identity provider for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteIdentityProvider service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnsupportedIdentityProvider`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteIdentityProviderRequest
+ */
+- (void)deleteIdentityProvider:(AWSCognitoIdentityProviderDeleteIdentityProviderRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes a resource server.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteResourceServer service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteResourceServerRequest
+ */
+- (AWSTask *)deleteResourceServer:(AWSCognitoIdentityProviderDeleteResourceServerRequest *)request;
+
+/**
+ <p>Deletes a resource server.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteResourceServer service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteResourceServerRequest
+ */
+- (void)deleteResourceServer:(AWSCognitoIdentityProviderDeleteResourceServerRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Allows a user to delete himself or herself.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUser service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserRequest
  */
 - (AWSTask *)deleteUser:(AWSCognitoIdentityProviderDeleteUserRequest *)request;
 
 /**
- DeleteUser
+ <p>Allows a user to delete himself or herself.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUser service method.
  @param completionHandler The completion handler to call when the load request is complete.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserRequest
  */
 - (void)deleteUser:(AWSCognitoIdentityProviderDeleteUserRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- DeleteUserAttributes
+ <p>Deletes the attributes for a user.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUserAttributes service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDeleteUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDeleteUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserAttributesRequest
  @see AWSCognitoIdentityProviderDeleteUserAttributesResponse
@@ -603,12 +1238,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderDeleteUserAttributesResponse *> *)deleteUserAttributes:(AWSCognitoIdentityProviderDeleteUserAttributesRequest *)request;
 
 /**
- DeleteUserAttributes
+ <p>Deletes the attributes for a user.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUserAttributes service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserAttributesRequest
  @see AWSCognitoIdentityProviderDeleteUserAttributesResponse
@@ -616,55 +1251,180 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteUserAttributes:(AWSCognitoIdentityProviderDeleteUserAttributesRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDeleteUserAttributesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- DeleteUserPool
+ <p>Deletes the specified Amazon Cognito user pool.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUserPool service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserImportInProgress`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserPoolRequest
  */
 - (AWSTask *)deleteUserPool:(AWSCognitoIdentityProviderDeleteUserPoolRequest *)request;
 
 /**
- DeleteUserPool
+ <p>Deletes the specified Amazon Cognito user pool.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUserPool service method.
  @param completionHandler The completion handler to call when the load request is complete.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserImportInProgress`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserPoolRequest
  */
 - (void)deleteUserPool:(AWSCognitoIdentityProviderDeleteUserPoolRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- DeleteUserPoolClient
+ <p>Allows the developer to delete the user pool client.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUserPoolClient service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserPoolClientRequest
  */
 - (AWSTask *)deleteUserPoolClient:(AWSCognitoIdentityProviderDeleteUserPoolClientRequest *)request;
 
 /**
- DeleteUserPoolClient
+ <p>Allows the developer to delete the user pool client.</p>
  
  @param request A container for the necessary parameters to execute the DeleteUserPoolClient service method.
  @param completionHandler The completion handler to call when the load request is complete.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDeleteUserPoolClientRequest
  */
 - (void)deleteUserPoolClient:(AWSCognitoIdentityProviderDeleteUserPoolClientRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- DescribeUserPool
+ <p>Deletes a domain for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteUserPoolDomain service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDeleteUserPoolDomainResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderDeleteUserPoolDomainResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderDeleteUserPoolDomainResponse *> *)deleteUserPoolDomain:(AWSCognitoIdentityProviderDeleteUserPoolDomainRequest *)request;
+
+/**
+ <p>Deletes a domain for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteUserPoolDomain service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDeleteUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderDeleteUserPoolDomainResponse
+ */
+- (void)deleteUserPoolDomain:(AWSCognitoIdentityProviderDeleteUserPoolDomainRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDeleteUserPoolDomainResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Gets information about a specific identity provider.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeIdentityProvider service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeIdentityProviderResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeIdentityProviderRequest
+ @see AWSCognitoIdentityProviderDescribeIdentityProviderResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderDescribeIdentityProviderResponse *> *)describeIdentityProvider:(AWSCognitoIdentityProviderDescribeIdentityProviderRequest *)request;
+
+/**
+ <p>Gets information about a specific identity provider.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeIdentityProvider service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeIdentityProviderRequest
+ @see AWSCognitoIdentityProviderDescribeIdentityProviderResponse
+ */
+- (void)describeIdentityProvider:(AWSCognitoIdentityProviderDescribeIdentityProviderRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDescribeIdentityProviderResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Describes a resource server.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeResourceServer service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeResourceServerResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeResourceServerRequest
+ @see AWSCognitoIdentityProviderDescribeResourceServerResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderDescribeResourceServerResponse *> *)describeResourceServer:(AWSCognitoIdentityProviderDescribeResourceServerRequest *)request;
+
+/**
+ <p>Describes a resource server.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeResourceServer service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeResourceServerRequest
+ @see AWSCognitoIdentityProviderDescribeResourceServerResponse
+ */
+- (void)describeResourceServer:(AWSCognitoIdentityProviderDescribeResourceServerRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDescribeResourceServerResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Describes the risk configuration.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeRiskConfiguration service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeRiskConfigurationResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeRiskConfigurationRequest
+ @see AWSCognitoIdentityProviderDescribeRiskConfigurationResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderDescribeRiskConfigurationResponse *> *)describeRiskConfiguration:(AWSCognitoIdentityProviderDescribeRiskConfigurationRequest *)request;
+
+/**
+ <p>Describes the risk configuration.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeRiskConfiguration service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeRiskConfigurationRequest
+ @see AWSCognitoIdentityProviderDescribeRiskConfigurationResponse
+ */
+- (void)describeRiskConfiguration:(AWSCognitoIdentityProviderDescribeRiskConfigurationRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDescribeRiskConfigurationResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Describes the user import job.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeUserImportJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeUserImportJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeUserImportJobRequest
+ @see AWSCognitoIdentityProviderDescribeUserImportJobResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderDescribeUserImportJobResponse *> *)describeUserImportJob:(AWSCognitoIdentityProviderDescribeUserImportJobRequest *)request;
+
+/**
+ <p>Describes the user import job.</p>
+ 
+ @param request A container for the necessary parameters to execute the DescribeUserImportJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderDescribeUserImportJobRequest
+ @see AWSCognitoIdentityProviderDescribeUserImportJobResponse
+ */
+- (void)describeUserImportJob:(AWSCognitoIdentityProviderDescribeUserImportJobRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDescribeUserImportJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Returns the configuration information and metadata of the specified user pool.</p>
  
  @param request A container for the necessary parameters to execute the DescribeUserPool service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeUserPoolResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeUserPoolResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolTagging`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDescribeUserPoolRequest
  @see AWSCognitoIdentityProviderDescribeUserPoolResponse
@@ -672,12 +1432,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderDescribeUserPoolResponse *> *)describeUserPool:(AWSCognitoIdentityProviderDescribeUserPoolRequest *)request;
 
 /**
- DescribeUserPool
+ <p>Returns the configuration information and metadata of the specified user pool.</p>
  
  @param request A container for the necessary parameters to execute the DescribeUserPool service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolTagging`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDescribeUserPoolRequest
  @see AWSCognitoIdentityProviderDescribeUserPoolResponse
@@ -685,11 +1445,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)describeUserPool:(AWSCognitoIdentityProviderDescribeUserPoolRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDescribeUserPoolResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- DescribeUserPoolClient
+ <p>Client method for returning the configuration information and metadata of the specified user pool app client.</p>
  
  @param request A container for the necessary parameters to execute the DescribeUserPoolClient service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeUserPoolClientResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeUserPoolClientResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDescribeUserPoolClientRequest
  @see AWSCognitoIdentityProviderDescribeUserPoolClientResponse
@@ -697,12 +1457,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderDescribeUserPoolClientResponse *> *)describeUserPoolClient:(AWSCognitoIdentityProviderDescribeUserPoolClientRequest *)request;
 
 /**
- DescribeUserPoolClient
+ <p>Client method for returning the configuration information and metadata of the specified user pool app client.</p>
  
  @param request A container for the necessary parameters to execute the DescribeUserPoolClient service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderDescribeUserPoolClientRequest
  @see AWSCognitoIdentityProviderDescribeUserPoolClientResponse
@@ -710,36 +1470,58 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)describeUserPoolClient:(AWSCognitoIdentityProviderDescribeUserPoolClientRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDescribeUserPoolClientResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- EnhanceAuth
+ <p>Gets information about a domain.</p>
  
- @param request A container for the necessary parameters to execute the EnhanceAuth service method.
+ @param request A container for the necessary parameters to execute the DescribeUserPoolDomain service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderEnhanceAuthResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderDescribeUserPoolDomainResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderEnhanceAuthRequest
- @see AWSCognitoIdentityProviderEnhanceAuthResponse
+ @see AWSCognitoIdentityProviderDescribeUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderDescribeUserPoolDomainResponse
  */
-- (AWSTask<AWSCognitoIdentityProviderEnhanceAuthResponse *> *)enhanceAuth:(AWSCognitoIdentityProviderEnhanceAuthRequest *)request;
+- (AWSTask<AWSCognitoIdentityProviderDescribeUserPoolDomainResponse *> *)describeUserPoolDomain:(AWSCognitoIdentityProviderDescribeUserPoolDomainRequest *)request;
 
 /**
- EnhanceAuth
+ <p>Gets information about a domain.</p>
  
- @param request A container for the necessary parameters to execute the EnhanceAuth service method.
+ @param request A container for the necessary parameters to execute the DescribeUserPoolDomain service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderEnhanceAuthRequest
- @see AWSCognitoIdentityProviderEnhanceAuthResponse
+ @see AWSCognitoIdentityProviderDescribeUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderDescribeUserPoolDomainResponse
  */
-- (void)enhanceAuth:(AWSCognitoIdentityProviderEnhanceAuthRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderEnhanceAuthResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+- (void)describeUserPoolDomain:(AWSCognitoIdentityProviderDescribeUserPoolDomainRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderDescribeUserPoolDomainResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ForgotPassword
+ <p>Forgets the specified device.</p>
+ 
+ @param request A container for the necessary parameters to execute the ForgetDevice service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderForgetDeviceRequest
+ */
+- (AWSTask *)forgetDevice:(AWSCognitoIdentityProviderForgetDeviceRequest *)request;
+
+/**
+ <p>Forgets the specified device.</p>
+ 
+ @param request A container for the necessary parameters to execute the ForgetDevice service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderForgetDeviceRequest
+ */
+- (void)forgetDevice:(AWSCognitoIdentityProviderForgetDeviceRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Calling this API causes a message to be sent to the end user with a confirmation code that is required to change the user's password. For the <code>Username</code> parameter, you can use the username or user alias. If a verified phone number exists for the user, the confirmation code is sent to the phone number. Otherwise, if a verified email exists, the confirmation code is sent to the email. If neither a verified phone number nor a verified email exists, <code>InvalidParameterException</code> is thrown. To use the confirmation code for resetting the password, call .</p>
  
  @param request A container for the necessary parameters to execute the ForgotPassword service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderForgotPasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderForgotPasswordResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderForgotPasswordRequest
  @see AWSCognitoIdentityProviderForgotPasswordResponse
@@ -747,12 +1529,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderForgotPasswordResponse *> *)forgotPassword:(AWSCognitoIdentityProviderForgotPasswordRequest *)request;
 
 /**
- ForgotPassword
+ <p>Calling this API causes a message to be sent to the end user with a confirmation code that is required to change the user's password. For the <code>Username</code> parameter, you can use the username or user alias. If a verified phone number exists for the user, the confirmation code is sent to the phone number. Otherwise, if a verified email exists, the confirmation code is sent to the email. If neither a verified phone number nor a verified email exists, <code>InvalidParameterException</code> is thrown. To use the confirmation code for resetting the password, call .</p>
  
  @param request A container for the necessary parameters to execute the ForgotPassword service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderForgotPasswordRequest
  @see AWSCognitoIdentityProviderForgotPasswordResponse
@@ -760,86 +1542,161 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)forgotPassword:(AWSCognitoIdentityProviderForgotPasswordRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderForgotPasswordResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- GetAuthenticationDetails
+ <p>Gets the header information for the .csv file to be used as input for the user import job.</p>
  
- @param request A container for the necessary parameters to execute the GetAuthenticationDetails service method.
+ @param request A container for the necessary parameters to execute the GetCSVHeader service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetAuthenticationDetailsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetCSVHeaderResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderGetAuthenticationDetailsRequest
- @see AWSCognitoIdentityProviderGetAuthenticationDetailsResponse
+ @see AWSCognitoIdentityProviderGetCSVHeaderRequest
+ @see AWSCognitoIdentityProviderGetCSVHeaderResponse
  */
-- (AWSTask<AWSCognitoIdentityProviderGetAuthenticationDetailsResponse *> *)getAuthenticationDetails:(AWSCognitoIdentityProviderGetAuthenticationDetailsRequest *)request;
+- (AWSTask<AWSCognitoIdentityProviderGetCSVHeaderResponse *> *)getCSVHeader:(AWSCognitoIdentityProviderGetCSVHeaderRequest *)request;
 
 /**
- GetAuthenticationDetails
+ <p>Gets the header information for the .csv file to be used as input for the user import job.</p>
  
- @param request A container for the necessary parameters to execute the GetAuthenticationDetails service method.
+ @param request A container for the necessary parameters to execute the GetCSVHeader service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderGetAuthenticationDetailsRequest
- @see AWSCognitoIdentityProviderGetAuthenticationDetailsResponse
+ @see AWSCognitoIdentityProviderGetCSVHeaderRequest
+ @see AWSCognitoIdentityProviderGetCSVHeaderResponse
  */
-- (void)getAuthenticationDetails:(AWSCognitoIdentityProviderGetAuthenticationDetailsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetAuthenticationDetailsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+- (void)getCSVHeader:(AWSCognitoIdentityProviderGetCSVHeaderRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetCSVHeaderResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- GetJWKS
+ <p>Gets the device.</p>
  
- @param request A container for the necessary parameters to execute the GetJWKS service method.
+ @param request A container for the necessary parameters to execute the GetDevice service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetJWKSResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetDeviceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderGetJWKSRequest
- @see AWSCognitoIdentityProviderGetJWKSResponse
+ @see AWSCognitoIdentityProviderGetDeviceRequest
+ @see AWSCognitoIdentityProviderGetDeviceResponse
  */
-- (AWSTask<AWSCognitoIdentityProviderGetJWKSResponse *> *)getJWKS:(AWSCognitoIdentityProviderGetJWKSRequest *)request;
+- (AWSTask<AWSCognitoIdentityProviderGetDeviceResponse *> *)getDevice:(AWSCognitoIdentityProviderGetDeviceRequest *)request;
 
 /**
- GetJWKS
+ <p>Gets the device.</p>
  
- @param request A container for the necessary parameters to execute the GetJWKS service method.
+ @param request A container for the necessary parameters to execute the GetDevice service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderGetJWKSRequest
- @see AWSCognitoIdentityProviderGetJWKSResponse
+ @see AWSCognitoIdentityProviderGetDeviceRequest
+ @see AWSCognitoIdentityProviderGetDeviceResponse
  */
-- (void)getJWKS:(AWSCognitoIdentityProviderGetJWKSRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetJWKSResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+- (void)getDevice:(AWSCognitoIdentityProviderGetDeviceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetDeviceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- GetOpenIdConfiguration
+ <p>Gets a group.</p><p>Requires developer credentials.</p>
  
- @param request A container for the necessary parameters to execute the GetOpenIdConfiguration service method.
+ @param request A container for the necessary parameters to execute the GetGroup service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetOpenIdConfigurationResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetGroupResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderGetOpenIdConfigurationRequest
- @see AWSCognitoIdentityProviderGetOpenIdConfigurationResponse
+ @see AWSCognitoIdentityProviderGetGroupRequest
+ @see AWSCognitoIdentityProviderGetGroupResponse
  */
-- (AWSTask<AWSCognitoIdentityProviderGetOpenIdConfigurationResponse *> *)getOpenIdConfiguration:(AWSCognitoIdentityProviderGetOpenIdConfigurationRequest *)request;
+- (AWSTask<AWSCognitoIdentityProviderGetGroupResponse *> *)getGroup:(AWSCognitoIdentityProviderGetGroupRequest *)request;
 
 /**
- GetOpenIdConfiguration
+ <p>Gets a group.</p><p>Requires developer credentials.</p>
  
- @param request A container for the necessary parameters to execute the GetOpenIdConfiguration service method.
+ @param request A container for the necessary parameters to execute the GetGroup service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderGetOpenIdConfigurationRequest
- @see AWSCognitoIdentityProviderGetOpenIdConfigurationResponse
+ @see AWSCognitoIdentityProviderGetGroupRequest
+ @see AWSCognitoIdentityProviderGetGroupResponse
  */
-- (void)getOpenIdConfiguration:(AWSCognitoIdentityProviderGetOpenIdConfigurationRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetOpenIdConfigurationResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+- (void)getGroup:(AWSCognitoIdentityProviderGetGroupRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetGroupResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- GetUser
+ <p>Gets the specified identity provider.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetIdentityProviderByIdentifier service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetIdentityProviderByIdentifierResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGetIdentityProviderByIdentifierRequest
+ @see AWSCognitoIdentityProviderGetIdentityProviderByIdentifierResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderGetIdentityProviderByIdentifierResponse *> *)getIdentityProviderByIdentifier:(AWSCognitoIdentityProviderGetIdentityProviderByIdentifierRequest *)request;
+
+/**
+ <p>Gets the specified identity provider.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetIdentityProviderByIdentifier service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGetIdentityProviderByIdentifierRequest
+ @see AWSCognitoIdentityProviderGetIdentityProviderByIdentifierResponse
+ */
+- (void)getIdentityProviderByIdentifier:(AWSCognitoIdentityProviderGetIdentityProviderByIdentifierRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetIdentityProviderByIdentifierResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>This method takes a user pool ID, and returns the signing certificate.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetSigningCertificate service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetSigningCertificateResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorResourceNotFound`.
+ 
+ @see AWSCognitoIdentityProviderGetSigningCertificateRequest
+ @see AWSCognitoIdentityProviderGetSigningCertificateResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderGetSigningCertificateResponse *> *)getSigningCertificate:(AWSCognitoIdentityProviderGetSigningCertificateRequest *)request;
+
+/**
+ <p>This method takes a user pool ID, and returns the signing certificate.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetSigningCertificate service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorResourceNotFound`.
+ 
+ @see AWSCognitoIdentityProviderGetSigningCertificateRequest
+ @see AWSCognitoIdentityProviderGetSigningCertificateResponse
+ */
+- (void)getSigningCertificate:(AWSCognitoIdentityProviderGetSigningCertificateRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetSigningCertificateResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Gets the UI Customization information for a particular app client's app UI, if there is something set. If nothing is set for the particular client, but there is an existing pool level customization (app <code>clientId</code> will be <code>ALL</code>), then that is returned. If nothing is present, then an empty shape is returned.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetUICustomization service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetUICustomizationResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGetUICustomizationRequest
+ @see AWSCognitoIdentityProviderGetUICustomizationResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderGetUICustomizationResponse *> *)getUICustomization:(AWSCognitoIdentityProviderGetUICustomizationRequest *)request;
+
+/**
+ <p>Gets the UI Customization information for a particular app client's app UI, if there is something set. If nothing is set for the particular client, but there is an existing pool level customization (app <code>clientId</code> will be <code>ALL</code>), then that is returned. If nothing is present, then an empty shape is returned.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetUICustomization service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGetUICustomizationRequest
+ @see AWSCognitoIdentityProviderGetUICustomizationResponse
+ */
+- (void)getUICustomization:(AWSCognitoIdentityProviderGetUICustomizationRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetUICustomizationResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Gets the user attributes and metadata for a user.</p>
  
  @param request A container for the necessary parameters to execute the GetUser service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetUserResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderGetUserRequest
  @see AWSCognitoIdentityProviderGetUserResponse
@@ -847,12 +1704,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderGetUserResponse *> *)getUser:(AWSCognitoIdentityProviderGetUserRequest *)request;
 
 /**
- GetUser
+ <p>Gets the user attributes and metadata for a user.</p>
  
  @param request A container for the necessary parameters to execute the GetUser service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderGetUserRequest
  @see AWSCognitoIdentityProviderGetUserResponse
@@ -860,11 +1717,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getUser:(AWSCognitoIdentityProviderGetUserRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetUserResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- GetUserAttributeVerificationCode
+ <p>Gets the user attribute verification code for the specified attribute name.</p>
  
  @param request A container for the necessary parameters to execute the GetUserAttributeVerificationCode service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetUserAttributeVerificationCodeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetUserAttributeVerificationCodeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderGetUserAttributeVerificationCodeRequest
  @see AWSCognitoIdentityProviderGetUserAttributeVerificationCodeResponse
@@ -872,12 +1729,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderGetUserAttributeVerificationCodeResponse *> *)getUserAttributeVerificationCode:(AWSCognitoIdentityProviderGetUserAttributeVerificationCodeRequest *)request;
 
 /**
- GetUserAttributeVerificationCode
+ <p>Gets the user attribute verification code for the specified attribute name.</p>
  
  @param request A container for the necessary parameters to execute the GetUserAttributeVerificationCode service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderGetUserAttributeVerificationCodeRequest
  @see AWSCognitoIdentityProviderGetUserAttributeVerificationCodeResponse
@@ -885,11 +1742,236 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getUserAttributeVerificationCode:(AWSCognitoIdentityProviderGetUserAttributeVerificationCodeRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetUserAttributeVerificationCodeResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ListUserPoolClients
+ <p>Gets the user pool multi-factor authentication (MFA) configuration.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetUserPoolMfaConfig service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGetUserPoolMfaConfigResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGetUserPoolMfaConfigRequest
+ @see AWSCognitoIdentityProviderGetUserPoolMfaConfigResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderGetUserPoolMfaConfigResponse *> *)getUserPoolMfaConfig:(AWSCognitoIdentityProviderGetUserPoolMfaConfigRequest *)request;
+
+/**
+ <p>Gets the user pool multi-factor authentication (MFA) configuration.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetUserPoolMfaConfig service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGetUserPoolMfaConfigRequest
+ @see AWSCognitoIdentityProviderGetUserPoolMfaConfigResponse
+ */
+- (void)getUserPoolMfaConfig:(AWSCognitoIdentityProviderGetUserPoolMfaConfigRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGetUserPoolMfaConfigResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Signs out users from all devices.</p>
+ 
+ @param request A container for the necessary parameters to execute the GlobalSignOut service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderGlobalSignOutResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGlobalSignOutRequest
+ @see AWSCognitoIdentityProviderGlobalSignOutResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderGlobalSignOutResponse *> *)globalSignOut:(AWSCognitoIdentityProviderGlobalSignOutRequest *)request;
+
+/**
+ <p>Signs out users from all devices.</p>
+ 
+ @param request A container for the necessary parameters to execute the GlobalSignOut service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderGlobalSignOutRequest
+ @see AWSCognitoIdentityProviderGlobalSignOutResponse
+ */
+- (void)globalSignOut:(AWSCognitoIdentityProviderGlobalSignOutRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderGlobalSignOutResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Initiates the authentication flow.</p>
+ 
+ @param request A container for the necessary parameters to execute the InitiateAuth service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderInitiateAuthResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderInitiateAuthRequest
+ @see AWSCognitoIdentityProviderInitiateAuthResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderInitiateAuthResponse *> *)initiateAuth:(AWSCognitoIdentityProviderInitiateAuthRequest *)request;
+
+/**
+ <p>Initiates the authentication flow.</p>
+ 
+ @param request A container for the necessary parameters to execute the InitiateAuth service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderInitiateAuthRequest
+ @see AWSCognitoIdentityProviderInitiateAuthResponse
+ */
+- (void)initiateAuth:(AWSCognitoIdentityProviderInitiateAuthRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderInitiateAuthResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists the devices.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListDevices service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListDevicesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListDevicesRequest
+ @see AWSCognitoIdentityProviderListDevicesResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderListDevicesResponse *> *)listDevices:(AWSCognitoIdentityProviderListDevicesRequest *)request;
+
+/**
+ <p>Lists the devices.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListDevices service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListDevicesRequest
+ @see AWSCognitoIdentityProviderListDevicesResponse
+ */
+- (void)listDevices:(AWSCognitoIdentityProviderListDevicesRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListDevicesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists the groups associated with a user pool.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListGroups service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListGroupsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListGroupsRequest
+ @see AWSCognitoIdentityProviderListGroupsResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderListGroupsResponse *> *)listGroups:(AWSCognitoIdentityProviderListGroupsRequest *)request;
+
+/**
+ <p>Lists the groups associated with a user pool.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListGroups service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListGroupsRequest
+ @see AWSCognitoIdentityProviderListGroupsResponse
+ */
+- (void)listGroups:(AWSCognitoIdentityProviderListGroupsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListGroupsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists information about all identity providers for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListIdentityProviders service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListIdentityProvidersResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListIdentityProvidersRequest
+ @see AWSCognitoIdentityProviderListIdentityProvidersResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderListIdentityProvidersResponse *> *)listIdentityProviders:(AWSCognitoIdentityProviderListIdentityProvidersRequest *)request;
+
+/**
+ <p>Lists information about all identity providers for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListIdentityProviders service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListIdentityProvidersRequest
+ @see AWSCognitoIdentityProviderListIdentityProvidersResponse
+ */
+- (void)listIdentityProviders:(AWSCognitoIdentityProviderListIdentityProvidersRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListIdentityProvidersResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists the resource servers for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListResourceServers service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListResourceServersResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListResourceServersRequest
+ @see AWSCognitoIdentityProviderListResourceServersResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderListResourceServersResponse *> *)listResourceServers:(AWSCognitoIdentityProviderListResourceServersRequest *)request;
+
+/**
+ <p>Lists the resource servers for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListResourceServers service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListResourceServersRequest
+ @see AWSCognitoIdentityProviderListResourceServersResponse
+ */
+- (void)listResourceServers:(AWSCognitoIdentityProviderListResourceServersRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListResourceServersResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists the tags that are assigned to an Amazon Cognito user pool.</p><p>A tag is a label that you can apply to user pools to categorize and manage them in different ways, such as by purpose, owner, environment, or other criteria.</p><p>You can use this action up to 10 times per second, per account.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListTagsForResource service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListTagsForResourceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListTagsForResourceRequest
+ @see AWSCognitoIdentityProviderListTagsForResourceResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderListTagsForResourceResponse *> *)listTagsForResource:(AWSCognitoIdentityProviderListTagsForResourceRequest *)request;
+
+/**
+ <p>Lists the tags that are assigned to an Amazon Cognito user pool.</p><p>A tag is a label that you can apply to user pools to categorize and manage them in different ways, such as by purpose, owner, environment, or other criteria.</p><p>You can use this action up to 10 times per second, per account.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListTagsForResource service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListTagsForResourceRequest
+ @see AWSCognitoIdentityProviderListTagsForResourceResponse
+ */
+- (void)listTagsForResource:(AWSCognitoIdentityProviderListTagsForResourceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListTagsForResourceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists the user import jobs.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListUserImportJobs service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUserImportJobsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListUserImportJobsRequest
+ @see AWSCognitoIdentityProviderListUserImportJobsResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderListUserImportJobsResponse *> *)listUserImportJobs:(AWSCognitoIdentityProviderListUserImportJobsRequest *)request;
+
+/**
+ <p>Lists the user import jobs.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListUserImportJobs service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderListUserImportJobsRequest
+ @see AWSCognitoIdentityProviderListUserImportJobsResponse
+ */
+- (void)listUserImportJobs:(AWSCognitoIdentityProviderListUserImportJobsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListUserImportJobsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Lists the clients that have been created for the specified user pool.</p>
  
  @param request A container for the necessary parameters to execute the ListUserPoolClients service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUserPoolClientsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUserPoolClientsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderListUserPoolClientsRequest
  @see AWSCognitoIdentityProviderListUserPoolClientsResponse
@@ -897,12 +1979,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderListUserPoolClientsResponse *> *)listUserPoolClients:(AWSCognitoIdentityProviderListUserPoolClientsRequest *)request;
 
 /**
- ListUserPoolClients
+ <p>Lists the clients that have been created for the specified user pool.</p>
  
  @param request A container for the necessary parameters to execute the ListUserPoolClients service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderListUserPoolClientsRequest
  @see AWSCognitoIdentityProviderListUserPoolClientsResponse
@@ -910,11 +1992,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)listUserPoolClients:(AWSCognitoIdentityProviderListUserPoolClientsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListUserPoolClientsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ListUserPools
+ <p>Lists the user pools associated with an AWS account.</p>
  
  @param request A container for the necessary parameters to execute the ListUserPools service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUserPoolsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUserPoolsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderListUserPoolsRequest
  @see AWSCognitoIdentityProviderListUserPoolsResponse
@@ -922,12 +2004,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderListUserPoolsResponse *> *)listUserPools:(AWSCognitoIdentityProviderListUserPoolsRequest *)request;
 
 /**
- ListUserPools
+ <p>Lists the user pools associated with an AWS account.</p>
  
  @param request A container for the necessary parameters to execute the ListUserPools service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderListUserPoolsRequest
  @see AWSCognitoIdentityProviderListUserPoolsResponse
@@ -935,11 +2017,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)listUserPools:(AWSCognitoIdentityProviderListUserPoolsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListUserPoolsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ListUsers
+ <p>Lists the users in the Amazon Cognito user pool.</p>
  
  @param request A container for the necessary parameters to execute the ListUsers service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUsersResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUsersResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderListUsersRequest
  @see AWSCognitoIdentityProviderListUsersResponse
@@ -947,12 +2029,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderListUsersResponse *> *)listUsers:(AWSCognitoIdentityProviderListUsersRequest *)request;
 
 /**
- ListUsers
+ <p>Lists the users in the Amazon Cognito user pool.</p>
  
  @param request A container for the necessary parameters to execute the ListUsers service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderListUsersRequest
  @see AWSCognitoIdentityProviderListUsersResponse
@@ -960,36 +2042,36 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)listUsers:(AWSCognitoIdentityProviderListUsersRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListUsersResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- RefreshTokens
+ <p>Lists the users in the specified group.</p><p>Requires developer credentials.</p>
  
- @param request A container for the necessary parameters to execute the RefreshTokens service method.
+ @param request A container for the necessary parameters to execute the ListUsersInGroup service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderRefreshTokensResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderListUsersInGroupResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderRefreshTokensRequest
- @see AWSCognitoIdentityProviderRefreshTokensResponse
+ @see AWSCognitoIdentityProviderListUsersInGroupRequest
+ @see AWSCognitoIdentityProviderListUsersInGroupResponse
  */
-- (AWSTask<AWSCognitoIdentityProviderRefreshTokensResponse *> *)refreshTokens:(AWSCognitoIdentityProviderRefreshTokensRequest *)request;
+- (AWSTask<AWSCognitoIdentityProviderListUsersInGroupResponse *> *)listUsersInGroup:(AWSCognitoIdentityProviderListUsersInGroupRequest *)request;
 
 /**
- RefreshTokens
+ <p>Lists the users in the specified group.</p><p>Requires developer credentials.</p>
  
- @param request A container for the necessary parameters to execute the RefreshTokens service method.
+ @param request A container for the necessary parameters to execute the ListUsersInGroup service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
  
- @see AWSCognitoIdentityProviderRefreshTokensRequest
- @see AWSCognitoIdentityProviderRefreshTokensResponse
+ @see AWSCognitoIdentityProviderListUsersInGroupRequest
+ @see AWSCognitoIdentityProviderListUsersInGroupResponse
  */
-- (void)refreshTokens:(AWSCognitoIdentityProviderRefreshTokensRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderRefreshTokensResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+- (void)listUsersInGroup:(AWSCognitoIdentityProviderListUsersInGroupRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderListUsersInGroupResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- ResendConfirmationCode
+ <p>Resends the confirmation (for confirmation of registration) to a specific user in the user pool.</p>
  
  @param request A container for the necessary parameters to execute the ResendConfirmationCode service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderResendConfirmationCodeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderResendConfirmationCodeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderResendConfirmationCodeRequest
  @see AWSCognitoIdentityProviderResendConfirmationCodeResponse
@@ -997,12 +2079,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderResendConfirmationCodeResponse *> *)resendConfirmationCode:(AWSCognitoIdentityProviderResendConfirmationCodeRequest *)request;
 
 /**
- ResendConfirmationCode
+ <p>Resends the confirmation (for confirmation of registration) to a specific user in the user pool.</p>
  
  @param request A container for the necessary parameters to execute the ResendConfirmationCode service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderResendConfirmationCodeRequest
  @see AWSCognitoIdentityProviderResendConfirmationCodeResponse
@@ -1010,11 +2092,136 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)resendConfirmationCode:(AWSCognitoIdentityProviderResendConfirmationCodeRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderResendConfirmationCodeResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- SetUserSettings
+ <p>Responds to the authentication challenge.</p>
+ 
+ @param request A container for the necessary parameters to execute the RespondToAuthChallenge service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderRespondToAuthChallengeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`.
+ 
+ @see AWSCognitoIdentityProviderRespondToAuthChallengeRequest
+ @see AWSCognitoIdentityProviderRespondToAuthChallengeResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderRespondToAuthChallengeResponse *> *)respondToAuthChallenge:(AWSCognitoIdentityProviderRespondToAuthChallengeRequest *)request;
+
+/**
+ <p>Responds to the authentication challenge.</p>
+ 
+ @param request A container for the necessary parameters to execute the RespondToAuthChallenge service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorMFAMethodNotFound`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`.
+ 
+ @see AWSCognitoIdentityProviderRespondToAuthChallengeRequest
+ @see AWSCognitoIdentityProviderRespondToAuthChallengeResponse
+ */
+- (void)respondToAuthChallenge:(AWSCognitoIdentityProviderRespondToAuthChallengeRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderRespondToAuthChallengeResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Configures actions on detected risks. To delete the risk configuration for <code>UserPoolId</code> or <code>ClientId</code>, pass null values for all four configuration types.</p><p>To enable Amazon Cognito advanced security features, update the user pool to include the <code>UserPoolAddOns</code> key<code>AdvancedSecurityMode</code>.</p><p>See .</p>
+ 
+ @param request A container for the necessary parameters to execute the SetRiskConfiguration service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSetRiskConfigurationResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetRiskConfigurationRequest
+ @see AWSCognitoIdentityProviderSetRiskConfigurationResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderSetRiskConfigurationResponse *> *)setRiskConfiguration:(AWSCognitoIdentityProviderSetRiskConfigurationRequest *)request;
+
+/**
+ <p>Configures actions on detected risks. To delete the risk configuration for <code>UserPoolId</code> or <code>ClientId</code>, pass null values for all four configuration types.</p><p>To enable Amazon Cognito advanced security features, update the user pool to include the <code>UserPoolAddOns</code> key<code>AdvancedSecurityMode</code>.</p><p>See .</p>
+ 
+ @param request A container for the necessary parameters to execute the SetRiskConfiguration service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetRiskConfigurationRequest
+ @see AWSCognitoIdentityProviderSetRiskConfigurationResponse
+ */
+- (void)setRiskConfiguration:(AWSCognitoIdentityProviderSetRiskConfigurationRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderSetRiskConfigurationResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Sets the UI customization information for a user pool's built-in app UI.</p><p>You can specify app UI customization settings for a single client (with a specific <code>clientId</code>) or for all clients (by setting the <code>clientId</code> to <code>ALL</code>). If you specify <code>ALL</code>, the default configuration will be used for every client that has no UI customization set previously. If you specify UI customization settings for a particular client, it will no longer fall back to the <code>ALL</code> configuration. </p><note><p>To use this API, your user pool must have a domain associated with it. Otherwise, there is no place to host the app's pages, and the service will throw an error.</p></note>
+ 
+ @param request A container for the necessary parameters to execute the SetUICustomization service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSetUICustomizationResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetUICustomizationRequest
+ @see AWSCognitoIdentityProviderSetUICustomizationResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderSetUICustomizationResponse *> *)setUICustomization:(AWSCognitoIdentityProviderSetUICustomizationRequest *)request;
+
+/**
+ <p>Sets the UI customization information for a user pool's built-in app UI.</p><p>You can specify app UI customization settings for a single client (with a specific <code>clientId</code>) or for all clients (by setting the <code>clientId</code> to <code>ALL</code>). If you specify <code>ALL</code>, the default configuration will be used for every client that has no UI customization set previously. If you specify UI customization settings for a particular client, it will no longer fall back to the <code>ALL</code> configuration. </p><note><p>To use this API, your user pool must have a domain associated with it. Otherwise, there is no place to host the app's pages, and the service will throw an error.</p></note>
+ 
+ @param request A container for the necessary parameters to execute the SetUICustomization service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetUICustomizationRequest
+ @see AWSCognitoIdentityProviderSetUICustomizationResponse
+ */
+- (void)setUICustomization:(AWSCognitoIdentityProviderSetUICustomizationRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderSetUICustomizationResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Set the user's multi-factor authentication (MFA) method preference.</p>
+ 
+ @param request A container for the necessary parameters to execute the SetUserMFAPreference service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSetUserMFAPreferenceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetUserMFAPreferenceRequest
+ @see AWSCognitoIdentityProviderSetUserMFAPreferenceResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderSetUserMFAPreferenceResponse *> *)setUserMFAPreference:(AWSCognitoIdentityProviderSetUserMFAPreferenceRequest *)request;
+
+/**
+ <p>Set the user's multi-factor authentication (MFA) method preference.</p>
+ 
+ @param request A container for the necessary parameters to execute the SetUserMFAPreference service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetUserMFAPreferenceRequest
+ @see AWSCognitoIdentityProviderSetUserMFAPreferenceResponse
+ */
+- (void)setUserMFAPreference:(AWSCognitoIdentityProviderSetUserMFAPreferenceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderSetUserMFAPreferenceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Set the user pool MFA configuration.</p>
+ 
+ @param request A container for the necessary parameters to execute the SetUserPoolMfaConfig service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSetUserPoolMfaConfigResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetUserPoolMfaConfigRequest
+ @see AWSCognitoIdentityProviderSetUserPoolMfaConfigResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderSetUserPoolMfaConfigResponse *> *)setUserPoolMfaConfig:(AWSCognitoIdentityProviderSetUserPoolMfaConfigRequest *)request;
+
+/**
+ <p>Set the user pool MFA configuration.</p>
+ 
+ @param request A container for the necessary parameters to execute the SetUserPoolMfaConfig service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderSetUserPoolMfaConfigRequest
+ @see AWSCognitoIdentityProviderSetUserPoolMfaConfigResponse
+ */
+- (void)setUserPoolMfaConfig:(AWSCognitoIdentityProviderSetUserPoolMfaConfigRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderSetUserPoolMfaConfigResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Sets the user settings like multi-factor authentication (MFA). If MFA is to be removed for a particular attribute pass the attribute with code delivery as null. If null list is passed, all MFA options are removed.</p>
  
  @param request A container for the necessary parameters to execute the SetUserSettings service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSetUserSettingsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSetUserSettingsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderSetUserSettingsRequest
  @see AWSCognitoIdentityProviderSetUserSettingsResponse
@@ -1022,12 +2229,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderSetUserSettingsResponse *> *)setUserSettings:(AWSCognitoIdentityProviderSetUserSettingsRequest *)request;
 
 /**
- SetUserSettings
+ <p>Sets the user settings like multi-factor authentication (MFA). If MFA is to be removed for a particular attribute pass the attribute with code delivery as null. If null list is passed, all MFA options are removed.</p>
  
  @param request A container for the necessary parameters to execute the SetUserSettings service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderSetUserSettingsRequest
  @see AWSCognitoIdentityProviderSetUserSettingsResponse
@@ -1035,11 +2242,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setUserSettings:(AWSCognitoIdentityProviderSetUserSettingsRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderSetUserSettingsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- SignUp
+ <p>Registers the user in the specified user pool and creates a user name, password, and user attributes.</p>
  
  @param request A container for the necessary parameters to execute the SignUp service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSignUpResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderSignUpResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`.
  
  @see AWSCognitoIdentityProviderSignUpRequest
  @see AWSCognitoIdentityProviderSignUpResponse
@@ -1047,12 +2254,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderSignUpResponse *> *)signUp:(AWSCognitoIdentityProviderSignUpRequest *)request;
 
 /**
- SignUp
+ <p>Registers the user in the specified user pool and creates a user name, password, and user attributes.</p>
  
  @param request A container for the necessary parameters to execute the SignUp service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidPassword`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorUsernameExists`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`.
  
  @see AWSCognitoIdentityProviderSignUpRequest
  @see AWSCognitoIdentityProviderSignUpResponse
@@ -1060,11 +2267,236 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)signUp:(AWSCognitoIdentityProviderSignUpRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderSignUpResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- UpdateUserAttributes
+ <p>Starts the user import.</p>
+ 
+ @param request A container for the necessary parameters to execute the StartUserImportJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderStartUserImportJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderStartUserImportJobRequest
+ @see AWSCognitoIdentityProviderStartUserImportJobResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderStartUserImportJobResponse *> *)startUserImportJob:(AWSCognitoIdentityProviderStartUserImportJobRequest *)request;
+
+/**
+ <p>Starts the user import.</p>
+ 
+ @param request A container for the necessary parameters to execute the StartUserImportJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderStartUserImportJobRequest
+ @see AWSCognitoIdentityProviderStartUserImportJobResponse
+ */
+- (void)startUserImportJob:(AWSCognitoIdentityProviderStartUserImportJobRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderStartUserImportJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Stops the user import job.</p>
+ 
+ @param request A container for the necessary parameters to execute the StopUserImportJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderStopUserImportJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderStopUserImportJobRequest
+ @see AWSCognitoIdentityProviderStopUserImportJobResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderStopUserImportJobResponse *> *)stopUserImportJob:(AWSCognitoIdentityProviderStopUserImportJobRequest *)request;
+
+/**
+ <p>Stops the user import job.</p>
+ 
+ @param request A container for the necessary parameters to execute the StopUserImportJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorPreconditionNotMet`, `AWSCognitoIdentityProviderErrorNotAuthorized`.
+ 
+ @see AWSCognitoIdentityProviderStopUserImportJobRequest
+ @see AWSCognitoIdentityProviderStopUserImportJobResponse
+ */
+- (void)stopUserImportJob:(AWSCognitoIdentityProviderStopUserImportJobRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderStopUserImportJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Assigns a set of tags to an Amazon Cognito user pool. A tag is a label that you can use to categorize and manage user pools in different ways, such as by purpose, owner, environment, or other criteria.</p><p>Each tag consists of a key and value, both of which you define. A key is a general category for more specific values. For example, if you have two versions of a user pool, one for testing and another for production, you might assign an <code>Environment</code> tag key to both user pools. The value of this key might be <code>Test</code> for one user pool and <code>Production</code> for the other.</p><p>Tags are useful for cost tracking and access control. You can activate your tags so that they appear on the Billing and Cost Management console, where you can track the costs associated with your user pools. In an IAM policy, you can constrain permissions for user pools based on specific tags or tag values.</p><p>You can use this action up to 5 times per second, per account. A user pool can have as many as 50 tags.</p>
+ 
+ @param request A container for the necessary parameters to execute the TagResource service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderTagResourceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderTagResourceRequest
+ @see AWSCognitoIdentityProviderTagResourceResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderTagResourceResponse *> *)tagResource:(AWSCognitoIdentityProviderTagResourceRequest *)request;
+
+/**
+ <p>Assigns a set of tags to an Amazon Cognito user pool. A tag is a label that you can use to categorize and manage user pools in different ways, such as by purpose, owner, environment, or other criteria.</p><p>Each tag consists of a key and value, both of which you define. A key is a general category for more specific values. For example, if you have two versions of a user pool, one for testing and another for production, you might assign an <code>Environment</code> tag key to both user pools. The value of this key might be <code>Test</code> for one user pool and <code>Production</code> for the other.</p><p>Tags are useful for cost tracking and access control. You can activate your tags so that they appear on the Billing and Cost Management console, where you can track the costs associated with your user pools. In an IAM policy, you can constrain permissions for user pools based on specific tags or tag values.</p><p>You can use this action up to 5 times per second, per account. A user pool can have as many as 50 tags.</p>
+ 
+ @param request A container for the necessary parameters to execute the TagResource service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderTagResourceRequest
+ @see AWSCognitoIdentityProviderTagResourceResponse
+ */
+- (void)tagResource:(AWSCognitoIdentityProviderTagResourceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderTagResourceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Removes the specified tags from an Amazon Cognito user pool. You can use this action up to 5 times per second, per account</p>
+ 
+ @param request A container for the necessary parameters to execute the UntagResource service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUntagResourceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUntagResourceRequest
+ @see AWSCognitoIdentityProviderUntagResourceResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderUntagResourceResponse *> *)untagResource:(AWSCognitoIdentityProviderUntagResourceRequest *)request;
+
+/**
+ <p>Removes the specified tags from an Amazon Cognito user pool. You can use this action up to 5 times per second, per account</p>
+ 
+ @param request A container for the necessary parameters to execute the UntagResource service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUntagResourceRequest
+ @see AWSCognitoIdentityProviderUntagResourceResponse
+ */
+- (void)untagResource:(AWSCognitoIdentityProviderUntagResourceRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUntagResourceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides the feedback for an authentication event whether it was from a valid user or not. This feedback is used for improving the risk evaluation decision for the user pool as part of Amazon Cognito advanced security.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateAuthEventFeedback service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateAuthEventFeedbackResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateAuthEventFeedbackRequest
+ @see AWSCognitoIdentityProviderUpdateAuthEventFeedbackResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderUpdateAuthEventFeedbackResponse *> *)updateAuthEventFeedback:(AWSCognitoIdentityProviderUpdateAuthEventFeedbackRequest *)request;
+
+/**
+ <p>Provides the feedback for an authentication event whether it was from a valid user or not. This feedback is used for improving the risk evaluation decision for the user pool as part of Amazon Cognito advanced security.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateAuthEventFeedback service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserPoolAddOnNotEnabled`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateAuthEventFeedbackRequest
+ @see AWSCognitoIdentityProviderUpdateAuthEventFeedbackResponse
+ */
+- (void)updateAuthEventFeedback:(AWSCognitoIdentityProviderUpdateAuthEventFeedbackRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateAuthEventFeedbackResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates the device status.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateDeviceStatus service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateDeviceStatusResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateDeviceStatusRequest
+ @see AWSCognitoIdentityProviderUpdateDeviceStatusResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderUpdateDeviceStatusResponse *> *)updateDeviceStatus:(AWSCognitoIdentityProviderUpdateDeviceStatusRequest *)request;
+
+/**
+ <p>Updates the device status.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateDeviceStatus service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateDeviceStatusRequest
+ @see AWSCognitoIdentityProviderUpdateDeviceStatusResponse
+ */
+- (void)updateDeviceStatus:(AWSCognitoIdentityProviderUpdateDeviceStatusRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateDeviceStatusResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates the specified group with the specified attributes.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateGroup service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateGroupResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateGroupRequest
+ @see AWSCognitoIdentityProviderUpdateGroupResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderUpdateGroupResponse *> *)updateGroup:(AWSCognitoIdentityProviderUpdateGroupRequest *)request;
+
+/**
+ <p>Updates the specified group with the specified attributes.</p><p>Requires developer credentials.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateGroup service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateGroupRequest
+ @see AWSCognitoIdentityProviderUpdateGroupResponse
+ */
+- (void)updateGroup:(AWSCognitoIdentityProviderUpdateGroupRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateGroupResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates identity provider information for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateIdentityProvider service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateIdentityProviderResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnsupportedIdentityProvider`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateIdentityProviderRequest
+ @see AWSCognitoIdentityProviderUpdateIdentityProviderResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderUpdateIdentityProviderResponse *> *)updateIdentityProvider:(AWSCognitoIdentityProviderUpdateIdentityProviderRequest *)request;
+
+/**
+ <p>Updates identity provider information for a user pool.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateIdentityProvider service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorUnsupportedIdentityProvider`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateIdentityProviderRequest
+ @see AWSCognitoIdentityProviderUpdateIdentityProviderResponse
+ */
+- (void)updateIdentityProvider:(AWSCognitoIdentityProviderUpdateIdentityProviderRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateIdentityProviderResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates the name and scopes of resource server. All other fields are read-only.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateResourceServer service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateResourceServerResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateResourceServerRequest
+ @see AWSCognitoIdentityProviderUpdateResourceServerResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderUpdateResourceServerResponse *> *)updateResourceServer:(AWSCognitoIdentityProviderUpdateResourceServerRequest *)request;
+
+/**
+ <p>Updates the name and scopes of resource server. All other fields are read-only.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateResourceServer service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateResourceServerRequest
+ @see AWSCognitoIdentityProviderUpdateResourceServerResponse
+ */
+- (void)updateResourceServer:(AWSCognitoIdentityProviderUpdateResourceServerRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateResourceServerResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Allows a user to update a specific attribute (one at a time).</p>
  
  @param request A container for the necessary parameters to execute the UpdateUserAttributes service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateUserAttributesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderUpdateUserAttributesRequest
  @see AWSCognitoIdentityProviderUpdateUserAttributesResponse
@@ -1072,12 +2504,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderUpdateUserAttributesResponse *> *)updateUserAttributes:(AWSCognitoIdentityProviderUpdateUserAttributesRequest *)request;
 
 /**
- UpdateUserAttributes
+ <p>Allows a user to update a specific attribute (one at a time).</p>
  
  @param request A container for the necessary parameters to execute the UpdateUserAttributes service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUnexpectedLambda`, `AWSCognitoIdentityProviderErrorUserLambdaValidation`, `AWSCognitoIdentityProviderErrorInvalidLambdaResponse`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorAliasExists`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorCodeDeliveryFailure`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderUpdateUserAttributesRequest
  @see AWSCognitoIdentityProviderUpdateUserAttributesResponse
@@ -1085,11 +2517,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateUserAttributes:(AWSCognitoIdentityProviderUpdateUserAttributesRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateUserAttributesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- UpdateUserPool
+ <p>Updates the specified user pool with the specified attributes. If you don't provide a value for an attribute, it will be set to the default value. You can get a list of the current user pool settings with .</p>
  
  @param request A container for the necessary parameters to execute the UpdateUserPool service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateUserPoolResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorConcurrentModification`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateUserPoolResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorConcurrentModification`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserImportInProgress`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorUserPoolTagging`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`.
  
  @see AWSCognitoIdentityProviderUpdateUserPoolRequest
  @see AWSCognitoIdentityProviderUpdateUserPoolResponse
@@ -1097,12 +2529,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderUpdateUserPoolResponse *> *)updateUserPool:(AWSCognitoIdentityProviderUpdateUserPoolRequest *)request;
 
 /**
- UpdateUserPool
+ <p>Updates the specified user pool with the specified attributes. If you don't provide a value for an attribute, it will be set to the default value. You can get a list of the current user pool settings with .</p>
  
  @param request A container for the necessary parameters to execute the UpdateUserPool service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorConcurrentModification`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorConcurrentModification`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorUserImportInProgress`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleAccessPolicy`, `AWSCognitoIdentityProviderErrorInvalidSmsRoleTrustRelationship`, `AWSCognitoIdentityProviderErrorUserPoolTagging`, `AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy`.
  
  @see AWSCognitoIdentityProviderUpdateUserPoolRequest
  @see AWSCognitoIdentityProviderUpdateUserPoolResponse
@@ -1110,11 +2542,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateUserPool:(AWSCognitoIdentityProviderUpdateUserPoolRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateUserPoolResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- UpdateUserPoolClient
+ <p>Updates the specified user pool app client with the specified attributes. If you don't provide a value for an attribute, it will be set to the default value. You can get a list of the current user pool app client settings with .</p>
  
  @param request A container for the necessary parameters to execute the UpdateUserPoolClient service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateUserPoolClientResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateUserPoolClientResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorConcurrentModification`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorScopeDoesNotExist`, `AWSCognitoIdentityProviderErrorInvalidOAuthFlow`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderUpdateUserPoolClientRequest
  @see AWSCognitoIdentityProviderUpdateUserPoolClientResponse
@@ -1122,12 +2554,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderUpdateUserPoolClientResponse *> *)updateUserPoolClient:(AWSCognitoIdentityProviderUpdateUserPoolClientRequest *)request;
 
 /**
- UpdateUserPoolClient
+ <p>Updates the specified user pool app client with the specified attributes. If you don't provide a value for an attribute, it will be set to the default value. You can get a list of the current user pool app client settings with .</p>
  
  @param request A container for the necessary parameters to execute the UpdateUserPoolClient service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorConcurrentModification`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorScopeDoesNotExist`, `AWSCognitoIdentityProviderErrorInvalidOAuthFlow`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderUpdateUserPoolClientRequest
  @see AWSCognitoIdentityProviderUpdateUserPoolClientResponse
@@ -1135,11 +2567,61 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateUserPoolClient:(AWSCognitoIdentityProviderUpdateUserPoolClientRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateUserPoolClientResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- VerifyUserAttribute
+ <p>Updates the Secure Sockets Layer (SSL) certificate for the custom domain for your user pool.</p><p>You can use this operation to provide the Amazon Resource Name (ARN) of a new certificate to Amazon Cognito. You cannot use it to change the domain for a user pool.</p><p>A custom domain is used to host the Amazon Cognito hosted UI, which provides sign-up and sign-in pages for your application. When you set up a custom domain, you provide a certificate that you manage with AWS Certificate Manager (ACM). When necessary, you can use this operation to change the certificate that you applied to your custom domain.</p><p>Usually, this is unnecessary following routine certificate renewal with ACM. When you renew your existing certificate in ACM, the ARN for your certificate remains the same, and your custom domain uses the new certificate automatically.</p><p>However, if you replace your existing certificate with a new one, ACM gives the new certificate a new ARN. To apply the new certificate to your custom domain, you must provide this ARN to Amazon Cognito.</p><p>When you add your new certificate in ACM, you must choose US East (N. Virginia) as the AWS Region.</p><p>After you submit your request, Amazon Cognito requires up to 1 hour to distribute your new certificate to your custom domain.</p><p>For more information about adding a custom domain to your user pool, see <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-add-custom-domain.html">Using Your Own Domain for the Hosted UI</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateUserPoolDomain service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderUpdateUserPoolDomainResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderUpdateUserPoolDomainResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderUpdateUserPoolDomainResponse *> *)updateUserPoolDomain:(AWSCognitoIdentityProviderUpdateUserPoolDomainRequest *)request;
+
+/**
+ <p>Updates the Secure Sockets Layer (SSL) certificate for the custom domain for your user pool.</p><p>You can use this operation to provide the Amazon Resource Name (ARN) of a new certificate to Amazon Cognito. You cannot use it to change the domain for a user pool.</p><p>A custom domain is used to host the Amazon Cognito hosted UI, which provides sign-up and sign-in pages for your application. When you set up a custom domain, you provide a certificate that you manage with AWS Certificate Manager (ACM). When necessary, you can use this operation to change the certificate that you applied to your custom domain.</p><p>Usually, this is unnecessary following routine certificate renewal with ACM. When you renew your existing certificate in ACM, the ARN for your certificate remains the same, and your custom domain uses the new certificate automatically.</p><p>However, if you replace your existing certificate with a new one, ACM gives the new certificate a new ARN. To apply the new certificate to your custom domain, you must provide this ARN to Amazon Cognito.</p><p>When you add your new certificate in ACM, you must choose US East (N. Virginia) as the AWS Region.</p><p>After you submit your request, Amazon Cognito requires up to 1 hour to distribute your new certificate to your custom domain.</p><p>For more information about adding a custom domain to your user pool, see <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-add-custom-domain.html">Using Your Own Domain for the Hosted UI</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateUserPoolDomain service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ 
+ @see AWSCognitoIdentityProviderUpdateUserPoolDomainRequest
+ @see AWSCognitoIdentityProviderUpdateUserPoolDomainResponse
+ */
+- (void)updateUserPoolDomain:(AWSCognitoIdentityProviderUpdateUserPoolDomainRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderUpdateUserPoolDomainResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Use this API to register a user's entered TOTP code and mark the user's software token MFA status as "verified" if successful. The request takes an access token or a session string, but not both.</p>
+ 
+ @param request A container for the necessary parameters to execute the VerifySoftwareToken service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderVerifySoftwareTokenResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorEnableSoftwareTokenMFA`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`, `AWSCognitoIdentityProviderErrorCodeMismatch`.
+ 
+ @see AWSCognitoIdentityProviderVerifySoftwareTokenRequest
+ @see AWSCognitoIdentityProviderVerifySoftwareTokenResponse
+ */
+- (AWSTask<AWSCognitoIdentityProviderVerifySoftwareTokenResponse *> *)verifySoftwareToken:(AWSCognitoIdentityProviderVerifySoftwareTokenRequest *)request;
+
+/**
+ <p>Use this API to register a user's entered TOTP code and mark the user's software token MFA status as "verified" if successful. The request takes an access token or a session string, but not both.</p>
+ 
+ @param request A container for the necessary parameters to execute the VerifySoftwareToken service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidUserPoolConfiguration`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`, `AWSCognitoIdentityProviderErrorEnableSoftwareTokenMFA`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound`, `AWSCognitoIdentityProviderErrorCodeMismatch`.
+ 
+ @see AWSCognitoIdentityProviderVerifySoftwareTokenRequest
+ @see AWSCognitoIdentityProviderVerifySoftwareTokenResponse
+ */
+- (void)verifySoftwareToken:(AWSCognitoIdentityProviderVerifySoftwareTokenRequest *)request completionHandler:(void (^ _Nullable)(AWSCognitoIdentityProviderVerifySoftwareTokenResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Verifies the specified user attributes in the user pool.</p>
  
  @param request A container for the necessary parameters to execute the VerifyUserAttribute service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderVerifyUserAttributeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSCognitoIdentityProviderVerifyUserAttributeResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderVerifyUserAttributeRequest
  @see AWSCognitoIdentityProviderVerifyUserAttributeResponse
@@ -1147,12 +2629,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (AWSTask<AWSCognitoIdentityProviderVerifyUserAttributeResponse *> *)verifyUserAttribute:(AWSCognitoIdentityProviderVerifyUserAttributeRequest *)request;
 
 /**
- VerifyUserAttribute
+ <p>Verifies the specified user attributes in the user pool.</p>
  
  @param request A container for the necessary parameters to execute the VerifyUserAttribute service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorInternalError`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSCognitoIdentityProviderErrorDomain` domain and the following error code: `AWSCognitoIdentityProviderErrorResourceNotFound`, `AWSCognitoIdentityProviderErrorInvalidParameter`, `AWSCognitoIdentityProviderErrorCodeMismatch`, `AWSCognitoIdentityProviderErrorExpiredCode`, `AWSCognitoIdentityProviderErrorNotAuthorized`, `AWSCognitoIdentityProviderErrorTooManyRequests`, `AWSCognitoIdentityProviderErrorLimitExceeded`, `AWSCognitoIdentityProviderErrorPasswordResetRequired`, `AWSCognitoIdentityProviderErrorUserNotFound`, `AWSCognitoIdentityProviderErrorUserNotConfirmed`, `AWSCognitoIdentityProviderErrorInternalError`.
  
  @see AWSCognitoIdentityProviderVerifyUserAttributeRequest
  @see AWSCognitoIdentityProviderVerifyUserAttributeResponse

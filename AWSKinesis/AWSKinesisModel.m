@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -61,6 +61,21 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 
 @end
 
+@implementation AWSKinesisDescribeLimitsInput
+
+@end
+
+@implementation AWSKinesisDescribeLimitsOutput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"openShardCount" : @"OpenShardCount",
+             @"shardLimit" : @"ShardLimit",
+             };
+}
+
+@end
+
 @implementation AWSKinesisDescribeStreamInput
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -82,7 +97,31 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 }
 
 + (NSValueTransformer *)streamDescriptionJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSKinesisStreamDescription class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSKinesisStreamDescription class]];
+}
+
+@end
+
+@implementation AWSKinesisDescribeStreamSummaryInput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"streamName" : @"StreamName",
+             };
+}
+
+@end
+
+@implementation AWSKinesisDescribeStreamSummaryOutput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"streamDescriptionSummary" : @"StreamDescriptionSummary",
+             };
+}
+
++ (NSValueTransformer *)streamDescriptionSummaryJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSKinesisStreamDescriptionSummary class]];
 }
 
 @end
@@ -153,7 +192,7 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 }
 
 + (NSValueTransformer *)recordsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisRecord class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisRecord class]];
 }
 
 @end
@@ -172,19 +211,19 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 
 + (NSValueTransformer *)shardIteratorTypeJSONTransformer {
     return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
-        if ([value isEqualToString:@"AT_SEQUENCE_NUMBER"]) {
+        if ([value caseInsensitiveCompare:@"AT_SEQUENCE_NUMBER"] == NSOrderedSame) {
             return @(AWSKinesisShardIteratorTypeAtSequenceNumber);
         }
-        if ([value isEqualToString:@"AFTER_SEQUENCE_NUMBER"]) {
+        if ([value caseInsensitiveCompare:@"AFTER_SEQUENCE_NUMBER"] == NSOrderedSame) {
             return @(AWSKinesisShardIteratorTypeAfterSequenceNumber);
         }
-        if ([value isEqualToString:@"TRIM_HORIZON"]) {
+        if ([value caseInsensitiveCompare:@"TRIM_HORIZON"] == NSOrderedSame) {
             return @(AWSKinesisShardIteratorTypeTrimHorizon);
         }
-        if ([value isEqualToString:@"LATEST"]) {
+        if ([value caseInsensitiveCompare:@"LATEST"] == NSOrderedSame) {
             return @(AWSKinesisShardIteratorTypeLatest);
         }
-        if ([value isEqualToString:@"AT_TIMESTAMP"]) {
+        if ([value caseInsensitiveCompare:@"AT_TIMESTAMP"] == NSOrderedSame) {
             return @(AWSKinesisShardIteratorTypeAtTimestamp);
         }
         return @(AWSKinesisShardIteratorTypeUnknown);
@@ -207,7 +246,7 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 }
 
 + (NSValueTransformer *)timestampJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
         return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
     } reverseBlock:^id(NSDate *date) {
         return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
@@ -244,6 +283,43 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
              @"retentionPeriodHours" : @"RetentionPeriodHours",
              @"streamName" : @"StreamName",
              };
+}
+
+@end
+
+@implementation AWSKinesisListShardsInput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"exclusiveStartShardId" : @"ExclusiveStartShardId",
+             @"maxResults" : @"MaxResults",
+             @"nextToken" : @"NextToken",
+             @"streamCreationTimestamp" : @"StreamCreationTimestamp",
+             @"streamName" : @"StreamName",
+             };
+}
+
++ (NSValueTransformer *)streamCreationTimestampJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+        return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+    } reverseBlock:^id(NSDate *date) {
+        return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
+}
+
+@end
+
+@implementation AWSKinesisListShardsOutput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"nextToken" : @"NextToken",
+             @"shards" : @"Shards",
+             };
+}
+
++ (NSValueTransformer *)shardsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisShard class]];
 }
 
 @end
@@ -292,7 +368,7 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 }
 
 + (NSValueTransformer *)tagsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisTag class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisTag class]];
 }
 
 @end
@@ -327,9 +403,31 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"encryptionType" : @"EncryptionType",
              @"sequenceNumber" : @"SequenceNumber",
              @"shardId" : @"ShardId",
              };
+}
+
++ (NSValueTransformer *)encryptionTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"NONE"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeNone);
+        }
+        if ([value caseInsensitiveCompare:@"KMS"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeKms);
+        }
+        return @(AWSKinesisEncryptionTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisEncryptionTypeNone:
+                return @"NONE";
+            case AWSKinesisEncryptionTypeKms:
+                return @"KMS";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end
@@ -344,7 +442,7 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 }
 
 + (NSValueTransformer *)recordsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisPutRecordsRequestEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisPutRecordsRequestEntry class]];
 }
 
 @end
@@ -353,13 +451,35 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"encryptionType" : @"EncryptionType",
              @"failedRecordCount" : @"FailedRecordCount",
              @"records" : @"Records",
              };
 }
 
++ (NSValueTransformer *)encryptionTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"NONE"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeNone);
+        }
+        if ([value caseInsensitiveCompare:@"KMS"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeKms);
+        }
+        return @(AWSKinesisEncryptionTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisEncryptionTypeNone:
+                return @"NONE";
+            case AWSKinesisEncryptionTypeKms:
+                return @"KMS";
+            default:
+                return nil;
+        }
+    }];
+}
+
 + (NSValueTransformer *)recordsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisPutRecordsResultEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisPutRecordsResultEntry class]];
 }
 
 @end
@@ -395,16 +515,38 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 	return @{
              @"approximateArrivalTimestamp" : @"ApproximateArrivalTimestamp",
              @"data" : @"Data",
+             @"encryptionType" : @"EncryptionType",
              @"partitionKey" : @"PartitionKey",
              @"sequenceNumber" : @"SequenceNumber",
              };
 }
 
 + (NSValueTransformer *)approximateArrivalTimestampJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
         return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
     } reverseBlock:^id(NSDate *date) {
         return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
+}
+
++ (NSValueTransformer *)encryptionTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"NONE"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeNone);
+        }
+        if ([value caseInsensitiveCompare:@"KMS"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeKms);
+        }
+        return @(AWSKinesisEncryptionTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisEncryptionTypeNone:
+                return @"NONE";
+            case AWSKinesisEncryptionTypeKms:
+                return @"KMS";
+            default:
+                return nil;
+        }
     }];
 }
 
@@ -445,11 +587,11 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 }
 
 + (NSValueTransformer *)hashKeyRangeJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSKinesisHashKeyRange class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSKinesisHashKeyRange class]];
 }
 
 + (NSValueTransformer *)sequenceNumberRangeJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSKinesisSequenceNumberRange class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSKinesisSequenceNumberRange class]];
 }
 
 @end
@@ -466,40 +608,220 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 
 @end
 
+@implementation AWSKinesisStartStreamEncryptionInput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"encryptionType" : @"EncryptionType",
+             @"keyId" : @"KeyId",
+             @"streamName" : @"StreamName",
+             };
+}
+
++ (NSValueTransformer *)encryptionTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"NONE"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeNone);
+        }
+        if ([value caseInsensitiveCompare:@"KMS"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeKms);
+        }
+        return @(AWSKinesisEncryptionTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisEncryptionTypeNone:
+                return @"NONE";
+            case AWSKinesisEncryptionTypeKms:
+                return @"KMS";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSKinesisStopStreamEncryptionInput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"encryptionType" : @"EncryptionType",
+             @"keyId" : @"KeyId",
+             @"streamName" : @"StreamName",
+             };
+}
+
++ (NSValueTransformer *)encryptionTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"NONE"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeNone);
+        }
+        if ([value caseInsensitiveCompare:@"KMS"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeKms);
+        }
+        return @(AWSKinesisEncryptionTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisEncryptionTypeNone:
+                return @"NONE";
+            case AWSKinesisEncryptionTypeKms:
+                return @"KMS";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
 @implementation AWSKinesisStreamDescription
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"encryptionType" : @"EncryptionType",
              @"enhancedMonitoring" : @"EnhancedMonitoring",
              @"hasMoreShards" : @"HasMoreShards",
+             @"keyId" : @"KeyId",
              @"retentionPeriodHours" : @"RetentionPeriodHours",
              @"shards" : @"Shards",
              @"streamARN" : @"StreamARN",
+             @"streamCreationTimestamp" : @"StreamCreationTimestamp",
              @"streamName" : @"StreamName",
              @"streamStatus" : @"StreamStatus",
              };
 }
 
++ (NSValueTransformer *)encryptionTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"NONE"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeNone);
+        }
+        if ([value caseInsensitiveCompare:@"KMS"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeKms);
+        }
+        return @(AWSKinesisEncryptionTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisEncryptionTypeNone:
+                return @"NONE";
+            case AWSKinesisEncryptionTypeKms:
+                return @"KMS";
+            default:
+                return nil;
+        }
+    }];
+}
+
 + (NSValueTransformer *)enhancedMonitoringJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisEnhancedMetrics class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisEnhancedMetrics class]];
 }
 
 + (NSValueTransformer *)shardsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisShard class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisShard class]];
+}
+
++ (NSValueTransformer *)streamCreationTimestampJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+        return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+    } reverseBlock:^id(NSDate *date) {
+        return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
 }
 
 + (NSValueTransformer *)streamStatusJSONTransformer {
     return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
-        if ([value isEqualToString:@"CREATING"]) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
             return @(AWSKinesisStreamStatusCreating);
         }
-        if ([value isEqualToString:@"DELETING"]) {
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
             return @(AWSKinesisStreamStatusDeleting);
         }
-        if ([value isEqualToString:@"ACTIVE"]) {
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
             return @(AWSKinesisStreamStatusActive);
         }
-        if ([value isEqualToString:@"UPDATING"]) {
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
+            return @(AWSKinesisStreamStatusUpdating);
+        }
+        return @(AWSKinesisStreamStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisStreamStatusCreating:
+                return @"CREATING";
+            case AWSKinesisStreamStatusDeleting:
+                return @"DELETING";
+            case AWSKinesisStreamStatusActive:
+                return @"ACTIVE";
+            case AWSKinesisStreamStatusUpdating:
+                return @"UPDATING";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSKinesisStreamDescriptionSummary
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"encryptionType" : @"EncryptionType",
+             @"enhancedMonitoring" : @"EnhancedMonitoring",
+             @"keyId" : @"KeyId",
+             @"openShardCount" : @"OpenShardCount",
+             @"retentionPeriodHours" : @"RetentionPeriodHours",
+             @"streamARN" : @"StreamARN",
+             @"streamCreationTimestamp" : @"StreamCreationTimestamp",
+             @"streamName" : @"StreamName",
+             @"streamStatus" : @"StreamStatus",
+             };
+}
+
++ (NSValueTransformer *)encryptionTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"NONE"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeNone);
+        }
+        if ([value caseInsensitiveCompare:@"KMS"] == NSOrderedSame) {
+            return @(AWSKinesisEncryptionTypeKms);
+        }
+        return @(AWSKinesisEncryptionTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisEncryptionTypeNone:
+                return @"NONE";
+            case AWSKinesisEncryptionTypeKms:
+                return @"KMS";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)enhancedMonitoringJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSKinesisEnhancedMetrics class]];
+}
+
++ (NSValueTransformer *)streamCreationTimestampJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+        return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+    } reverseBlock:^id(NSDate *date) {
+        return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
+}
+
++ (NSValueTransformer *)streamStatusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSKinesisStreamStatusCreating);
+        }
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
+            return @(AWSKinesisStreamStatusDeleting);
+        }
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSKinesisStreamStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
             return @(AWSKinesisStreamStatusUpdating);
         }
         return @(AWSKinesisStreamStatusUnknown);
@@ -527,6 +849,46 @@ NSString *const AWSKinesisErrorDomain = @"com.amazonaws.AWSKinesisErrorDomain";
 	return @{
              @"key" : @"Key",
              @"value" : @"Value",
+             };
+}
+
+@end
+
+@implementation AWSKinesisUpdateShardCountInput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"scalingType" : @"ScalingType",
+             @"streamName" : @"StreamName",
+             @"targetShardCount" : @"TargetShardCount",
+             };
+}
+
++ (NSValueTransformer *)scalingTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"UNIFORM_SCALING"] == NSOrderedSame) {
+            return @(AWSKinesisScalingTypeUniformScaling);
+        }
+        return @(AWSKinesisScalingTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSKinesisScalingTypeUniformScaling:
+                return @"UNIFORM_SCALING";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSKinesisUpdateShardCountOutput
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"currentShardCount" : @"CurrentShardCount",
+             @"streamName" : @"StreamName",
+             @"targetShardCount" : @"TargetShardCount",
              };
 }
 

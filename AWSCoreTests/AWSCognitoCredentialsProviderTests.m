@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -194,13 +194,14 @@ BOOL _identityChanged;
     // Static cib client that uses long term credentials
     [AWSCognitoIdentity registerCognitoIdentityWithConfiguration:configuration
                                                           forKey:@"Static"];
-
+    
     AWSCognitoCredentialsProviderTestsAccountID = credentialsJson[@"accountId"];
     AWSCognitoCredentialsProviderTestsFacebookAppID = credentialsJson[@"facebookAppId"];
     AWSCognitoCredentialsProviderTestsFacebookAppSecret = credentialsJson[@"facebookAppSecret"];
     AWSCognitoCredentialsProviderTestsUnauthRoleArn = credentialsJson[@"unauthRoleArn"];
     AWSCognitoCredentialsProviderTestsAuthRoleArn = credentialsJson[@"authRoleArn"];
 
+    //[AWSCognitoCredentialsProviderTests cleanupIdentityPools];
     [AWSCognitoCredentialsProviderTests createFBAccount];
     [AWSCognitoCredentialsProviderTests createIdentityPools];
 }
@@ -272,6 +273,7 @@ BOOL _identityChanged;
         XCTAssertNotNil(credentials.accessKey, @"Unable to get accessKey");
 
         identityProvider.loggedIn = YES;
+        [provider clearCredentials];
         return [provider credentials];
     }] continueWithBlock:^id _Nullable(AWSTask * _Nonnull task) {
         if (task.error) {
@@ -299,6 +301,7 @@ BOOL _identityChanged;
         XCTAssertNotNil(credentials.accessKey, @"Unable to get accessKey");
         
         identityProvider.loggedIn = YES;
+        [provider clearCredentials];
         return [provider credentials];
     }] continueWithBlock:^id _Nullable(AWSTask * _Nonnull task) {
         if (task.error) {
@@ -384,6 +387,7 @@ BOOL _identityChanged;
     }] continueWithSuccessBlock:^id _Nullable(AWSTask * _Nonnull task) {
         XCTAssertEqualObjects(provider1.identityId, provider2.identityId);
         originalIdentityId = provider2.identityId;
+        [provider2 clearCredentials];
         return [provider2 credentials];
     }] continueWithBlock:^id _Nullable(AWSTask * _Nonnull task) {
         XCTAssertNil(task.error);
@@ -430,6 +434,7 @@ BOOL _identityChanged;
         XCTAssertNotNil(credentials.accessKey, @"Unable to get accessKey");
 
         identityProvider.loggedIn = YES;
+        [provider clearCredentials];
         return [provider credentials];
     }] continueWithBlock:^id(AWSTask *task) {
         if (task.error) {
@@ -570,8 +575,6 @@ BOOL _identityChanged;
                                                                                                        identityPoolId:_identityPoolIdAuth];
 
     AWSCognitoCredentialsProvider *provider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-                                                                                          unauthRoleArn:nil
-                                                                                            authRoleArn:nil
                                                                                        identityProvider:fakeIdentityProvider];
 
     [[[provider credentials] continueWithBlock:^id(AWSTask *task) {
@@ -597,13 +600,15 @@ BOOL _identityChanged;
 
     // Get the FB APP access token
     NSString *raw_response = [NSString stringWithContentsOfURL:[NSURL URLWithString:accessURI] encoding:NSUTF8StringEncoding error:nil];
-    NSRange startOfToken = [raw_response rangeOfString:@"="];
+    NSDictionary *accessTokenDictionary = [NSJSONSerialization JSONObjectWithData:[raw_response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+    NSString *accessToken = accessTokenDictionary[@"access_token"];
+    //NSRange startOfToken = [raw_response rangeOfString:@"="];
     // Strip the 'access_token=' so we can easily encode result
-    _facebookAppToken = [[raw_response substringFromIndex:startOfToken.location + 1] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
+    //_facebookAppToken = [[raw_response substringFromIndex:startOfToken.location + 1] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
     // Add a new test user, the result contains an access key we can use to test assume role
-    NSString *addUserURI = [NSString stringWithFormat:@"https://graph.facebook.com/%@/accounts/test-users?installed=true&name=Foo%%20Bar&locale=en_US&permissions=read_stream&method=post&access_token=%@", AWSCognitoCredentialsProviderTestsFacebookAppID, _facebookAppToken];
-
+    NSString *addUserURI = [NSString stringWithFormat:@"https://graph.facebook.com/%@/accounts/test-users?installed=true&name=Foo%%20Bar&locale=en_US&permissions=read_stream&method=post&access_token=%@", AWSCognitoCredentialsProviderTestsFacebookAppID, [accessToken aws_stringWithURLEncodingPath]];
+    
     NSError *error = nil;
     NSString *newUser = [NSString stringWithContentsOfURL:[NSURL URLWithString:addUserURI]
                                                  encoding:NSASCIIStringEncoding
@@ -686,13 +691,36 @@ BOOL _identityChanged;
     [[AWSTask taskForCompletionOfAllTasks:tasks] waitUntilFinished];
 }
 
+
++ (void)cleanupIdentityPools {
+    AWSCognitoIdentityListIdentityPoolsInput *lpi = [AWSCognitoIdentityListIdentityPoolsInput new];
+    lpi.maxResults = [NSNumber numberWithInteger:60];
+    
+    [[[AWSCognitoIdentity CognitoIdentityForKey:@"Static"] listIdentityPools:lpi] continueWithSuccessBlock:^id _Nullable(AWSTask<AWSCognitoIdentityListIdentityPoolsResponse *> * _Nonnull task) {
+        NSMutableArray *tasks = [NSMutableArray new];
+        for (AWSCognitoIdentityIdentityPoolShortDescription *object in task.result.identityPools) {
+            NSLog(@"Inspecting %@: %@", object.identityPoolName, object.identityPoolId);
+            if([object.identityPoolName containsString:@"CIBiOS"]){
+                AWSCognitoIdentityDeleteIdentityPoolInput *deletePoolForAuth = [AWSCognitoIdentityDeleteIdentityPoolInput new];
+                deletePoolForAuth.identityPoolId= object.identityPoolId;
+                NSLog(@"Deleting %@",object.identityPoolId);
+                [tasks addObject:[[AWSCognitoIdentity CognitoIdentityForKey:@"Static"] deleteIdentityPool:deletePoolForAuth]];
+            }
+        }
+        
+        [[AWSTask taskForCompletionOfAllTasks:tasks] waitUntilFinished];
+
+        return nil;
+    }];
+}
+
 - (void)identityIdDidChange:(NSNotification *)notification {
     NSDictionary *dictionary = [notification userInfo];
     NSString *oldId = dictionary[AWSCognitoNotificationNewId];
     NSString *newId = dictionary[AWSCognitoNotificationPreviousId];
     
-    AWSLogDebug(@"OLD ID: %@", oldId);
-    AWSLogDebug(@"NEW ID: %@", newId);
+    AWSDDLogDebug(@"OLD ID: %@", oldId);
+    AWSDDLogDebug(@"NEW ID: %@", newId);
     _identityChanged = YES;
 }
 

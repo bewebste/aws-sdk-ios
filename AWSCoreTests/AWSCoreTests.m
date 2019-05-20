@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 
 #import <XCTest/XCTest.h>
 #import "AWSCore.h"
+#import "AWSGZIP.h"
 #import "AWSSerialization.h"
 #import "AWSURLRequestSerialization.h"
 #import "AWSURLResponseSerialization.h"
@@ -31,6 +32,8 @@
 @end
 
 @implementation AWSCoreTests
+
+static NSString* const awsConfigurationJsonFileName = @"awsconfiguration.json";
 
 - (void)setUp {
     [super setUp];
@@ -125,8 +128,8 @@
                                 headers:testHeaders
                              parameters:testParams] continueWithSuccessBlock:^id(AWSTask *task) {
         //Assert headers are properly set
-        NSDictionary *serialziedHeaders = [testRequest allHTTPHeaderFields];
-        XCTAssertEqualObjects(testHeaders, serialziedHeaders, "JSONSerializer failed to properly attach headers");
+        NSDictionary *serializedHeaders = [testRequest allHTTPHeaderFields];
+        XCTAssertEqualObjects(testHeaders, serializedHeaders, "JSONSerializer failed to properly attach headers");
         
         //Assert body is properly in JSON
         NSData *jsonData = [testRequest HTTPBody];
@@ -148,6 +151,50 @@
         }
         return nil;
     }] waitUntilFinished];
+}
+
+- (void)testJSONRequestPayloadIsGzippedIfSpecifiedInHeaders {
+    // We'll assign these inside the continuation block after serialization, and
+    // assert on them after the block completes
+    __block NSString *requestContentEncoding = nil;
+    __block NSData *requestHTTPBody = nil;
+
+    NSString *testURLString = @"http://aws.amazon.com";
+    NSURL *testURL = [NSURL URLWithString:testURLString];
+    NSMutableURLRequest *testRequest = [NSMutableURLRequest requestWithURL:testURL];
+    testRequest.HTTPMethod = @"POST";
+
+    NSDictionary *testParams = @{ @"Key1": @"Value1" };
+    NSDictionary *testHeaders = @{
+                                  @"Content-Encoding":@"gzip"
+                                  };
+
+    AWSJSONRequestSerializer *jsonSerializer = [AWSJSONRequestSerializer new];
+
+    [[[jsonSerializer serializeRequest:testRequest
+                               headers:testHeaders
+                            parameters:testParams] continueWithSuccessBlock:^id(AWSTask *task) {
+        NSDictionary *serializedHeaders = [testRequest allHTTPHeaderFields];
+        requestContentEncoding = [serializedHeaders objectForKey:@"Content-Encoding"];
+        requestHTTPBody = [testRequest HTTPBody];
+        return nil;
+    }] waitUntilFinished];
+
+    XCTAssertNotNil(requestContentEncoding, "Content encoding should not be nil");
+    XCTAssertEqual(@"gzip", requestContentEncoding);
+
+    XCTAssertNotNil(requestHTTPBody, "Request HTTP Body should not be nil");
+
+    NSData *jsonData = [requestHTTPBody awsgzip_gunzippedData];
+    XCTAssertNotNil(jsonData, @"jsonData should not be nil");
+
+    NSError *error = nil;
+    NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&error];
+    XCTAssertNil(error, @"Error serializing unzipped data into JSON: %@", error);
+
+    XCTAssertEqualObjects(jsonDictionary, testParams, @"Unzipped JSON data does not equal incoming data");
 }
 
 - (void)testXMLSerializer {
@@ -302,7 +349,7 @@
             }
 
             // ------------Validate Result------------------------------
-            if ([responseResult isKindOfClass:[NSDictionary class]] && [responseResult objectForKey:@"Stream"] ) {
+            if ([responseResult isKindOfClass:[NSDictionary class]] && [responseResult objectForKey:@"Stream"]) {
                 NSMutableDictionary *tempResult = [responseResult mutableCopy];
                 [tempResult setObject:[[NSString alloc] initWithData:responseResult[@"Stream"] encoding:NSUTF8StringEncoding] forKey:@"Stream"];
                 responseResult = tempResult;
@@ -449,7 +496,7 @@
             }
             
             // ------------Validate Result------------------------------
-            if ([responseResult isKindOfClass:[NSDictionary class]] && [responseResult objectForKey:@"Stream"] ) {
+            if ([responseResult isKindOfClass:[NSDictionary class]] && [responseResult objectForKey:@"Stream"]) {
                 NSMutableDictionary *tempResult = [responseResult mutableCopy];
                 [tempResult setObject:[[NSString alloc] initWithData:responseResult[@"Stream"] encoding:NSUTF8StringEncoding] forKey:@"Stream"];
                 responseResult = tempResult;
@@ -807,152 +854,6 @@
 }
 
 
-- (void)testEC2Serializer {
-    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"ec2-input" ofType:@"json"];
-    
-    NSError *error = nil;
-    NSMutableArray *ec2TestPackage = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
-                                                                        options:NSJSONReadingMutableContainers
-                                                                          error:&error];
-    XCTAssertNil(error);
-    
-    for (int i=0; i<[ec2TestPackage count]; i++) {
-        NSMutableDictionary *aTestPak = [ec2TestPackage objectAtIndex:i];
-        NSArray *testCases = [aTestPak objectForKey:@"cases"];
-        for(int j=0; j<[testCases count]; j++) {
-            NSDictionary *aTest = [testCases objectAtIndex:j];
-            
-            //create mockRequest
-            NSMutableURLRequest *mockRequest = [NSMutableURLRequest new];
-            mockRequest.URL = [NSURL URLWithString:@"/"];
-            mockRequest.HTTPMethod = @"POST";
-            
-            //create user input parameters
-            NSDictionary *testParameters = aTest[@"params"];
-            
-            
-            //construct serviceDefinition dictionary
-            if (aTestPak[@"operations"] == nil) {
-                aTestPak[@"operations"] = [NSMutableDictionary new];
-            }
-            if (aTestPak[@"operations"][@"OperationName"]) {
-                [aTestPak[@"operations"] removeObjectForKey:@"OperationName"];
-            }
-            aTestPak[@"operations"][@"OperationName"] = aTest[@"given"];
-            
-            //create mock ServiceDefinitionJSON
-            NSDictionary *mockServiceDefinitionJSON = aTestPak;
-            
-            
-            // ------------ Perform Serialization ---------------------
-            // --------------------------------------------------------
-            
-            AWSEC2RequestSerializer *testEC2Serializer = [AWSEC2RequestSerializer new];
-            [testEC2Serializer setValue:mockServiceDefinitionJSON forKey:@"serviceDefinitionJSON"];
-            [testEC2Serializer setValue:@"OperationName" forKey:@"actionName"];
-            
-            
-            AWSTask *resultTask = [testEC2Serializer serializeRequest:mockRequest
-                                                                     headers:@{}
-                                                                  parameters:testParameters];
-            if (resultTask.error) {
-                XCTFail(@"(TestPak %d TestCase %d) Serialization Error:%@",i,j,resultTask.error);
-                return;
-            }
-            
-            // ------------Validate Result------------------------------
-            
-            //validate result
-            NSDictionary *resultDic = aTest[@"serialized"];
-            
-            //validate HTTP URL
-            XCTAssertEqualObjects(resultDic[@"uri"], [mockRequest.URL absoluteString], @"(TestPak %d TestCase %d) wrong HTTP URI, expect:%@, but got:%@",i,j,resultDic[@"uri"],[mockRequest.URL absoluteString]);
-            
-            //validate HTTP Body
-            NSString* resultBodyStr = [[NSString alloc] initWithData:mockRequest.HTTPBody encoding:NSUTF8StringEncoding];
-            NSString* expectedBodyStr = resultDic[@"body"];
-            
-            NSCountedSet *resultBodySet = [NSCountedSet setWithArray:[resultBodyStr componentsSeparatedByString:@"&"]];
-            NSCountedSet *expectedBodySet = [NSCountedSet setWithArray:[expectedBodyStr componentsSeparatedByString:@"&"]];
-            
-            if ([expectedBodySet count] == 0) {
-                XCTAssertEqualObjects(expectedBodyStr,resultBodyStr , @"(TestPak %d TestCase %d) wrong HTTP Body, expect:\n%@, but got:\n%@",i,j,expectedBodyStr, resultBodyStr);
-            } else {
-                XCTAssertEqualObjects(expectedBodySet,resultBodySet , @"(TestPak %d TestCase %d) wrong HTTP Body, expect:\n%@, but got:\n%@",i,j,expectedBodySet, resultBodySet);
-            }
-        }
-        
-    }
-}
-
-- (void)testEC2Deserializer {
-    NSString *filePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"ec2-output" ofType:@"json"];
-    
-    NSError *error = nil;
-    NSMutableArray *ec2TestPackge = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
-                                                                    options:NSJSONReadingMutableContainers
-                                                                      error:&error];
-    XCTAssertNil(error);
-    
-    for (int i=0; i<[ec2TestPackge count]; i++) {
-        NSMutableDictionary *aTestPak = [ec2TestPackge objectAtIndex:i];
-        NSArray *testCases = [aTestPak objectForKey:@"cases"];
-        for(int j=0; j<[testCases count]; j++) {
-            NSDictionary *aTest = [testCases objectAtIndex:j];
-            
-            //create mockResponse
-            NSDictionary *responseHeaders = aTest[@"response"][@"headers"];
-            NSInteger statusCode = [aTest[@"response"][@"status_code"] integerValue];
-            NSHTTPURLResponse *mockResponse = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:@"/"] statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:responseHeaders];
-            
-            //construct serviceDefinition dictionary
-            if (aTestPak[@"operations"] == nil) {
-                aTestPak[@"operations"] = [NSMutableDictionary new];
-            }
-            if (aTestPak[@"operations"][@"OperationName"]) {
-                [aTestPak[@"operations"] removeObjectForKey:@"OperationName"];
-            }
-            aTestPak[@"operations"][@"OperationName"] = aTest[@"given"];
-            
-            //create mock ServiceDefinitionJSON
-            NSDictionary *mockServiceDefinitionJSON = aTestPak;
-            
-            
-            // ------------ Perform Serialization ---------------------
-            // --------------------------------------------------------
-            
-            AWSXMLResponseSerializer *testXmlResponseSerializer = [AWSXMLResponseSerializer new];
-            [testXmlResponseSerializer setValue:mockServiceDefinitionJSON forKey:@"serviceDefinitionJSON"];
-            [testXmlResponseSerializer setValue:@"OperationName" forKey:@"actionName"];
-            
-            
-            
-            NSString *responseBodyStr = aTest[@"response"][@"body"];
-            NSData *responseBodyData = [responseBodyStr dataUsingEncoding:NSUTF8StringEncoding];
-            NSError *parseError = nil;
-            id responseResult = [[testXmlResponseSerializer responseObjectForResponse:mockResponse originalRequest:nil currentRequest:nil data:responseBodyData error:&parseError] mutableCopy];
-            if (parseError) {
-                XCTFail(@"(TestPak %d TestCase %d) Serialization Error:%@",i,j,parseError);
-                return;
-            }
-            
-            // ------------Validate Result------------------------------
-            if ([responseResult isKindOfClass:[NSDictionary class]] && [responseResult objectForKey:@"Stream"] ) {
-                NSMutableDictionary *tempResult = [responseResult mutableCopy];
-                [tempResult setObject:[[NSString alloc] initWithData:responseResult[@"Stream"] encoding:NSUTF8StringEncoding] forKey:@"Stream"];
-                responseResult = tempResult;
-            }
-            //validate result
-            NSDictionary *expectedResult = aTest[@"result"];
-            [self replaceNSData2NSString:responseResult];
-            
-            XCTAssertEqualObjects(expectedResult,responseResult , @"(TestPak %d TestCase %d) wrong HTTP Body, expect:\n%@, but got:\n%@",i,j,expectedResult, responseResult);
-            
-        }
-        
-    }
-}
-
 - (void)testSerializersForHTTPMethodAndBodyMismatch {
     NSMutableURLRequest *request = [NSMutableURLRequest new];
     request.URL = [NSURL URLWithString:@"/"];
@@ -966,7 +867,6 @@
                                             @"key2" : @"value2",
                                             @"key3" : @"value3"}] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(request.HTTPBody);
         return nil;
     }] waitUntilFinished];
@@ -978,7 +878,6 @@
                                             @"key2" : @"value2",
                                             @"key3" : @"value3"}] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(request.HTTPBody);
         return nil;
     }] waitUntilFinished];
@@ -990,7 +889,6 @@
                                             @"key2" : @"value2",
                                             @"key3" : @"value3"}] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNotNil(request.HTTPBody);
         return nil;
     }] waitUntilFinished];
@@ -1000,7 +898,7 @@
 {
     if ([jsonObject isKindOfClass:[NSArray class]]) {
         
-        for (int i = 0 ; i< [jsonObject count] ; i++ ) {
+        for (int i = 0 ; i < [jsonObject count] ; i++) {
             id object = jsonObject[i];
             
             if ([object isKindOfClass:[NSArray class]] || [object isKindOfClass:[NSDictionary class]]) {
@@ -1015,7 +913,7 @@
     
     if ([jsonObject isKindOfClass:[NSDictionary class]]) {
         for (NSString *key in [jsonObject allKeys]) {
-            if ( [jsonObject[key] isKindOfClass:[NSDictionary class]] || [jsonObject[key] isKindOfClass:[NSArray class]]) {
+            if ([jsonObject[key] isKindOfClass:[NSDictionary class]] || [jsonObject[key] isKindOfClass:[NSArray class]]) {
                 [self replaceNSData2NSString:jsonObject[key]];
             }
             
@@ -1024,8 +922,55 @@
             }
         }
     }
-   
+}
+
+- (void)testValidAwsConfigurationJsonIfPresent {
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"awsconfiguration"
+                                                         ofType:@"json"];
+    if (!filePath) {
+        return;
+    }
     
+    NSDictionary *awsConfigurationJson = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath]
+                                                                         options:NSJSONReadingMutableContainers
+                                                                           error:nil];
+    @try {
+        NSString *cognitoIdentityPoolId = awsConfigurationJson[@"CredentialsProvider"][@"CognitoIdentity"][@"Default"][@"PoolId"];
+        XCTAssertNotNil(cognitoIdentityPoolId);
+    } @catch (NSException *exception) {
+        XCTFail(@"Cannot read the Cognito Identity Pool Id from the %@.", awsConfigurationJsonFileName);
+    }
+}
+
+- (void)testAwsInfoInit {
+    @try {
+        AWSInfo *defaultInfo = [AWSInfo defaultAWSInfo];
+        XCTAssertNotNil(defaultInfo);
+    } @catch (NSException *exception) {
+        XCTFail(@"AWSInfo initilization failed.");
+    }
+}
+
+- (void)testEmptyAwsConfigurationJsonIfPresent {
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"awsconfiguration"
+                                                         ofType:@"json"];
+    if (!filePath) {
+        return;
+    }
+    NSData *validData = [NSData dataWithContentsOfFile:filePath];
+    
+    // Clear contents of file
+    [[NSFileManager defaultManager] createFileAtPath:filePath contents:[NSData data] attributes:nil];
+    
+    @try {
+        AWSInfo *defaultInfo = [AWSInfo defaultAWSInfo];
+        XCTAssertNotNil(defaultInfo, @"AWSInfo should be initialized.");
+    } @catch (NSException *exception) {
+        XCTFail(@"AWSInfo initilization failed and exception thrown.");
+    }
+    
+    // Write the data back to the file
+    [[NSFileManager defaultManager] createFileAtPath:filePath contents:validData attributes:nil];
 }
 
 @end

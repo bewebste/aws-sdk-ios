@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -115,6 +115,10 @@
     
     
 }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)testLogger {
     XCTAssertEqualObjects([[AWSLogger defaultLogger] logLevelLabel:AWSLogLevelUnknown], @"?");
     XCTAssertEqualObjects([[AWSLogger defaultLogger] logLevelLabel:AWSLogLevelNone], @"?");
@@ -124,5 +128,7 @@
     XCTAssertEqualObjects([[AWSLogger defaultLogger] logLevelLabel:AWSLogLevelDebug], @"Debug");
     XCTAssertEqualObjects([[AWSLogger defaultLogger] logLevelLabel:AWSLogLevelVerbose], @"Verbose");
 }
+
+#pragma clang diagnostic pop
 
 @end

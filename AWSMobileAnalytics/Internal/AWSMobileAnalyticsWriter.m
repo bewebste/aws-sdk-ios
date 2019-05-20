@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -64,6 +64,10 @@
 
 -(BOOL)writeLine:(NSString*)stringToWrite error:(NSError**)writeError
 {
+    if(stringToWrite == nil || stringToWrite.length == 0)
+    {
+        return NO;
+    }
     // check if this already ends with newline
     NSString* suffix = [stringToWrite substringFromIndex:[stringToWrite length] - 1];
     NSRange newlineOccurence = [suffix rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]];

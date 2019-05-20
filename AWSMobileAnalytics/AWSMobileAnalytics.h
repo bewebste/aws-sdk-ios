@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -15,11 +15,21 @@
 
 #import <Foundation/Foundation.h>
 
-//! Project version number for AWSMobileAnalytics.
-FOUNDATION_EXPORT double AWSMobileAnalyticsVersionNumber;
+/*!
+ Project version number for the AWSMobileAnalytics framework.
 
-//! Project version string for AWSMobileAnalytics.
-FOUNDATION_EXPORT const unsigned char AWSMobileAnalyticsVersionString[];
+ @warning The AWSMobileAnalytics SDK is deprecated. Please use AWSPinpoint for analytics.
+ @deprecated Please use AWSPinpoint for analytics.
+ */
+FOUNDATION_EXPORT double AWSMobileAnalyticsVersionNumber DEPRECATED_MSG_ATTRIBUTE("Use AWSPinpoint instead.");
+
+/*!
+ Project version string for the AWSMobileAnalytics framework.
+
+ @warning The AWSMobileAnalytics SDK is deprecated. Please use AWSPinpoint for analytics.
+ @deprecated Please use AWSPinpoint for analytics.
+ */
+FOUNDATION_EXPORT const unsigned char AWSMobileAnalyticsVersionString[] DEPRECATED_MSG_ATTRIBUTE("Use AWSPinpoint instead.");
 
 #import <AWSCore/AWSCore.h>
 

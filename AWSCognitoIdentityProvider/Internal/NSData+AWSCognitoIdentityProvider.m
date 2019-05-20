@@ -2,17 +2,7 @@
 // Copyright 2014-2016 Amazon.com,
 // Inc. or its affiliates. All Rights Reserved.
 //
-// Licensed under the Amazon Software License (the "License").
-// You may not use this file except in compliance with the
-// License. A copy of the License is located at
-//
-//     http://aws.amazon.com/asl/
-//
-// or in the "license" file accompanying this file. This file is
-// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-// CONDITIONS OF ANY KIND, express or implied. See the License
-// for the specific language governing permissions and
-// limitations under the License.
+// SPDX-License-Identifier: Apache-2.0
 //
 
 #import "NSData+AWSCognitoIdentityProvider.h"
@@ -43,6 +33,11 @@ AWSJKBigInteger *signedBigIntegerFromNSData(NSData* data) {
     AWSJKBigInteger *twosComplementMinusOneMaybe = nil;
     unsigned long bufferLength = data.length + 1;
     uint8_t *bytes = malloc(sizeof(uint8_t) * bufferLength);
+    if (bytes == NULL) {
+        // this situation is irrecoverable and we don't want to return something corrupted, so we raise an exception (avoiding NSAssert that may be disabled)
+        [NSException raise:@"NSInternalInconsistencyException" format:@"failed malloc" arguments:nil];
+        return nil;
+    }
     
     memcpy(bytes+1, data.bytes, data.length);
     
@@ -71,9 +66,13 @@ AWSJKBigInteger *signedBigIntegerFromNSData(NSData* data) {
 @implementation NSData (NSDataBigInteger)
 + (NSData*) aws_dataWithBigInteger:(AWSJKBigInteger *)bigInteger {
     unsigned int byteCount = [bigInteger countBytes];
-    
+    if (byteCount == 0) {
+        return [NSData data];
+    }
     uint8_t *bytes = malloc(byteCount);
-    if (!bytes) {
+    if (bytes == NULL) {
+        // this situation is irrecoverable and we don't want to return something corrupted, so we raise an exception (avoiding NSAssert that may be disabled)
+        [NSException raise:@"NSInternalInconsistencyException" format:@"failed malloc" arguments:nil];
         return nil;
     }
     
@@ -90,7 +89,9 @@ AWSJKBigInteger *signedBigIntegerFromNSData(NSData* data) {
     
     // +1 for sign byte
     uint8_t *bytes = malloc(byteCount + 1);
-    if (!bytes) {
+    if (bytes == NULL) {
+        // this situation is irrecoverable and we don't want to return something corrupted, so we raise an exception (avoiding NSAssert that may be disabled)
+        [NSException raise:@"NSInternalInconsistencyException" format:@"failed malloc" arguments:nil];
         return nil;
     }
     
@@ -139,7 +140,15 @@ AWSJKBigInteger *signedBigIntegerFromNSData(NSData* data) {
     }
     
     NSUInteger outputLen = len / 2;
+    if (outputLen == 0) {
+        return [NSData data];
+    }
     uint8_t *output = malloc(sizeof(uint8_t) * outputLen);
+    if (output == NULL) {
+        // this situation is irrecoverable and we don't want to return something corrupted, so we raise an exception (avoiding NSAssert that may be disabled)
+        [NSException raise:@"NSInternalInconsistencyException" format:@"failed malloc" arguments:nil];
+        return nil;
+    }
     
     const char *hexBytes = (const char*)[hexStrData bytes];
     for (NSUInteger i = 0, j=0; i < len && j < outputLen; i += 2, j++) {

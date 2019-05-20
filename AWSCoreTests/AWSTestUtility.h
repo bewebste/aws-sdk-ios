@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -14,21 +14,25 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AWSCocoaLumberjack.h"
+#import <AWSCore/AWSCore.h>
 
 FOUNDATION_EXPORT NSString *const AWSTestUtilitySTSKey;
 FOUNDATION_EXPORT NSString *const AWSTestUtilityCognitoIdentityServiceKey;
 
 @interface AWSTestUtility : NSObject
 
-+(void)setupCrdentialsViaFile;
++ (void)setupCrdentialsViaFile;
 + (void)setupFakeCognitoCredentialsProvider;
 + (void)setupCognitoCredentialsProvider;
 + (void)setupSTS;
 + (void)setupCognitoIdentityService;
++ (NSDictionary<NSString *, NSString *> *)getCredentialsJsonAsDictionary;
 
 - (NSDate *)mockDateSwizzle;
 + (void)setMockDate:(NSDate *)aMockDate;
 + (void)setupSwizzling;
 + (void)revertSwizzling;
++ (NSString *)getIoTEndPoint:(NSString *) endpointName;
 
 @end

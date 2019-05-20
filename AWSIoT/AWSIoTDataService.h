@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -20,6 +20,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+//! SDK version for AWSIoTData
+FOUNDATION_EXPORT NSString *const AWSIoTDataSDKVersion;
+
 /**
  <fullname>AWS IoT</fullname><p>AWS IoT-Data enables secure, bi-directional communication between Internet-connected things (such as sensors, actuators, embedded devices, or smart appliances) and the AWS cloud. It implements a broker for applications and things to publish messages over HTTP (Publish) and retrieve, update, and delete thing shadows. A thing shadow is a persistent representation of your things and their state in the AWS cloud.</p>
  */
@@ -39,13 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
  
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
-         let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
-         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
-
-         return true
-     }
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
+        let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = configuration
+ 
+        return true
+    }
 
  *Objective-C*
 
@@ -63,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  *Swift*
 
-     let IoTData = AWSIoTData.defaultIoTData()
+     let IoTData = AWSIoTData.default()
 
  *Objective-C*
 
@@ -80,13 +83,13 @@ NS_ASSUME_NONNULL_BEGIN
 
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
-         let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
-         AWSIoTData.registerIoTDataWithConfiguration(configuration, forKey: "USWest2IoTData")
-
-         return true
-     }
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
+        let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
+        AWSIoTData.register(with: configuration!, forKey: "USWest2IoTData")
+ 
+        return true
+    }
 
  *Objective-C*
 
@@ -125,13 +128,13 @@ NS_ASSUME_NONNULL_BEGIN
 
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-         let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
-         let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
-         AWSIoTData.registerIoTDataWithConfiguration(configuration, forKey: "USWest2IoTData")
-
-         return true
-     }
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
+        let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
+        AWSIoTData.register(with: configuration!, forKey: "USWest2IoTData")
+ 
+        return true
+    }
 
  *Objective-C*
 

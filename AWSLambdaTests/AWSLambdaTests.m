@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -123,7 +123,6 @@
 
     [[[lambda invoke:invocationRequest] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNotNil(task.result);
         AWSLambdaInvocationResponse *invocationResponse = task.result;
         XCTAssertTrue([invocationResponse.payload isKindOfClass:[NSDictionary class]]);
@@ -133,6 +132,40 @@
         XCTAssertEqualObjects(result[@"key3"], @"value3");
         return nil;
     }] waitUntilFinished];
+}
+
+- (void)testInvokeWithClockSkew {
+    [AWSTestUtility setupSwizzling];
+    
+    XCTAssertFalse([NSDate aws_getRuntimeClockSkew], @"current RunTimeClockSkew is not zero!");
+    [AWSTestUtility setMockDate:[NSDate dateWithTimeIntervalSince1970:3600]];
+    
+    AWSLambda *lambda = [AWSLambda defaultLambda];
+    AWSLambdaInvocationRequest *invocationRequest = [AWSLambdaInvocationRequest new];
+    invocationRequest.functionName = @"helloWorldExample";
+    invocationRequest.invocationType = AWSLambdaInvocationTypeRequestResponse;
+    NSDictionary *parameters = @{@"key1" : @"value1",
+                                 @"key2" : @"value2",
+                                 @"key3" : @"value3",
+                                 @"isError" : @NO};
+    invocationRequest.payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                                options:kNilOptions
+                                                                  error:nil];
+    invocationRequest.clientContext = [[AWSClientContext new] base64EncodedJSONString];
+    
+    [[[lambda invoke:invocationRequest] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNil(task.error);
+        XCTAssertNotNil(task.result);
+        AWSLambdaInvocationResponse *invocationResponse = task.result;
+        XCTAssertTrue([invocationResponse.payload isKindOfClass:[NSDictionary class]]);
+        NSDictionary *result = invocationResponse.payload;
+        XCTAssertEqualObjects(result[@"key1"], @"value1");
+        XCTAssertEqualObjects(result[@"key2"], @"value2");
+        XCTAssertEqualObjects(result[@"key3"], @"value3");
+        return nil;
+    }] waitUntilFinished];
+    
+    [AWSTestUtility revertSwizzling];
 }
 
 - (void)testInvoke2 {
@@ -148,7 +181,6 @@
     
     [[[lambda invoke:invocationRequest] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNotNil(task.result);
         AWSLambdaInvocationResponse *invocationResponse = task.result;
         XCTAssertTrue([invocationResponse.payload isKindOfClass:[NSDictionary class]]);
@@ -176,7 +208,6 @@
 
     [[[lambda invoke:invocationRequest] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNotNil(task.result);
         AWSLambdaInvocationResponse *invocationResponse = task.result;
         XCTAssertTrue([invocationResponse.payload isKindOfClass:[NSDictionary class]]);
@@ -203,7 +234,6 @@
 
     [[[lambda invoke:invocationRequest] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNotNil(task.result);
         AWSLambdaInvocationResponse *invocationResponse = task.result;
         XCTAssertTrue([invocationResponse.payload isKindOfClass:[NSDictionary class]]);

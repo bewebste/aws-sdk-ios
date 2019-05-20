@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -109,7 +109,10 @@
     statisticsInput.namespace = @""; //namespace is empty
     
     [[[cloudWatch getMetricStatistics:statisticsInput] continueWithBlock:^id(AWSTask *task) {
-        XCTAssertNotNil(task.error, @"Expected MissingParameter error not found.");
+        XCTAssertNotNil(task.error, @"Expected InvalidParameterCombination error not found.");
+        XCTAssertEqual(task.error.code, AWSCloudWatchErrorInvalidParameterCombination);
+        XCTAssertTrue([@"InvalidParameterCombination" isEqualToString:task.error.userInfo[@"Code"]]);
+        XCTAssertTrue([@"At least one of the parameters Statistics and ExtendedStatistics must be specified." isEqualToString:task.error.userInfo[@"Message"]]);
         return nil;
     }] waitUntilFinished];
     

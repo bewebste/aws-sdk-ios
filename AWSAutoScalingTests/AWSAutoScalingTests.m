@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -89,9 +89,10 @@
     attacheInstancesQuery.autoScalingGroupName = @"invalidGroupName"; //invalid group name
 
     [[[autoScaling attachInstances:attacheInstancesQuery] continueWithBlock:^id(AWSTask *task) {
-        if (task.error == nil) {
-            XCTFail(@"Expect Error but got nil");
-        }
+        XCTAssertNotNil(task.error, @"Expected ValidationError error not found.");
+        XCTAssertEqual(task.error.code, 0);
+        XCTAssertTrue([@"ValidationError" isEqualToString:task.error.userInfo[@"Code"]]);
+        XCTAssertTrue([@"Instance ID(s) must be provided" isEqualToString:task.error.userInfo[@"Message"]]);
 
         return nil;
     }]waitUntilFinished];

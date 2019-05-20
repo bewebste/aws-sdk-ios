@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -444,7 +444,7 @@ static NSString *tableNameKeyOnly = nil;
         NSMutableArray *tasks = [NSMutableArray new];
         NSArray *gameTitleArray = @[@"Galaxy Invaders",@"Meteor Blasters", @"Starship X", @"Alien Adventure",@"Attack Ships"];
         for (int32_t i = 0; i < 50; i++) {
-            for (int32_t j = 0 ; j < 2; j++) {
+            for (int32_t j = 0; j < 2; j++) {
                 TestObject2 *to2 = [TestObject2 new];
                 to2.UserId = [NSString stringWithFormat:@"%d",i];
                 if (i == 21 && j == 0) {
@@ -630,10 +630,6 @@ static NSString *tableNameKeyOnly = nil;
             XCTFail(@"Error: [%@]", task.error);
         }
 
-        if (task.exception) {
-            XCTFail(@"Exception: [%@]", task.exception);
-        }
-
         return nil;
     }] waitUntilFinished];
 
@@ -645,7 +641,6 @@ static NSString *tableNameKeyOnly = nil;
                  hashKey:@"some random value that does not exist"
                 rangeKey:@"some random value that does not exist"] continueWithBlock:^id _Nullable(AWSTask * _Nonnull task) {
         XCTAssertNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
 
         return nil;
@@ -1207,10 +1202,6 @@ static NSString *tableNameKeyOnly = nil;
             XCTFail(@"Error: [%@]", task.error);
         }
 
-        if (task.exception) {
-            XCTFail(@"Exception: [%@]", task.exception);
-        }
-
         XCTAssertEqual([task.result class], [TestObjectV2 class]);
         TestObjectV2 *testObject = task.result;
         XCTAssertEqualObjects(testObject.hashKey, hashKeyValue);
@@ -1245,10 +1236,6 @@ static NSString *tableNameKeyOnly = nil;
     }] continueWithBlock:^id(AWSTask *task) {
         if (task.error) {
             XCTFail(@"Error: [%@]", task.error);
-        }
-
-        if (task.exception) {
-            XCTFail(@"Exception: [%@]", task.exception);
         }
 
         XCTAssertEqual([task.result class], [TestObjectV2 class]);
@@ -2111,10 +2098,6 @@ static NSString *tableNameKeyOnly = nil;
     }] continueWithBlock:^id(AWSTask *task) {
         if (task.error) {
             XCTFail(@"Error: [%@]", task.error);
-        }
-        
-        if (task.exception) {
-            XCTFail(@"Exception: [%@]", task.exception);
         }
         
         return nil;

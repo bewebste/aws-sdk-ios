@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -156,9 +156,9 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 
 - (AWSTask *)submitRecordsForStream:(NSString *)streamName
                             records:(NSArray *)temporaryRecords
-                      partitionKeys:(NSArray *)partitionKeys
-                   putPartitionKeys:(NSMutableArray *)putPartitionKeys
-                 retryPartitionKeys:(NSMutableArray *)retryPartitionKeys
+                             rowIds:(NSArray *)rowIds
+                          putRowIds:(NSMutableArray *)putRowIds
+                        retryRowIds:(NSMutableArray *)retryRowIds
                                stop:(BOOL *)stop {
     NSMutableArray *records = [NSMutableArray new];
 
@@ -173,16 +173,16 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     putRecordBatchInput.deliveryStreamName = streamName;
     putRecordBatchInput.records = records;
 
-    AWSLogVerbose(@"putRecordBatchInput: [%@]", putRecordBatchInput);
+    AWSDDLogVerbose(@"putRecordBatchInput: [%@]", putRecordBatchInput);
     return [[self.firehose putRecordBatch:putRecordBatchInput] continueWithBlock:^id(AWSTask *task) {
         if (task.error) {
-            AWSLogError(@"Error: [%@]", task.error);
-            if ([task.error.domain isEqualToString:NSURLErrorDomain]) {
+            AWSDDLogError(@"Error: [%@]", task.error);
+            const NSArray *stopErrorDomains = @[NSURLErrorDomain, AWSCognitoIdentityErrorDomain];
+
+            if (task.error && [stopErrorDomains containsObject:task.error.domain]) {
                 *stop = YES;
             }
-        }
-        if (task.exception) {
-            AWSLogError(@"Exception: [%@]", task.exception);
+            return [AWSTask taskWithError:task.error];
         }
         if (task.result) {
             AWSFirehosePutRecordBatchOutput *putRecordBatchOutput = task.result;
@@ -190,15 +190,15 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
             for (int i = 0; i < [putRecordBatchOutput.requestResponses count]; i++) {
                 AWSFirehosePutRecordBatchResponseEntry *resultEntry = putRecordBatchOutput.requestResponses[i];
                 if (resultEntry.errorCode) {
-                    AWSLogInfo(@"Error Code: [%@] Error Message: [%@]", resultEntry.errorCode, resultEntry.errorMessage);
+                    AWSDDLogInfo(@"Error Code: [%@] Error Message: [%@]", resultEntry.errorCode, resultEntry.errorMessage);
                 }
                 // When the error code is ProvisionedThroughputExceededException or InternalFailure,
                 // we should retry. So, don't delete the row from the database.
                 if (![resultEntry.errorCode isEqualToString:@"Throttling"]
                     && ![resultEntry.errorCode isEqualToString:@"ServiceUnavailable"]) {
-                    [putPartitionKeys addObject:partitionKeys[i]];
+                    [putRowIds addObject:rowIds[i]];
                 } else {
-                    [retryPartitionKeys addObject:partitionKeys[i]];
+                    [retryRowIds addObject:rowIds[i]];
                 }
             }
         }

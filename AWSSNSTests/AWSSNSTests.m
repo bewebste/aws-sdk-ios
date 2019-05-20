@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -92,7 +92,10 @@
     input.endpointArn = @""; //endPointARN is empty
     
     [[[sns getEndpointAttributes:input] continueWithBlock:^id(AWSTask *task) {
-        XCTAssertNotNil(task.error, @"expected MissingParameters Error but got nil");
+        XCTAssertNotNil(task.error, @"expected InvalidParameters Error but got nil");
+        XCTAssertEqual(task.error.code, AWSSNSErrorInvalidParameter);
+        XCTAssertTrue([@"InvalidParameter" isEqualToString:task.error.userInfo[@"Code"]]);
+        XCTAssertTrue([@"Invalid parameter: EndpointArn Reason: An ARN must have at least 6 elements, not 1" isEqualToString:task.error.userInfo[@"Message"]]);
         return nil;
     }] waitUntilFinished];
 }

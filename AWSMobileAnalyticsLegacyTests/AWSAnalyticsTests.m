@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ FOUNDATION_EXPORT double    const AWSValueForceSubmissionWaitTime;
 + (void)setUp {
     [super setUp];
 
-    AWSLogDebug(@"sleeping for %f seconds before AWSAnalyticsTests starts.", AWSValueForceSubmissionWaitTime);
+    AWSDDLogDebug(@"sleeping for %f seconds before AWSAnalyticsTests starts.", AWSValueForceSubmissionWaitTime);
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:AWSValueForceSubmissionWaitTime]];
 }
 
@@ -92,7 +92,7 @@ FOUNDATION_EXPORT double    const AWSValueForceSubmissionWaitTime;
                                                      toURL:[NSURL fileURLWithPath:testAppSupportPath]
                                             backupItemName:@"com.amazonaws.MobileAnalytics.backupItem"
                                                      error:&error];
-    if ( NO == result) {
+    if (NO == result) {
         XCTFail(@"aws_atomicCopyItemAtURL failed. %@",error);
     }
     
@@ -150,9 +150,11 @@ FOUNDATION_EXPORT double    const AWSValueForceSubmissionWaitTime;
     
 
     //Brand new installation of an App integrated with this RC should put both event cache and client id pref in the “NSApplicationSupportDirectory”, NOT “NSCachesDirectory”.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     XCTAssertNotNil([AWSMobileAnalytics mobileAnalyticsForAppId:testAppId identityPoolId:self.identityPoolId]);
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-    
+#pragma clang dianostic pop
     XCTAssertTrue([fileManager fileExistsAtPath:appIDAppSupportPath]);
     XCTAssertTrue([fileManager fileExistsAtPath:prefAppSupportPath]);
     XCTAssertTrue([fileManager fileExistsAtPath:eventsFileAppSupportPath]);
@@ -177,7 +179,7 @@ FOUNDATION_EXPORT double    const AWSValueForceSubmissionWaitTime;
                                         options:NSFileManagerItemReplacementUsingNewMetadataOnly
                                resultingItemURL:nil
                                           error:&error];
-    if ( NO == result) {
+    if (NO == result) {
         XCTFail(@" replaceItem failed: %@",error);
     }
     XCTAssertFalse([fileManager fileExistsAtPath:appIDAppSupportPath]);
@@ -286,8 +288,12 @@ FOUNDATION_EXPORT double    const AWSValueForceSubmissionWaitTime;
 }
 
 - (void)test_createMobileAnalyticsInstance {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     AWSMobileAnalytics* insights = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)] identityPoolId:self.identityPoolId];
+#pragma cland diagnostic pop
     XCTAssertNotNil([insights eventClient]);
+
 }
 
 - (void)test_createMobileAnalyticsInstanceOldConstructor_WithDifferentAppId {
@@ -297,31 +303,49 @@ FOUNDATION_EXPORT double    const AWSValueForceSubmissionWaitTime;
 }
 
 - (void)test_createMobileAnalyticsInstance_WithSameAppId_And_SameIdentityPool {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     AWSMobileAnalytics* insights1 = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)] identityPoolId:self.identityPoolId];
     AWSMobileAnalytics* insights2 = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)] identityPoolId:self.identityPoolId];
+#pragma clang diagnostic pop
     XCTAssertEqual(insights1, insights2);
 }
 
 - (void)test_createMobileAnalyticsInstance_WithSameAppId_And_DifferentIdentityPool {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     AWSMobileAnalytics* insights1 = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)] identityPoolId:@"bogusId-1"];
     AWSMobileAnalytics* insights2 = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)] identityPoolId:@"bogusId-2"];
+#pragma clang dianostic pop
     XCTAssertEqual(insights1, insights2);
+
 }
 
 - (void)test_createMobileAnalyticsInstance_WithDifferentAppId_And_SameIdentityPool {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     AWSMobileAnalytics* insights1 = [AWSMobileAnalytics mobileAnalyticsForAppId:@"appId-1" identityPoolId:self.identityPoolId];
     AWSMobileAnalytics* insights2 = [AWSMobileAnalytics mobileAnalyticsForAppId:@"appId-2" identityPoolId:self.identityPoolId];
+#pragma clang dianostic pop
     XCTAssertNotEqual(insights1, insights2);
+
 }
 
 - (void)test_createMobileAnalyticsInstance_WithOldConstructor_And_NewConstructor {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     AWSMobileAnalytics* insights1 = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)] identityPoolId:self.identityPoolId];
     AWSMobileAnalytics* insights2 = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)]];
+#pragma clang dianostic pop
     XCTAssertEqual(insights1, insights2);
+
 }
 
 - (void)test_createAndSubmitEventOldConstructor {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     AWSMobileAnalytics* insights = [AWSMobileAnalytics mobileAnalyticsForAppId:[NSString stringWithFormat:@"appId-%@",NSStringFromSelector(_cmd)]];
+#pragma clang diagnostic pop
     XCTAssertNotNil([insights eventClient]);
 
     // Record when the user completes level 1

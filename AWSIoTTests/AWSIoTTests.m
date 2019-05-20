@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -28,6 +28,9 @@ static NSString *certificateID = nil;
 
 + (void)setUp {
     [super setUp];
+    [AWSDDLog sharedInstance].logLevel = AWSDDLogLevelInfo;
+    [AWSDDLog addLogger:[AWSDDTTYLogger sharedInstance]];
+
     [AWSTestUtility setupCognitoCredentialsProvider];
 }
 - (void)setUp {
@@ -69,7 +72,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] describeCertificate:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -90,7 +92,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] createPolicy:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -111,7 +112,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] attachPrincipalPolicy:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -132,7 +132,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] attachThingPrincipal:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -154,7 +153,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] cancelCertificateTransfer:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -175,7 +173,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] createPolicyVersion:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -196,7 +193,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] createThing:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -217,7 +213,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] createTopicRule:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -238,7 +233,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] deleteCertificate:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -259,7 +253,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] deletePolicy:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -280,7 +273,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] deletePolicyVersion:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -301,7 +293,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] deleteThing:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -322,7 +313,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] deleteTopicRule:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -343,7 +333,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] describeThing:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -364,7 +353,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] detachPrincipalPolicy:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -386,7 +374,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] detachThingPrincipal:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -407,7 +394,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] getPolicy:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -428,7 +414,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] getPolicyVersion:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -449,7 +434,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] getTopicRule:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -470,7 +454,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listCertificates:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -491,7 +474,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listPolicies:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -512,7 +494,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listPolicyVersions:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -533,7 +514,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listPrincipalPolicies:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -554,7 +534,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listPrincipalThings:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -575,7 +554,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listThingPrincipals:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -596,7 +574,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listThings:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -617,7 +594,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] listTopicRules:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -638,7 +614,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] rejectCertificateTransfer:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -659,7 +634,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] replaceTopicRule:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -680,7 +654,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] setDefaultPolicyVersion:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -701,7 +674,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] transferCertificate:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -722,7 +694,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] updateCertificate:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];
@@ -743,7 +714,6 @@ static NSString *certificateID = nil;
     
     [[[[AWSIoT IoTForKey:key] updateThing:request] continueWithBlock:^id(AWSTask *task) {
         XCTAssertNotNil(task.error);
-        XCTAssertNil(task.exception);
         XCTAssertNil(task.result);
         return nil;
     }] waitUntilFinished];

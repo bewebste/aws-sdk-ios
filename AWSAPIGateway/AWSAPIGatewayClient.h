@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -14,6 +14,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AWSCore/AWSCore.h>
+#import "AWSAPIGatewayModel.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+//! SDK version for AWSAPIGateway
+FOUNDATION_EXPORT NSString *const AWSAPIGatewaySDKVersion;
 
 FOUNDATION_EXPORT NSString *const AWSAPIGatewayErrorDomain;
 
@@ -30,8 +37,21 @@ typedef NS_ENUM(NSInteger, AWSAPIGatewayErrorType) {
 
 @interface AWSAPIGatewayClient : NSObject
 
-@property (nonatomic, strong, readonly) AWSServiceConfiguration *configuration;
+@property (nonatomic, strong) AWSServiceConfiguration *configuration;
 
-@property (nonatomic, strong) NSString *APIKey;
+@property (nonatomic, strong, nullable) NSString *APIKey;
+
+
+
+/**
+ *  The invoke method can be used to invoke an `AWS API Gateway` API endpoint with a `AWSAPIGatewayRequest` object.
+ *
+ *  @param apiRequest An `AWSAPIGatewayRequest` object.
+ *
+ *  @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSAPIGatewayResponse`. On failed execution, `task.error` may contain an `NSError`.
+ */
+- (AWSTask<AWSAPIGatewayResponse *> *)invoke:(AWSAPIGatewayRequest *)apiRequest;
 
 @end
+
+NS_ASSUME_NONNULL_END

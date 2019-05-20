@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)activitiesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
 }
 
 @end
@@ -51,57 +51,57 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)endTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)startTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)statusCodeJSONTransformer {
     return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
-        if ([value isEqualToString:@"PendingSpotBidPlacement"]) {
+        if ([value caseInsensitiveCompare:@"PendingSpotBidPlacement"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodePendingSpotBidPlacement);
         }
-        if ([value isEqualToString:@"WaitingForSpotInstanceRequestId"]) {
+        if ([value caseInsensitiveCompare:@"WaitingForSpotInstanceRequestId"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeWaitingForSpotInstanceRequestId);
         }
-        if ([value isEqualToString:@"WaitingForSpotInstanceId"]) {
+        if ([value caseInsensitiveCompare:@"WaitingForSpotInstanceId"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeWaitingForSpotInstanceId);
         }
-        if ([value isEqualToString:@"WaitingForInstanceId"]) {
+        if ([value caseInsensitiveCompare:@"WaitingForInstanceId"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeWaitingForInstanceId);
         }
-        if ([value isEqualToString:@"PreInService"]) {
+        if ([value caseInsensitiveCompare:@"PreInService"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodePreInService);
         }
-        if ([value isEqualToString:@"InProgress"]) {
+        if ([value caseInsensitiveCompare:@"InProgress"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeInProgress);
         }
-        if ([value isEqualToString:@"WaitingForELBConnectionDraining"]) {
+        if ([value caseInsensitiveCompare:@"WaitingForELBConnectionDraining"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeWaitingForELBConnectionDraining);
         }
-        if ([value isEqualToString:@"MidLifecycleAction"]) {
+        if ([value caseInsensitiveCompare:@"MidLifecycleAction"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeMidLifecycleAction);
         }
-        if ([value isEqualToString:@"WaitingForInstanceWarmup"]) {
+        if ([value caseInsensitiveCompare:@"WaitingForInstanceWarmup"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeWaitingForInstanceWarmup);
         }
-        if ([value isEqualToString:@"Successful"]) {
+        if ([value caseInsensitiveCompare:@"Successful"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeSuccessful);
         }
-        if ([value isEqualToString:@"Failed"]) {
+        if ([value caseInsensitiveCompare:@"Failed"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeFailed);
         }
-        if ([value isEqualToString:@"Cancelled"]) {
+        if ([value caseInsensitiveCompare:@"Cancelled"] == NSOrderedSame) {
             return @(AWSAutoScalingScalingActivityStatusCodeCancelled);
         }
         return @(AWSAutoScalingScalingActivityStatusCodeUnknown);
@@ -148,7 +148,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)activityJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingActivity class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingActivity class]];
 }
 
 @end
@@ -229,12 +229,15 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"healthCheckGracePeriod" : @"HealthCheckGracePeriod",
              @"healthCheckType" : @"HealthCheckType",
              @"instances" : @"Instances",
-             @"latestInstancesProtectedFromScaleIn" : @"NewInstancesProtectedFromScaleIn",
              @"launchConfigurationName" : @"LaunchConfigurationName",
+             @"launchTemplate" : @"LaunchTemplate",
              @"loadBalancerNames" : @"LoadBalancerNames",
              @"maxSize" : @"MaxSize",
              @"minSize" : @"MinSize",
+             @"mixedInstancesPolicy" : @"MixedInstancesPolicy",
+             @"latestInstancesProtectedFromScaleIn" : @"NewInstancesProtectedFromScaleIn",
              @"placementGroup" : @"PlacementGroup",
+             @"serviceLinkedRoleARN" : @"ServiceLinkedRoleARN",
              @"status" : @"Status",
              @"suspendedProcesses" : @"SuspendedProcesses",
              @"tags" : @"Tags",
@@ -245,27 +248,35 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)createdTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)enabledMetricsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingEnabledMetric class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingEnabledMetric class]];
 }
 
 + (NSValueTransformer *)instancesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingInstance class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingInstance class]];
+}
+
++ (NSValueTransformer *)launchTemplateJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingLaunchTemplateSpecification class]];
+}
+
++ (NSValueTransformer *)mixedInstancesPolicyJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingMixedInstancesPolicy class]];
 }
 
 + (NSValueTransformer *)suspendedProcessesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingSuspendedProcess class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingSuspendedProcess class]];
 }
 
 + (NSValueTransformer *)tagsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTagDescription class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTagDescription class]];
 }
 
 @end
@@ -292,7 +303,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)autoScalingGroupsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAutoScalingGroup class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAutoScalingGroup class]];
 }
 
 @end
@@ -306,9 +317,14 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"healthStatus" : @"HealthStatus",
              @"instanceId" : @"InstanceId",
              @"launchConfigurationName" : @"LaunchConfigurationName",
+             @"launchTemplate" : @"LaunchTemplate",
              @"lifecycleState" : @"LifecycleState",
              @"protectedFromScaleIn" : @"ProtectedFromScaleIn",
              };
+}
+
++ (NSValueTransformer *)launchTemplateJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingLaunchTemplateSpecification class]];
 }
 
 @end
@@ -323,7 +339,61 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)autoScalingInstancesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAutoScalingInstanceDetails class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAutoScalingInstanceDetails class]];
+}
+
+@end
+
+@implementation AWSAutoScalingBatchDeleteScheduledActionAnswer
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"failedScheduledActions" : @"FailedScheduledActions",
+             };
+}
+
++ (NSValueTransformer *)failedScheduledActionsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingFailedScheduledUpdateGroupActionRequest class]];
+}
+
+@end
+
+@implementation AWSAutoScalingBatchDeleteScheduledActionType
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"autoScalingGroupName" : @"AutoScalingGroupName",
+             @"scheduledActionNames" : @"ScheduledActionNames",
+             };
+}
+
+@end
+
+@implementation AWSAutoScalingBatchPutScheduledUpdateGroupActionAnswer
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"failedScheduledUpdateGroupActions" : @"FailedScheduledUpdateGroupActions",
+             };
+}
+
++ (NSValueTransformer *)failedScheduledUpdateGroupActionsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingFailedScheduledUpdateGroupActionRequest class]];
+}
+
+@end
+
+@implementation AWSAutoScalingBatchPutScheduledUpdateGroupActionType
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"autoScalingGroupName" : @"AutoScalingGroupName",
+             @"scheduledUpdateGroupActions" : @"ScheduledUpdateGroupActions",
+             };
+}
+
++ (NSValueTransformer *)scheduledUpdateGroupActionsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingScheduledUpdateGroupActionRequest class]];
 }
 
 @end
@@ -340,7 +410,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)ebsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingEbs class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingEbs class]];
 }
 
 @end
@@ -374,12 +444,16 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"healthCheckGracePeriod" : @"HealthCheckGracePeriod",
              @"healthCheckType" : @"HealthCheckType",
              @"instanceId" : @"InstanceId",
-             @"latestInstancesProtectedFromScaleIn" : @"NewInstancesProtectedFromScaleIn",
              @"launchConfigurationName" : @"LaunchConfigurationName",
+             @"launchTemplate" : @"LaunchTemplate",
+             @"lifecycleHookSpecificationList" : @"LifecycleHookSpecificationList",
              @"loadBalancerNames" : @"LoadBalancerNames",
              @"maxSize" : @"MaxSize",
              @"minSize" : @"MinSize",
+             @"mixedInstancesPolicy" : @"MixedInstancesPolicy",
+             @"latestInstancesProtectedFromScaleIn" : @"NewInstancesProtectedFromScaleIn",
              @"placementGroup" : @"PlacementGroup",
+             @"serviceLinkedRoleARN" : @"ServiceLinkedRoleARN",
              @"tags" : @"Tags",
              @"targetGroupARNs" : @"TargetGroupARNs",
              @"terminationPolicies" : @"TerminationPolicies",
@@ -387,8 +461,20 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              };
 }
 
++ (NSValueTransformer *)launchTemplateJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingLaunchTemplateSpecification class]];
+}
+
++ (NSValueTransformer *)lifecycleHookSpecificationListJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLifecycleHookSpecification class]];
+}
+
++ (NSValueTransformer *)mixedInstancesPolicyJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingMixedInstancesPolicy class]];
+}
+
 + (NSValueTransformer *)tagsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTag class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTag class]];
 }
 
 @end
@@ -419,11 +505,11 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)blockDeviceMappingsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingBlockDeviceMapping class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingBlockDeviceMapping class]];
 }
 
 + (NSValueTransformer *)instanceMonitoringJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMonitoring class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMonitoring class]];
 }
 
 @end
@@ -437,7 +523,61 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)tagsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTag class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTag class]];
+}
+
+@end
+
+@implementation AWSAutoScalingCustomizedMetricSpecification
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"dimensions" : @"Dimensions",
+             @"metricName" : @"MetricName",
+             @"namespace" : @"Namespace",
+             @"statistic" : @"Statistic",
+             @"unit" : @"Unit",
+             };
+}
+
++ (NSValueTransformer *)dimensionsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingMetricDimension class]];
+}
+
++ (NSValueTransformer *)statisticJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"Average"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricStatisticAverage);
+        }
+        if ([value caseInsensitiveCompare:@"Minimum"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricStatisticMinimum);
+        }
+        if ([value caseInsensitiveCompare:@"Maximum"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricStatisticMaximum);
+        }
+        if ([value caseInsensitiveCompare:@"SampleCount"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricStatisticSampleCount);
+        }
+        if ([value caseInsensitiveCompare:@"Sum"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricStatisticSum);
+        }
+        return @(AWSAutoScalingMetricStatisticUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSAutoScalingMetricStatisticAverage:
+                return @"Average";
+            case AWSAutoScalingMetricStatisticMinimum:
+                return @"Minimum";
+            case AWSAutoScalingMetricStatisticMaximum:
+                return @"Maximum";
+            case AWSAutoScalingMetricStatisticSampleCount:
+                return @"SampleCount";
+            case AWSAutoScalingMetricStatisticSum:
+                return @"Sum";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end
@@ -510,7 +650,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)tagsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTag class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTag class]];
 }
 
 @end
@@ -537,7 +677,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)adjustmentTypesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAdjustmentType class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAdjustmentType class]];
 }
 
 @end
@@ -583,7 +723,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)lifecycleHooksJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLifecycleHook class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLifecycleHook class]];
 }
 
 @end
@@ -621,7 +761,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)loadBalancerTargetGroupsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLoadBalancerTargetGroupState class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLoadBalancerTargetGroupState class]];
 }
 
 @end
@@ -648,7 +788,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)loadBalancersJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLoadBalancerState class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLoadBalancerState class]];
 }
 
 @end
@@ -663,11 +803,11 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)granularitiesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingMetricGranularityType class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingMetricGranularityType class]];
 }
 
 + (NSValueTransformer *)metricsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingMetricCollectionType class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingMetricCollectionType class]];
 }
 
 @end
@@ -682,7 +822,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)notificationConfigurationsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingNotificationConfiguration class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingNotificationConfiguration class]];
 }
 
 @end
@@ -740,18 +880,18 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)endTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)startTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
@@ -768,7 +908,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)filtersJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingFilter class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingFilter class]];
 }
 
 @end
@@ -792,7 +932,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)activitiesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
 }
 
 @end
@@ -897,7 +1037,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)activitiesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
 }
 
 @end
@@ -937,7 +1077,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)activitiesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingActivity class]];
 }
 
 @end
@@ -948,6 +1088,18 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 	return @{
              @"autoScalingGroupName" : @"AutoScalingGroupName",
              @"instanceIds" : @"InstanceIds",
+             };
+}
+
+@end
+
+@implementation AWSAutoScalingFailedScheduledUpdateGroupActionRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"errorCode" : @"ErrorCode",
+             @"errorMessage" : @"ErrorMessage",
+             @"scheduledActionName" : @"ScheduledActionName",
              };
 }
 
@@ -972,50 +1124,55 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"healthStatus" : @"HealthStatus",
              @"instanceId" : @"InstanceId",
              @"launchConfigurationName" : @"LaunchConfigurationName",
+             @"launchTemplate" : @"LaunchTemplate",
              @"lifecycleState" : @"LifecycleState",
              @"protectedFromScaleIn" : @"ProtectedFromScaleIn",
              };
 }
 
++ (NSValueTransformer *)launchTemplateJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingLaunchTemplateSpecification class]];
+}
+
 + (NSValueTransformer *)lifecycleStateJSONTransformer {
     return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
-        if ([value isEqualToString:@"Pending"]) {
+        if ([value caseInsensitiveCompare:@"Pending"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStatePending);
         }
-        if ([value isEqualToString:@"Pending:Wait"]) {
+        if ([value caseInsensitiveCompare:@"Pending:Wait"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStatePendingWait);
         }
-        if ([value isEqualToString:@"Pending:Proceed"]) {
+        if ([value caseInsensitiveCompare:@"Pending:Proceed"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStatePendingProceed);
         }
-        if ([value isEqualToString:@"Quarantined"]) {
+        if ([value caseInsensitiveCompare:@"Quarantined"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateQuarantined);
         }
-        if ([value isEqualToString:@"InService"]) {
+        if ([value caseInsensitiveCompare:@"InService"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateInService);
         }
-        if ([value isEqualToString:@"Terminating"]) {
+        if ([value caseInsensitiveCompare:@"Terminating"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateTerminating);
         }
-        if ([value isEqualToString:@"Terminating:Wait"]) {
+        if ([value caseInsensitiveCompare:@"Terminating:Wait"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateTerminatingWait);
         }
-        if ([value isEqualToString:@"Terminating:Proceed"]) {
+        if ([value caseInsensitiveCompare:@"Terminating:Proceed"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateTerminatingProceed);
         }
-        if ([value isEqualToString:@"Terminated"]) {
+        if ([value caseInsensitiveCompare:@"Terminated"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateTerminated);
         }
-        if ([value isEqualToString:@"Detaching"]) {
+        if ([value caseInsensitiveCompare:@"Detaching"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateDetaching);
         }
-        if ([value isEqualToString:@"Detached"]) {
+        if ([value caseInsensitiveCompare:@"Detached"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateDetached);
         }
-        if ([value isEqualToString:@"EnteringStandby"]) {
+        if ([value caseInsensitiveCompare:@"EnteringStandby"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateEnteringStandby);
         }
-        if ([value isEqualToString:@"Standby"]) {
+        if ([value caseInsensitiveCompare:@"Standby"] == NSOrderedSame) {
             return @(AWSAutoScalingLifecycleStateStandby);
         }
         return @(AWSAutoScalingLifecycleStateUnknown);
@@ -1065,6 +1222,21 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 
 @end
 
+@implementation AWSAutoScalingInstancesDistribution
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"onDemandAllocationStrategy" : @"OnDemandAllocationStrategy",
+             @"onDemandBaseCapacity" : @"OnDemandBaseCapacity",
+             @"onDemandPercentageAboveBaseCapacity" : @"OnDemandPercentageAboveBaseCapacity",
+             @"spotAllocationStrategy" : @"SpotAllocationStrategy",
+             @"spotInstancePools" : @"SpotInstancePools",
+             @"spotMaxPrice" : @"SpotMaxPrice",
+             };
+}
+
+@end
+
 @implementation AWSAutoScalingLaunchConfiguration
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -1092,19 +1264,19 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)blockDeviceMappingsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingBlockDeviceMapping class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingBlockDeviceMapping class]];
 }
 
 + (NSValueTransformer *)createdTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)instanceMonitoringJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMonitoring class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMonitoring class]];
 }
 
 @end
@@ -1141,7 +1313,48 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)launchConfigurationsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLaunchConfiguration class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLaunchConfiguration class]];
+}
+
+@end
+
+@implementation AWSAutoScalingLaunchTemplate
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"launchTemplateSpecification" : @"LaunchTemplateSpecification",
+             @"overrides" : @"Overrides",
+             };
+}
+
++ (NSValueTransformer *)launchTemplateSpecificationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingLaunchTemplateSpecification class]];
+}
+
++ (NSValueTransformer *)overridesJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingLaunchTemplateOverrides class]];
+}
+
+@end
+
+@implementation AWSAutoScalingLaunchTemplateOverrides
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"instanceType" : @"InstanceType",
+             };
+}
+
+@end
+
+@implementation AWSAutoScalingLaunchTemplateSpecification
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"launchTemplateId" : @"LaunchTemplateId",
+             @"launchTemplateName" : @"LaunchTemplateName",
+             @"version" : @"Version",
+             };
 }
 
 @end
@@ -1153,6 +1366,22 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"autoScalingGroupName" : @"AutoScalingGroupName",
              @"defaultResult" : @"DefaultResult",
              @"globalTimeout" : @"GlobalTimeout",
+             @"heartbeatTimeout" : @"HeartbeatTimeout",
+             @"lifecycleHookName" : @"LifecycleHookName",
+             @"lifecycleTransition" : @"LifecycleTransition",
+             @"notificationMetadata" : @"NotificationMetadata",
+             @"notificationTargetARN" : @"NotificationTargetARN",
+             @"roleARN" : @"RoleARN",
+             };
+}
+
+@end
+
+@implementation AWSAutoScalingLifecycleHookSpecification
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"defaultResult" : @"DefaultResult",
              @"heartbeatTimeout" : @"HeartbeatTimeout",
              @"lifecycleHookName" : @"LifecycleHookName",
              @"lifecycleTransition" : @"LifecycleTransition",
@@ -1196,12 +1425,42 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 
 @end
 
+@implementation AWSAutoScalingMetricDimension
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"name" : @"Name",
+             @"value" : @"Value",
+             };
+}
+
+@end
+
 @implementation AWSAutoScalingMetricGranularityType
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"granularity" : @"Granularity",
              };
+}
+
+@end
+
+@implementation AWSAutoScalingMixedInstancesPolicy
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"instancesDistribution" : @"InstancesDistribution",
+             @"launchTemplate" : @"LaunchTemplate",
+             };
+}
+
++ (NSValueTransformer *)instancesDistributionJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstancesDistribution class]];
+}
+
++ (NSValueTransformer *)launchTemplateJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingLaunchTemplate class]];
 }
 
 @end
@@ -1228,7 +1487,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)scalingPoliciesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingScalingPolicy class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingScalingPolicy class]];
 }
 
 @end
@@ -1237,8 +1496,55 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"alarms" : @"Alarms",
              @"policyARN" : @"PolicyARN",
              };
+}
+
++ (NSValueTransformer *)alarmsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAlarm class]];
+}
+
+@end
+
+@implementation AWSAutoScalingPredefinedMetricSpecification
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"predefinedMetricType" : @"PredefinedMetricType",
+             @"resourceLabel" : @"ResourceLabel",
+             };
+}
+
++ (NSValueTransformer *)predefinedMetricTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"ASGAverageCPUUtilization"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricTypeASGAverageCPUUtilization);
+        }
+        if ([value caseInsensitiveCompare:@"ASGAverageNetworkIn"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricTypeASGAverageNetworkIn);
+        }
+        if ([value caseInsensitiveCompare:@"ASGAverageNetworkOut"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricTypeASGAverageNetworkOut);
+        }
+        if ([value caseInsensitiveCompare:@"ALBRequestCountPerTarget"] == NSOrderedSame) {
+            return @(AWSAutoScalingMetricTypeALBRequestCountPerTarget);
+        }
+        return @(AWSAutoScalingMetricTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSAutoScalingMetricTypeASGAverageCPUUtilization:
+                return @"ASGAverageCPUUtilization";
+            case AWSAutoScalingMetricTypeASGAverageNetworkIn:
+                return @"ASGAverageNetworkIn";
+            case AWSAutoScalingMetricTypeASGAverageNetworkOut:
+                return @"ASGAverageNetworkOut";
+            case AWSAutoScalingMetricTypeALBRequestCountPerTarget:
+                return @"ALBRequestCountPerTarget";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end
@@ -1262,7 +1568,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)processesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingProcessType class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingProcessType class]];
 }
 
 @end
@@ -1315,11 +1621,16 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"policyType" : @"PolicyType",
              @"scalingAdjustment" : @"ScalingAdjustment",
              @"stepAdjustments" : @"StepAdjustments",
+             @"targetTrackingConfiguration" : @"TargetTrackingConfiguration",
              };
 }
 
 + (NSValueTransformer *)stepAdjustmentsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingStepAdjustment class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingStepAdjustment class]];
+}
+
++ (NSValueTransformer *)targetTrackingConfigurationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingTargetTrackingConfiguration class]];
 }
 
 @end
@@ -1341,26 +1652,26 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)endTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)startTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)timeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
@@ -1400,15 +1711,20 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"policyType" : @"PolicyType",
              @"scalingAdjustment" : @"ScalingAdjustment",
              @"stepAdjustments" : @"StepAdjustments",
+             @"targetTrackingConfiguration" : @"TargetTrackingConfiguration",
              };
 }
 
 + (NSValueTransformer *)alarmsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAlarm class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingAlarm class]];
 }
 
 + (NSValueTransformer *)stepAdjustmentsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingStepAdjustment class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingStepAdjustment class]];
+}
+
++ (NSValueTransformer *)targetTrackingConfigurationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingTargetTrackingConfiguration class]];
 }
 
 @end
@@ -1434,7 +1750,7 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)scheduledUpdateGroupActionsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingScheduledUpdateGroupAction class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingScheduledUpdateGroupAction class]];
 }
 
 @end
@@ -1457,26 +1773,58 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)endTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)startTimeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
 + (NSValueTransformer *)timeJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
+    }];
+}
+
+@end
+
+@implementation AWSAutoScalingScheduledUpdateGroupActionRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"desiredCapacity" : @"DesiredCapacity",
+             @"endTime" : @"EndTime",
+             @"maxSize" : @"MaxSize",
+             @"minSize" : @"MinSize",
+             @"recurrence" : @"Recurrence",
+             @"scheduledActionName" : @"ScheduledActionName",
+             @"startTime" : @"StartTime",
+             };
+}
+
++ (NSValueTransformer *)endTimeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+        return [NSDate aws_dateFromString:str];
+    } reverseBlock:^id(NSDate *date) {
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
+    }];
+}
+
++ (NSValueTransformer *)startTimeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+        return [NSDate aws_dateFromString:str];
+    } reverseBlock:^id(NSDate *date) {
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
@@ -1583,7 +1931,28 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
 }
 
 + (NSValueTransformer *)tagsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTagDescription class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingTagDescription class]];
+}
+
+@end
+
+@implementation AWSAutoScalingTargetTrackingConfiguration
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"customizedMetricSpecification" : @"CustomizedMetricSpecification",
+             @"disableScaleIn" : @"DisableScaleIn",
+             @"predefinedMetricSpecification" : @"PredefinedMetricSpecification",
+             @"targetValue" : @"TargetValue",
+             };
+}
+
++ (NSValueTransformer *)customizedMetricSpecificationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingCustomizedMetricSpecification class]];
+}
+
++ (NSValueTransformer *)predefinedMetricSpecificationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingPredefinedMetricSpecification class]];
 }
 
 @end
@@ -1609,14 +1978,25 @@ NSString *const AWSAutoScalingErrorDomain = @"com.amazonaws.AWSAutoScalingErrorD
              @"desiredCapacity" : @"DesiredCapacity",
              @"healthCheckGracePeriod" : @"HealthCheckGracePeriod",
              @"healthCheckType" : @"HealthCheckType",
-             @"latestInstancesProtectedFromScaleIn" : @"NewInstancesProtectedFromScaleIn",
              @"launchConfigurationName" : @"LaunchConfigurationName",
+             @"launchTemplate" : @"LaunchTemplate",
              @"maxSize" : @"MaxSize",
              @"minSize" : @"MinSize",
+             @"mixedInstancesPolicy" : @"MixedInstancesPolicy",
+             @"latestInstancesProtectedFromScaleIn" : @"NewInstancesProtectedFromScaleIn",
              @"placementGroup" : @"PlacementGroup",
+             @"serviceLinkedRoleARN" : @"ServiceLinkedRoleARN",
              @"terminationPolicies" : @"TerminationPolicies",
              @"VPCZoneIdentifier" : @"VPCZoneIdentifier",
              };
+}
+
++ (NSValueTransformer *)launchTemplateJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingLaunchTemplateSpecification class]];
+}
+
++ (NSValueTransformer *)mixedInstancesPolicyJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingMixedInstancesPolicy class]];
 }
 
 @end

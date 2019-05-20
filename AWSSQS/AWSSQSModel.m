@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)entriesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSChangeMessageVisibilityBatchRequestEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSChangeMessageVisibilityBatchRequestEntry class]];
 }
 
 @end
@@ -81,11 +81,11 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)failedJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSBatchResultErrorEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSBatchResultErrorEntry class]];
 }
 
 + (NSValueTransformer *)successfulJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSChangeMessageVisibilityBatchResultEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSChangeMessageVisibilityBatchResultEntry class]];
 }
 
 @end
@@ -143,7 +143,7 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)entriesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSDeleteMessageBatchRequestEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSDeleteMessageBatchRequestEntry class]];
 }
 
 @end
@@ -169,11 +169,11 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)failedJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSBatchResultErrorEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSBatchResultErrorEntry class]];
 }
 
 + (NSValueTransformer *)successfulJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSDeleteMessageBatchResultEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSDeleteMessageBatchResultEntry class]];
 }
 
 @end
@@ -271,6 +271,26 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 
 @end
 
+@implementation AWSSQSListQueueTagsRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"queueUrl" : @"QueueUrl",
+             };
+}
+
+@end
+
+@implementation AWSSQSListQueueTagsResult
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"tags" : @"Tags",
+             };
+}
+
+@end
+
 @implementation AWSSQSListQueuesRequest
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -306,11 +326,11 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)messageAttributesJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(id JSONDictionary) {
-		return [AWSModelUtility mapMTLDictionaryFromJSONDictionary:JSONDictionary withModelClass:[AWSSQSMessageAttributeValue class]];
-	} reverseBlock:^id(id mapMTLDictionary) {
-		return [AWSModelUtility JSONDictionaryFromMapMTLDictionary:mapMTLDictionary];
-	}];
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(id JSONDictionary) {
+        return [AWSModelUtility mapMTLDictionaryFromJSONDictionary:JSONDictionary withModelClass:[AWSSQSMessageAttributeValue class]];
+    } reverseBlock:^id(id mapMTLDictionary) {
+        return [AWSModelUtility JSONDictionaryFromMapMTLDictionary:mapMTLDictionary];
+    }];
 }
 
 @end
@@ -347,6 +367,7 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
              @"maxNumberOfMessages" : @"MaxNumberOfMessages",
              @"messageAttributeNames" : @"MessageAttributeNames",
              @"queueUrl" : @"QueueUrl",
+             @"receiveRequestAttemptId" : @"ReceiveRequestAttemptId",
              @"visibilityTimeout" : @"VisibilityTimeout",
              @"waitTimeSeconds" : @"WaitTimeSeconds",
              };
@@ -363,7 +384,7 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)messagesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSMessage class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSMessage class]];
 }
 
 @end
@@ -389,7 +410,7 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)entriesJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSSendMessageBatchRequestEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSSendMessageBatchRequestEntry class]];
 }
 
 @end
@@ -402,15 +423,17 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
              @"identifier" : @"Id",
              @"messageAttributes" : @"MessageAttributes",
              @"messageBody" : @"MessageBody",
+             @"messageDeduplicationId" : @"MessageDeduplicationId",
+             @"messageGroupId" : @"MessageGroupId",
              };
 }
 
 + (NSValueTransformer *)messageAttributesJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(id JSONDictionary) {
-		return [AWSModelUtility mapMTLDictionaryFromJSONDictionary:JSONDictionary withModelClass:[AWSSQSMessageAttributeValue class]];
-	} reverseBlock:^id(id mapMTLDictionary) {
-		return [AWSModelUtility JSONDictionaryFromMapMTLDictionary:mapMTLDictionary];
-	}];
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(id JSONDictionary) {
+        return [AWSModelUtility mapMTLDictionaryFromJSONDictionary:JSONDictionary withModelClass:[AWSSQSMessageAttributeValue class]];
+    } reverseBlock:^id(id mapMTLDictionary) {
+        return [AWSModelUtility JSONDictionaryFromMapMTLDictionary:mapMTLDictionary];
+    }];
 }
 
 @end
@@ -425,11 +448,11 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 }
 
 + (NSValueTransformer *)failedJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSBatchResultErrorEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSBatchResultErrorEntry class]];
 }
 
 + (NSValueTransformer *)successfulJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSSendMessageBatchResultEntry class]];
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSQSSendMessageBatchResultEntry class]];
 }
 
 @end
@@ -442,6 +465,7 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
              @"MD5OfMessageAttributes" : @"MD5OfMessageAttributes",
              @"MD5OfMessageBody" : @"MD5OfMessageBody",
              @"messageId" : @"MessageId",
+             @"sequenceNumber" : @"SequenceNumber",
              };
 }
 
@@ -454,16 +478,18 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
              @"delaySeconds" : @"DelaySeconds",
              @"messageAttributes" : @"MessageAttributes",
              @"messageBody" : @"MessageBody",
+             @"messageDeduplicationId" : @"MessageDeduplicationId",
+             @"messageGroupId" : @"MessageGroupId",
              @"queueUrl" : @"QueueUrl",
              };
 }
 
 + (NSValueTransformer *)messageAttributesJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(id JSONDictionary) {
-		return [AWSModelUtility mapMTLDictionaryFromJSONDictionary:JSONDictionary withModelClass:[AWSSQSMessageAttributeValue class]];
-	} reverseBlock:^id(id mapMTLDictionary) {
-		return [AWSModelUtility JSONDictionaryFromMapMTLDictionary:mapMTLDictionary];
-	}];
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(id JSONDictionary) {
+        return [AWSModelUtility mapMTLDictionaryFromJSONDictionary:JSONDictionary withModelClass:[AWSSQSMessageAttributeValue class]];
+    } reverseBlock:^id(id mapMTLDictionary) {
+        return [AWSModelUtility JSONDictionaryFromMapMTLDictionary:mapMTLDictionary];
+    }];
 }
 
 @end
@@ -475,6 +501,7 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
              @"MD5OfMessageAttributes" : @"MD5OfMessageAttributes",
              @"MD5OfMessageBody" : @"MD5OfMessageBody",
              @"messageId" : @"MessageId",
+             @"sequenceNumber" : @"SequenceNumber",
              };
 }
 
@@ -486,6 +513,28 @@ NSString *const AWSSQSErrorDomain = @"com.amazonaws.AWSSQSErrorDomain";
 	return @{
              @"attributes" : @"Attributes",
              @"queueUrl" : @"QueueUrl",
+             };
+}
+
+@end
+
+@implementation AWSSQSTagQueueRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"queueUrl" : @"QueueUrl",
+             @"tags" : @"Tags",
+             };
+}
+
+@end
+
+@implementation AWSSQSUntagQueueRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"queueUrl" : @"QueueUrl",
+             @"tagKeys" : @"TagKeys",
              };
 }
 

@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -13,21 +13,22 @@
 // permissions and limitations under the License.
 //
 
-#import "AWSKinesis.h"
-
-#import "AWSNetworking.h"
-#import "AWSCategory.h"
-#import "AWSSignature.h"
-#import "AWSService.h"
-#import "AWSNetworking.h"
-#import "AWSURLRequestSerialization.h"
-#import "AWSURLResponseSerialization.h"
-#import "AWSURLRequestRetryHandler.h"
-#import "AWSSynchronizedMutableDictionary.h"
+#import "AWSFirehoseService.h"
+#import <AWSCore/AWSNetworking.h>
+#import <AWSCore/AWSCategory.h>
+#import <AWSCore/AWSNetworking.h>
+#import <AWSCore/AWSSignature.h>
+#import <AWSCore/AWSService.h>
+#import <AWSCore/AWSURLRequestSerialization.h>
+#import <AWSCore/AWSURLResponseSerialization.h>
+#import <AWSCore/AWSURLRequestRetryHandler.h>
+#import <AWSCore/AWSSynchronizedMutableDictionary.h>
 #import "AWSFirehoseResources.h"
+#import "AWSFirehoseSerializer.h"
 
 static NSString *const AWSInfoFirehose = @"Firehose";
-static NSString *const AWSFirehoseSDKVersion = @"2.4.5";
+NSString *const AWSFirehoseSDKVersion = @"2.9.8";
+
 
 @interface AWSFirehoseResponseSerializer : AWSJSONResponseSerializer
 
@@ -62,21 +63,23 @@ static NSDictionary *errorCodeDictionary = nil;
                                                     data:data
                                                    error:error];
     if (!*error && [responseObject isKindOfClass:[NSDictionary class]]) {
-        if ([errorCodeDictionary objectForKey:[[[responseObject objectForKey:@"__type"] componentsSeparatedByString:@"#"] lastObject]]) {
-            if (error) {
-                *error = [NSError errorWithDomain:AWSFirehoseErrorDomain
-                                             code:[[errorCodeDictionary objectForKey:[[[responseObject objectForKey:@"__type"] componentsSeparatedByString:@"#"] lastObject]] integerValue]
-                                         userInfo:responseObject];
-            }
-            return responseObject;
-        } else if ([[[responseObject objectForKey:@"__type"] componentsSeparatedByString:@"#"] lastObject]) {
-            if (error) {
-                *error = [NSError errorWithDomain:AWSFirehoseErrorDomain
-                                             code:AWSFirehoseErrorUnknown
-                                         userInfo:responseObject];
-            }
-            return responseObject;
-        }
+    	if (!*error && [responseObject isKindOfClass:[NSDictionary class]]) {
+	        if ([errorCodeDictionary objectForKey:[[[responseObject objectForKey:@"__type"] componentsSeparatedByString:@"#"] lastObject]]) {
+	            if (error) {
+	                *error = [NSError errorWithDomain:AWSFirehoseErrorDomain
+	                                             code:[[errorCodeDictionary objectForKey:[[[responseObject objectForKey:@"__type"] componentsSeparatedByString:@"#"] lastObject]] integerValue]
+	                                         userInfo:responseObject];
+	            }
+	            return responseObject;
+	        } else if ([[[responseObject objectForKey:@"__type"] componentsSeparatedByString:@"#"] lastObject]) {
+	            if (error) {
+	                *error = [NSError errorWithDomain:AWSCognitoIdentityErrorDomain
+	                                             code:AWSCognitoIdentityErrorUnknown
+	                                         userInfo:responseObject];
+	            }
+	            return responseObject;
+	        }
+    	}
     }
 
     if (!*error && response.statusCode/100 != 2) {
@@ -92,7 +95,7 @@ static NSDictionary *errorCodeDictionary = nil;
                                                        error:error];
         }
     }
-
+	
     return responseObject;
 }
 
@@ -103,30 +106,6 @@ static NSDictionary *errorCodeDictionary = nil;
 @end
 
 @implementation AWSFirehoseRequestRetryHandler
-
-- (AWSNetworkingRetryType)shouldRetry:(uint32_t)currentRetryCount
-                             response:(NSHTTPURLResponse *)response
-                                 data:(NSData *)data
-                                error:(NSError *)error {
-    AWSNetworkingRetryType retryType = [super shouldRetry:currentRetryCount
-                                                 response:response
-                                                     data:data
-                                                    error:error];
-    if(retryType == AWSNetworkingRetryTypeShouldNotRetry
-       && [error.domain isEqualToString:AWSFirehoseErrorDomain]
-       && currentRetryCount < self.maxRetryCount) {
-        switch (error.code) {
-            case AWSFirehoseErrorLimitExceeded:
-                retryType = AWSNetworkingRetryTypeShouldRetry;
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    return retryType;
-}
 
 @end
 
@@ -149,6 +128,12 @@ static NSDictionary *errorCodeDictionary = nil;
 
 @end
 
+@interface AWSEndpoint()
+
+- (void) setRegion:(AWSRegionType)regionType service:(AWSServiceType)serviceType;
+
+@end
+
 @implementation AWSFirehose
 
 + (void)initialize {
@@ -156,7 +141,7 @@ static NSDictionary *errorCodeDictionary = nil;
 
     if (![AWSiOSSDKVersion isEqualToString:AWSFirehoseSDKVersion]) {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"AWSCore and AWSKinesis versions need to match. Check your SDK installation. AWSCore: %@ AWSKinesis: %@", AWSiOSSDKVersion, AWSFirehoseSDKVersion]
+                                       reason:[NSString stringWithFormat:@"AWSCore and AWSFirehose versions need to match. Check your SDK installation. AWSCore: %@ AWSFirehose: %@", AWSiOSSDKVersion, AWSFirehoseSDKVersion]
                                      userInfo:nil];
     }
 }
@@ -182,7 +167,7 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 
         if (!serviceConfiguration) {
             @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                           reason:@"The service configuration is `nil`. You need to configure `Info.plist` or set `defaultServiceConfiguration` before using this method."
+                                           reason:@"The service configuration is `nil`. You need to configure `awsconfiguration.json`, `Info.plist` or set `defaultServiceConfiguration` before using this method."
                                          userInfo:nil];
         }
         _defaultFirehose = [[AWSFirehose alloc] initWithConfiguration:serviceConfiguration];
@@ -213,7 +198,7 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
             AWSServiceConfiguration *serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:serviceInfo.region
                                                                                         credentialsProvider:serviceInfo.cognitoCredentialsProvider];
             [AWSFirehose registerFirehoseWithConfiguration:serviceConfiguration
-                                                    forKey:key];
+                                                                forKey:key];
         }
 
         return [_serviceClients objectForKey:key];
@@ -236,11 +221,16 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 - (instancetype)initWithConfiguration:(AWSServiceConfiguration *)configuration {
     if (self = [super init]) {
         _configuration = [configuration copy];
-
-        _configuration.endpoint = [[AWSEndpoint alloc] initWithRegion:_configuration.regionType
+       	
+        if(!configuration.endpoint){
+            _configuration.endpoint = [[AWSEndpoint alloc] initWithRegion:_configuration.regionType
                                                               service:AWSServiceFirehose
                                                          useUnsafeURL:NO];
-
+        }else{
+            [_configuration.endpoint setRegion:_configuration.regionType
+                                      service:AWSServiceFirehose];
+        }
+       	
         AWSSignatureV4Signer *signer = [[AWSSignatureV4Signer alloc] initWithCredentialsProvider:_configuration.credentialsProvider
                                                                                         endpoint:_configuration.endpoint];
         AWSNetworkingRequestInterceptor *baseInterceptor = [[AWSNetworkingRequestInterceptor alloc] initWithUserAgent:_configuration.userAgent];
@@ -248,8 +238,8 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 
         _configuration.baseURL = _configuration.endpoint.URL;
         _configuration.retryHandler = [[AWSFirehoseRequestRetryHandler alloc] initWithMaximumRetryCount:_configuration.maxRetryCount];
-        _configuration.headers = @{@"Content-Type" : @"application/x-amz-json-1.1"};
-
+        _configuration.headers = @{@"Content-Type" : @"application/x-amz-json-1.1"}; 
+		
         _networking = [[AWSNetworking alloc] initWithConfiguration:_configuration];
     }
     
@@ -267,23 +257,24 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
         if (!request) {
             request = [AWSRequest new];
         }
-        
+
         AWSNetworkingRequest *networkingRequest = request.internalRequest;
         if (request) {
             networkingRequest.parameters = [[AWSMTLJSONAdapter JSONDictionaryFromModel:request] aws_removeNullValues];
         } else {
             networkingRequest.parameters = @{};
         }
-        
-        NSMutableDictionary *headers = [NSMutableDictionary new];
+
+		NSMutableDictionary *headers = [NSMutableDictionary new];
         headers[@"X-Amz-Target"] = [NSString stringWithFormat:@"%@.%@", targetPrefix, operationName];
         networkingRequest.headers = headers;
         networkingRequest.HTTPMethod = HTTPMethod;
-        networkingRequest.requestSerializer = [[AWSJSONRequestSerializer alloc] initWithJSONDefinition:[[AWSFirehoseResources sharedInstance] JSONObject]
-                                                                                            actionName:operationName];
+		networkingRequest.requestSerializer = [[AWSFirehoseRequestSerializer alloc] initWithJSONDefinition:[[AWSFirehoseResources sharedInstance] JSONObject]
+		 															     actionName:operationName];
         networkingRequest.responseSerializer = [[AWSFirehoseResponseSerializer alloc] initWithJSONDefinition:[[AWSFirehoseResources sharedInstance] JSONObject]
-                                                                                                 actionName:operationName
-                                                                                                outputClass:outputClass];
+                                                                                             actionName:operationName
+                                                                                            outputClass:outputClass];
+        
         return [self.networking sendRequest:networkingRequest];
     }
 }
@@ -300,15 +291,10 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 }
 
 - (void)createDeliveryStream:(AWSFirehoseCreateDeliveryStreamInput *)request
-           completionHandler:(void (^)(AWSFirehoseCreateDeliveryStreamOutput *response, NSError *error))completionHandler {
+     completionHandler:(void (^)(AWSFirehoseCreateDeliveryStreamOutput *response, NSError *error))completionHandler {
     [[self createDeliveryStream:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseCreateDeliveryStreamOutput *> * _Nonnull task) {
         AWSFirehoseCreateDeliveryStreamOutput *result = task.result;
         NSError *error = task.error;
-
-        if (task.exception) {
-            AWSLogError(@"Fatal exception: [%@]", task.exception);
-            kill(getpid(), SIGKILL);
-        }
 
         if (completionHandler) {
             completionHandler(result, error);
@@ -328,15 +314,10 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 }
 
 - (void)deleteDeliveryStream:(AWSFirehoseDeleteDeliveryStreamInput *)request
-           completionHandler:(void (^)(AWSFirehoseDeleteDeliveryStreamOutput *response, NSError *error))completionHandler {
+     completionHandler:(void (^)(AWSFirehoseDeleteDeliveryStreamOutput *response, NSError *error))completionHandler {
     [[self deleteDeliveryStream:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseDeleteDeliveryStreamOutput *> * _Nonnull task) {
         AWSFirehoseDeleteDeliveryStreamOutput *result = task.result;
         NSError *error = task.error;
-
-        if (task.exception) {
-            AWSLogError(@"Fatal exception: [%@]", task.exception);
-            kill(getpid(), SIGKILL);
-        }
 
         if (completionHandler) {
             completionHandler(result, error);
@@ -356,15 +337,10 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 }
 
 - (void)describeDeliveryStream:(AWSFirehoseDescribeDeliveryStreamInput *)request
-             completionHandler:(void (^)(AWSFirehoseDescribeDeliveryStreamOutput *response, NSError *error))completionHandler {
+     completionHandler:(void (^)(AWSFirehoseDescribeDeliveryStreamOutput *response, NSError *error))completionHandler {
     [[self describeDeliveryStream:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseDescribeDeliveryStreamOutput *> * _Nonnull task) {
         AWSFirehoseDescribeDeliveryStreamOutput *result = task.result;
         NSError *error = task.error;
-
-        if (task.exception) {
-            AWSLogError(@"Fatal exception: [%@]", task.exception);
-            kill(getpid(), SIGKILL);
-        }
 
         if (completionHandler) {
             completionHandler(result, error);
@@ -384,15 +360,33 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 }
 
 - (void)listDeliveryStreams:(AWSFirehoseListDeliveryStreamsInput *)request
-          completionHandler:(void (^)(AWSFirehoseListDeliveryStreamsOutput *response, NSError *error))completionHandler {
+     completionHandler:(void (^)(AWSFirehoseListDeliveryStreamsOutput *response, NSError *error))completionHandler {
     [[self listDeliveryStreams:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseListDeliveryStreamsOutput *> * _Nonnull task) {
         AWSFirehoseListDeliveryStreamsOutput *result = task.result;
         NSError *error = task.error;
 
-        if (task.exception) {
-            AWSLogError(@"Fatal exception: [%@]", task.exception);
-            kill(getpid(), SIGKILL);
+        if (completionHandler) {
+            completionHandler(result, error);
         }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSFirehoseListTagsForDeliveryStreamOutput *> *)listTagsForDeliveryStream:(AWSFirehoseListTagsForDeliveryStreamInput *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"Firehose_20150804"
+                 operationName:@"ListTagsForDeliveryStream"
+                   outputClass:[AWSFirehoseListTagsForDeliveryStreamOutput class]];
+}
+
+- (void)listTagsForDeliveryStream:(AWSFirehoseListTagsForDeliveryStreamInput *)request
+     completionHandler:(void (^)(AWSFirehoseListTagsForDeliveryStreamOutput *response, NSError *error))completionHandler {
+    [[self listTagsForDeliveryStream:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseListTagsForDeliveryStreamOutput *> * _Nonnull task) {
+        AWSFirehoseListTagsForDeliveryStreamOutput *result = task.result;
+        NSError *error = task.error;
 
         if (completionHandler) {
             completionHandler(result, error);
@@ -412,15 +406,10 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 }
 
 - (void)putRecord:(AWSFirehosePutRecordInput *)request
-completionHandler:(void (^)(AWSFirehosePutRecordOutput *response, NSError *error))completionHandler {
+     completionHandler:(void (^)(AWSFirehosePutRecordOutput *response, NSError *error))completionHandler {
     [[self putRecord:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehosePutRecordOutput *> * _Nonnull task) {
         AWSFirehosePutRecordOutput *result = task.result;
         NSError *error = task.error;
-
-        if (task.exception) {
-            AWSLogError(@"Fatal exception: [%@]", task.exception);
-            kill(getpid(), SIGKILL);
-        }
 
         if (completionHandler) {
             completionHandler(result, error);
@@ -445,10 +434,97 @@ completionHandler:(void (^)(AWSFirehosePutRecordOutput *response, NSError *error
         AWSFirehosePutRecordBatchOutput *result = task.result;
         NSError *error = task.error;
 
-        if (task.exception) {
-            AWSLogError(@"Fatal exception: [%@]", task.exception);
-            kill(getpid(), SIGKILL);
+        if (completionHandler) {
+            completionHandler(result, error);
         }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSFirehoseStartDeliveryStreamEncryptionOutput *> *)startDeliveryStreamEncryption:(AWSFirehoseStartDeliveryStreamEncryptionInput *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"Firehose_20150804"
+                 operationName:@"StartDeliveryStreamEncryption"
+                   outputClass:[AWSFirehoseStartDeliveryStreamEncryptionOutput class]];
+}
+
+- (void)startDeliveryStreamEncryption:(AWSFirehoseStartDeliveryStreamEncryptionInput *)request
+     completionHandler:(void (^)(AWSFirehoseStartDeliveryStreamEncryptionOutput *response, NSError *error))completionHandler {
+    [[self startDeliveryStreamEncryption:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseStartDeliveryStreamEncryptionOutput *> * _Nonnull task) {
+        AWSFirehoseStartDeliveryStreamEncryptionOutput *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSFirehoseStopDeliveryStreamEncryptionOutput *> *)stopDeliveryStreamEncryption:(AWSFirehoseStopDeliveryStreamEncryptionInput *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"Firehose_20150804"
+                 operationName:@"StopDeliveryStreamEncryption"
+                   outputClass:[AWSFirehoseStopDeliveryStreamEncryptionOutput class]];
+}
+
+- (void)stopDeliveryStreamEncryption:(AWSFirehoseStopDeliveryStreamEncryptionInput *)request
+     completionHandler:(void (^)(AWSFirehoseStopDeliveryStreamEncryptionOutput *response, NSError *error))completionHandler {
+    [[self stopDeliveryStreamEncryption:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseStopDeliveryStreamEncryptionOutput *> * _Nonnull task) {
+        AWSFirehoseStopDeliveryStreamEncryptionOutput *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSFirehoseTagDeliveryStreamOutput *> *)tagDeliveryStream:(AWSFirehoseTagDeliveryStreamInput *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"Firehose_20150804"
+                 operationName:@"TagDeliveryStream"
+                   outputClass:[AWSFirehoseTagDeliveryStreamOutput class]];
+}
+
+- (void)tagDeliveryStream:(AWSFirehoseTagDeliveryStreamInput *)request
+     completionHandler:(void (^)(AWSFirehoseTagDeliveryStreamOutput *response, NSError *error))completionHandler {
+    [[self tagDeliveryStream:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseTagDeliveryStreamOutput *> * _Nonnull task) {
+        AWSFirehoseTagDeliveryStreamOutput *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSFirehoseUntagDeliveryStreamOutput *> *)untagDeliveryStream:(AWSFirehoseUntagDeliveryStreamInput *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"Firehose_20150804"
+                 operationName:@"UntagDeliveryStream"
+                   outputClass:[AWSFirehoseUntagDeliveryStreamOutput class]];
+}
+
+- (void)untagDeliveryStream:(AWSFirehoseUntagDeliveryStreamInput *)request
+     completionHandler:(void (^)(AWSFirehoseUntagDeliveryStreamOutput *response, NSError *error))completionHandler {
+    [[self untagDeliveryStream:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseUntagDeliveryStreamOutput *> * _Nonnull task) {
+        AWSFirehoseUntagDeliveryStreamOutput *result = task.result;
+        NSError *error = task.error;
 
         if (completionHandler) {
             completionHandler(result, error);
@@ -468,20 +544,15 @@ completionHandler:(void (^)(AWSFirehosePutRecordOutput *response, NSError *error
 }
 
 - (void)updateDestination:(AWSFirehoseUpdateDestinationInput *)request
-        completionHandler:(void (^)(AWSFirehoseUpdateDestinationOutput *response, NSError *error))completionHandler {
+     completionHandler:(void (^)(AWSFirehoseUpdateDestinationOutput *response, NSError *error))completionHandler {
     [[self updateDestination:request] continueWithBlock:^id _Nullable(AWSTask<AWSFirehoseUpdateDestinationOutput *> * _Nonnull task) {
         AWSFirehoseUpdateDestinationOutput *result = task.result;
         NSError *error = task.error;
 
-        if (task.exception) {
-            AWSLogError(@"Fatal exception: [%@]", task.exception);
-            kill(getpid(), SIGKILL);
-        }
-        
         if (completionHandler) {
             completionHandler(result, error);
         }
-        
+
         return nil;
     }];
 }

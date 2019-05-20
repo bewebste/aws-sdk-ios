@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -15,25 +15,9 @@
 
 #import "AWSIoTDataService.h"
 #import "AWSIoTService.h"
+#import "AWSIoTMQTTTypes.h"
 
-typedef NS_ENUM(NSInteger, AWSIoTMQTTStatus) {
-    AWSIoTMQTTStatusUnknown,
-    AWSIoTMQTTStatusConnecting,
-    AWSIoTMQTTStatusConnected,
-    AWSIoTMQTTStatusDisconnected,
-    AWSIoTMQTTStatusConnectionRefused,
-    AWSIoTMQTTStatusConnectionError,
-    AWSIoTMQTTStatusProtocolError
-};
-
-typedef NS_ENUM(NSInteger, AWSIoTMQTTQoS) {
-    AWSIoTMQTTQoSMessageDeliveryAttemptedAtMostOnce = 0,
-    AWSIoTMQTTQoSMessageDeliveryAttemptedAtLeastOnce = 1
-};
-
-typedef void(^AWSIoTMQTTNewMessageBlock)(NSData *data);
-typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString *topic, NSData *data);
-
+NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - AWSIoTMQTTLastWillAndTestament
 
@@ -71,43 +55,134 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
  (minimumConnectionTimeInterval), the quiet period is reset to the initial value.  
  Default value: 1 second.
   */
-@property(nonatomic, assign) NSTimeInterval baseReconnectTimeInterval;
+@property(nonatomic, assign, readonly) NSTimeInterval baseReconnectTimeInterval;
 
 /**
  The time in seconds that a connection must be active before resetting
  the current reconnection time to the base reconnection time.  Default value:
  20 seconds.
  */
-@property(nonatomic, assign) NSTimeInterval minimumConnectionTimeInterval;
+@property(nonatomic, assign, readonly) NSTimeInterval minimumConnectionTimeInterval;
 
 /**
  The maximum time in seconds to wait prior to attempting to reconnect.  Default value:
  128 seconds.
  */
-@property(nonatomic, assign) NSTimeInterval maximumReconnectTimeInterval;
+@property(nonatomic, assign, readonly) NSTimeInterval maximumReconnectTimeInterval;
 
 /**
  The MQTT keep-alive time in seconds.  Default value: 60s seconds.
  */
-@property(nonatomic, assign) NSTimeInterval keepAliveTimeInterval;
+@property(nonatomic, assign, readonly) NSTimeInterval keepAliveTimeInterval;
 
 /**
  The last will and testament (LWT) to be used when connecting to AWS IoT; in the event
  that this client disconnects improperly, AWS IoT will use this to notify any interested
  clients.  Default value: nil
  */
-@property(atomic, strong) AWSIoTMQTTLastWillAndTestament *lastWillAndTestament;
+@property(atomic, strong, readonly) AWSIoTMQTTLastWillAndTestament *lastWillAndTestament;
 
 /**
  The run loop to execute the MQTT client in.  Default value: [NSRunLoop currentRunLoop]
  */
-@property(atomic, strong) NSRunLoop *runLoop;
+@property(atomic, strong, readonly) NSRunLoop *runLoop;
 
 /**
  The run loop mode to use when executing the MQTT client.  Default value: NSDefaultRunLoopMode
  */
-@property(nonatomic, strong) NSString *runLoopMode;
+@property(nonatomic, strong, readonly) NSString *runLoopMode;
 
+/**
+ Boolean flag to indicate whether auto-resubscribe feature is enabled. Default value: YES
+ When enabled, in the event of abnormal network disconnection, the sdk automatically
+ subscribes to previously subscribed topics.
+ */
+@property(nonatomic, assign, readonly) BOOL autoResubscribe;
+
+/**
+ The max number of publish messages to retry per second if the pub-ack is not received within 60 seconds
+ **/
+@property(nonatomic, assign, readonly) NSUInteger publishRetryThrottle;
+
+/**
+ Create an AWSIoTMQTTConfiguration object and initialize its parameters.
+ The AWSIoTMQTTConfiguration object is then passed to AWSIoTDataManager to initialize it.
+ Note, clients need to either specify all parameters explicitly or not customize any
+ parameter in which case default parameter values will be used to initialize
+ AWSIoTMqttConfiguration.
+ 
+ @param kat     keepAliveTimeInterval, Mqtt Keep Alive time in seconds
+ 
+ @param brt     baseReconnectTimeInterval, The time in seconds to wait before attempting
+                the first reconnect
+ 
+ @param mct     minimumConnectionTimeInterval, The time in seconds that a connection
+                must be active before resetting the current reconnection time to the
+                base reconnection time.
+ 
+ @param mrt     maximumReconnectTimeInterval, The maximum time in seconds to wait prior
+                to attempting to reconnect
+ 
+ @param rlp     The run loop to execute the MQTT client in
+ 
+ @param rlm     The run loop mode to use when executing the MQTT client
+ 
+ @param ars     autoResubscribe, Boolean flag to indicate whether auto-resubscribe
+                feature is enabled
+ 
+ @param lwt     lastWillAndTestament, The last will and testament (LWT) to be used
+                when connecting to AWS IoT
+ */
+- (instancetype)initWithKeepAliveTimeInterval:(NSTimeInterval)kat
+                    baseReconnectTimeInterval:(NSTimeInterval)brt
+                minimumConnectionTimeInterval:(NSTimeInterval)mct
+                 maximumReconnectTimeInterval:(NSTimeInterval)mrt
+                                      runLoop:(NSRunLoop*)rlp
+                                  runLoopMode:(NSString*)rlm
+                              autoResubscribe:(BOOL)ars
+                         lastWillAndTestament:(AWSIoTMQTTLastWillAndTestament*)lwt;
+
+/**
+ Create an AWSIoTMQTTConfiguration object and initialize its parameters.
+ The AWSIoTMQTTConfiguration object is then passed to AWSIoTDataManager to initialize it.
+ Note, clients need to either specify all parameters explicitly or not customize any
+ parameter in which case default parameter values will be used to initialize
+ AWSIoTMqttConfiguration.
+ 
+ @param kat     keepAliveTimeInterval, Mqtt Keep Alive time in seconds
+ 
+ @param brt     baseReconnectTimeInterval, The time in seconds to wait before attempting
+ the first reconnect
+ 
+ @param mct     minimumConnectionTimeInterval, The time in seconds that a connection
+ must be active before resetting the current reconnection time to the
+ base reconnection time.
+ 
+ @param mrt     maximumReconnectTimeInterval, The maximum time in seconds to wait prior
+ to attempting to reconnect
+ 
+ @param rlp     The run loop to execute the MQTT client in
+ 
+ @param rlm     The run loop mode to use when executing the MQTT client
+ 
+ @param ars     autoResubscribe, Boolean flag to indicate whether auto-resubscribe
+ feature is enabled
+ 
+ @param lwt     lastWillAndTestament, The last will and testament (LWT) to be used
+ when connecting to AWS IoT
+ 
+ @param prt     publishRetryThrottle, the max number of publish messages to retry per second
+ if the pub-ack is not received within 60 seconds
+ */
+- (instancetype)initWithKeepAliveTimeInterval:(NSTimeInterval)kat
+                    baseReconnectTimeInterval:(NSTimeInterval)brt
+                minimumConnectionTimeInterval:(NSTimeInterval)mct
+                 maximumReconnectTimeInterval:(NSTimeInterval)mrt
+                                      runLoop:(NSRunLoop*)rlp
+                                  runLoopMode:(NSString*)rlm
+                              autoResubscribe:(BOOL)ars
+                         lastWillAndTestament:(AWSIoTMQTTLastWillAndTestament*)lwt
+                         publishRetryThrottle:(NSUInteger)prt;
 @end
 
 #pragma mark - AWSIoTDataManager
@@ -127,7 +202,7 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
  methods.
  
  */
-@property (nonatomic, strong) AWSIoTMQTTConfiguration *mqttConfiguration;
+@property (nonatomic, strong, readonly) AWSIoTMQTTConfiguration *mqttConfiguration;
 
 /**
  Returns the singleton service client. If the singleton object does not exist, the SDK instantiates the default service client with `defaultServiceConfiguration` from `[AWSServiceManager defaultServiceManager]`. The reference to this object is maintained by the SDK, and you do not need to retain it manually.
@@ -136,10 +211,10 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
          let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
          let configuration = AWSServiceConfiguration(region: .USEast1, credentialsProvider: credentialProvider)
-         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration
+         AWSServiceManager.default().defaultServiceConfiguration = configuration
 
          return true
      }
@@ -160,7 +235,7 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 
  *Swift*
 
-     let IoTDataManager = AWSIoTDataManager.defaultIoTDataManager()
+     let IoTDataManager = AWSIoTDataManager.default()
 
  *Objective-C*
 
@@ -168,7 +243,7 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 
  @return The default service client.
  */
-+ (instancetype)defaultIoTDataManager;
++ (instancetype)defaultIoTDataManager __attribute__ ((deprecated("Use `registerIoTDataManagerWithConfiguration:forKey:` with the custom endpoint to initialize AWSIoTDataManager")));
 
 /**
  Creates a service client with the given service configuration and registers it for the key.
@@ -177,10 +252,10 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
          let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
          let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
-         AWSIoTDataManager.registerIoTDataManagerWithConfiguration(configuration, forKey: "USWest2IoTDataManager")
+         AWSIoTDataManager.register(with: configuration!, forKey: "USWest2IoTDataManager")
 
          return true
      }
@@ -215,6 +290,73 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
  */
 + (void)registerIoTDataManagerWithConfiguration:(AWSServiceConfiguration *)configuration forKey:(NSString *)key;
 
+
+
+/**
+ Creates a service client with the given service configuration and
+ AWSIoTMQTTConfiguration and registers it for the key.
+
+ For example:
+
+ *Swift*
+
+ let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
+ let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
+ let mqttConfig = AWSIoTMQTTConfiguration(keepAliveTimeInterval: 60.0,
+                                      baseReconnectTimeInterval: 1.0,
+                                  minimumConnectionTimeInterval: 20.0,
+                                   maximumReconnectTimeInterval: 128.0,
+                                                        runLoop: RunLoop.current,
+                                                    runLoopMode: RunLoopMode.defaultRunLoopMode.rawValue,
+                                                autoResubscribe: true,
+                                           lastWillAndTestament: AWSIoTMQTTLastWillAndTestament() )
+
+ AWSIoTDataManager.register(with: configuration!, with: mqttConfig!, forKey: "USWest2IoTDataManager")
+
+
+ *Objective-C*
+
+ AWSCognitoCredentialsProvider *credentialsProvider =
+    [ [AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
+                                                identityPoolId:@"YourIdentityPoolId"];
+ AWSServiceConfiguration *configuration =
+    [ [AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSWest2
+                                 credentialsProvider:credentialsProvider];
+ AWSIoTMQTTConfiguration *mqttConfig =
+    [ [AWSIoTMQTTConfiguration alloc] initWithKeepAliveTimeInterval:60.0
+                                          baseReconnectTimeInterval:1.0
+                                      minimumConnectionTimeInterval:20.0
+                                       maximumReconnectTimeInterval:128.0
+                                                            runLoop:[NSRunLoop currentRunLoop]
+                                                        runLoopMode:NSDefaultRunLoopMode
+                                                    autoResubscribe:YES
+                                               lastWillAndTestament:[AWSIoTMQTTLastWillAndTestament new] ];
+
+ [AWSIoTDataManager registerIoTDataManagerWithConfiguration:configuration
+                                      withMQTTConfiguration:mqttConfig
+                                                     forKey:@"USWest2IoTDataManager"];
+
+ Then call the following to get the service client:
+
+ *Swift*
+
+ let IoTDataManager = AWSIoTDataManager(forKey: "USWest2IoTDataManager")
+
+ *Objective-C*
+
+ AWSIoTDataManager *IoTDataManager = [AWSIoTDataManager IoTDataManagerForKey:@"USWest2IoTDataManager"];
+
+ @warning After calling this method, do not modify the configuration object. It may cause unspecified behaviors.
+
+ @param configuration A service configuration object.
+ @param mqttConfig    A AWSIoTMQTTConfiguration object.
+ @param key           A string to identify the service client.
+ */
++ (void)registerIoTDataManagerWithConfiguration:(AWSServiceConfiguration *)configuration
+                          withMQTTConfiguration:(AWSIoTMQTTConfiguration *)mqttConfig
+                                         forKey:(NSString *)key;
+
+
 /**
  Retrieves the service client associated with the key. You need to call `+ registerIoTDataManagerWithConfiguration:forKey:` before invoking this method.
 
@@ -222,10 +364,10 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 
  *Swift*
 
-     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
          let credentialProvider = AWSCognitoCredentialsProvider(regionType: .USEast1, identityPoolId: "YourIdentityPoolId")
          let configuration = AWSServiceConfiguration(region: .USWest2, credentialsProvider: credentialProvider)
-         AWSIoTDataManager.registerIoTDataManagerWithConfiguration(configuration, forKey: "USWest2IoTDataManager")
+         AWSIoTDataManager.register(with: configuration!, forKey: "USWest2IoTDataManager")
 
          return true
      }
@@ -269,6 +411,34 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 + (void)removeIoTDataManagerForKey:(NSString *)key;
 
 /**
+ Enable or disable sending SDK name and version in the Mqtt Connect message. Enabled by default.
+ Must be called before calling connect.
+ */
+- (void)enableMetricsCollection:(BOOL)enabled;
+
+/**
+ @deprecated This method is deprecated and will be deleted in the next minor version. Please use `updateUserMetaData` instead.
+ Set user-specified dictionary of the additional values to be passed as components of
+ connection username.
+ *Swift*
+ let userMetaData: [String: String] = ["AFRSDK": "ios", "AFRSDKVersion": "1.0.0", "AFRLibVersion":"1.4.1"]
+ iotDataManager.addUserMetaData(userMetaData)
+ @param userMetaData A dictionary of key-value metadata pairs to be appended to the connection username
+ */
+- (void)addUserMetaData:(NSDictionary<NSString *, NSString *> *)userMetaData
+DEPRECATED_MSG_ATTRIBUTE("Use `updateUserMetaData` for updating the user meta data");
+
+/**
+ Set user-specified dictionary of the additional values to be passed as components of
+ connection username.
+ *Swift*
+ let userMetaData: [String: String] = ["AFRSDK": "ios", "AFRSDKVersion": "1.0.0", "AFRLibVersion":"1.4.1"]
+ iotDataManager.addUserMetaData(userMetaData)
+ @param userMetaData A dictionary of key-value metadata pairs to be appended to the connection username
+ */
+- (void)updateUserMetaData:(NSDictionary<NSString *, NSString *> *)userMetaData;
+
+/**
  Initialises the MQTT session and connects to AWS IoT using certificate-based mutual authentication
 
  @return true if initialise finished with success
@@ -279,7 +449,7 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 
  @param certificateId contains the ID of the certificate to use in the connection; must be in the keychain
  
- @param block Reference. When new mqtt session status is received the function of block will be called with new connection status.
+ @param callback When new mqtt session status is received callback will be called with new connection status.
 
  */
 - (BOOL)connectWithClientId:(NSString *)clientId
@@ -288,7 +458,28 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
              statusCallback:(void (^)(AWSIoTMQTTStatus status))callback;
 
 /**
- Initialises the MQTT session and connects to AWS IoT using WebSocket/SigV4 authentication.  IAM
+ Initialises the MQTT session and connects to AWS IoT on port 443 using certificate-based mutual authentication
+ and ALPN (Application Layer Protocol Negotiation)
+ 
+ @return true if initialise finished with success
+ 
+ @param clientId The Client Identifier identifies the Client to the Server.
+ 
+ @param cleanSession specifies if the server should discard previous session information.
+ 
+ @param certificateId contains the ID of the certificate to use in the connection; must be in the keychain
+ 
+ @param callback When new mqtt session status is received callback will be called with new connection status.
+ 
+ */
+- (BOOL)connectUsingALPNWithClientId:(NSString *)clientId
+               cleanSession:(BOOL)cleanSession
+              certificateId:(NSString *)certificateId
+             statusCallback:(void (^)(AWSIoTMQTTStatus status))callback
+             API_AVAILABLE(ios(11), macosx(10.13));
+
+/**
+ Initialises the MQTT session and connects to AWS IoT using WebSocket/SigV4 authentication. IAM
  credentials are taken from the current service configuration.
  
  @return true if initialise finished with success
@@ -297,12 +488,40 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
  
  @param cleanSession specifies if the server should discard previous session information.
  
- @param block Reference. When new mqtt session status is received the function of block will be called with new connection status.
+ @param callback When new mqtt session status is received the callback will be called with new connection status.
  
  */
 - (BOOL)connectUsingWebSocketWithClientId:(NSString *)clientId
                             cleanSession:(BOOL)cleanSession
                           statusCallback:(void (^)(AWSIoTMQTTStatus status))callback;
+    
+/**
+ Initialises the MQTT session and connects to AWS IoT using WebSocket/CustomAuthorizer mechanism.
+ 
+ @param clientId The Client Identifier identifies the Client to the Server.
+ 
+ @param cleanSession specifies if the server should discard previous session information.
+ 
+ @param customAuthorizerName Name of the AWS IoT custom authorizer.
+ 
+ @param tokenKeyName This specifies the key name that your device chooses, which indicates the token in the
+ custom authorization HTTP request header.
+ 
+ @param tokenValue This specifies the custom authorization token to authorize the request to the AWS IoT gateway.
+ 
+ @param tokenSignature This specifies the token signature for the custom authorizer to validate the tokenValue.
+ 
+ @param callback When new mqtt session status is received the callback will be called with new connection status.
+ 
+ @return true if initialise finished with success.
+ */
+- (BOOL)connectUsingWebSocketWithClientId:(NSString *)clientId
+                             cleanSession:(BOOL)cleanSession
+                     customAuthorizerName:(NSString *)customAuthorizerName
+                             tokenKeyName:(NSString *)tokenKeyName
+                               tokenValue:(NSString *)tokenValue
+                           tokenSignature:(NSString *)tokenSignature
+                           statusCallback:(void (^)(AWSIoTMQTTStatus status))callback;
 
 /**
  Disconnect from a mqtt client (close current mqtt session)
@@ -310,16 +529,16 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
  */
 - (void)disconnect;
 
-- (void)publishString:(NSString *)str
-              onTopic:(NSString *)topic __attribute__((deprecated("Use publishString:onTopic:QoS:")));
+/**
+ Get the current connection status
+ @return AWSIoTMQTTStatus
+ */
+- (AWSIoTMQTTStatus)getConnectionStatus;
 
-- (void)publishString:(NSString *)str
-                  qos:(UInt8)qos
-              onTopic:(NSString *)topic __attribute__((deprecated("Use publishString:onTopic:QoS:")));
 /**
  Send MQTT message to specified topic
 
- @param message The message (As NSString object) to be sent.
+ @param string The message (As NSString object) to be sent.
 
  @param qos The QoS value to use when publishing (optional, default AWSIoTMQTTQoSAtMostOnce).
 
@@ -332,19 +551,32 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
                onTopic:(NSString *)topic
                    QoS:(AWSIoTMQTTQoS)qos;
 
-- (void)publishData:(NSData *)data
-            onTopic:(NSString *)topic __attribute__((deprecated("Use publishData:onTopic:QoS:")));
+/**
+ Send MQTT message to specified topic
+ 
+ @param string The message (As NSString object) to be sent.
+ 
+ @param qos The QoS value to use when publishing (optional, default AWSIoTMQTTQoSAtMostOnce).
+ 
+ @param topic The topic for publish to.
+ 
+ @param ackCallback the callback for ack if QoS > 0.
+ 
+ @return Boolean value indicating success or failure.
+ 
+ */
+- (BOOL) publishString:(NSString *)string
+               onTopic:(NSString *)topic
+                   QoS:(AWSIoTMQTTQoS)qos
+           ackCallback:(AWSIoTMQTTAckBlock)ackCallback;
 
-- (void)publishData:(NSData *)data
-                qos:(UInt8)qos
-            onTopic:(NSString *)topic __attribute__((deprecated("Use publishData:onTopic:QoS:")));
 /**
  Send MQTT message to specified topic
 
- @param message The message (As NSData) to be sent.
+ @param data The message (As NSData) to be sent.
 
  @param qos The QoS value to use when publishing (optional, default AWSIoTMQTTQoSAtMostOnce).
- 
+
  @param topic The topic for publish to.
 
  @return Boolean value indicating success or failure.
@@ -354,9 +586,25 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
              onTopic:(NSString *)topic
                  QoS:(AWSIoTMQTTQoS)qos;
 
-- (void)subscribeToTopic:(NSString *)topic
-                     qos:(UInt8)qos
-         messageCallback:(AWSIoTMQTTNewMessageBlock)callback __attribute__((deprecated("Use subscribeToTopic:QoS:messageCallback:")));
+/**
+ Send MQTT message to specified topic
+ 
+ @param data The message (As NSData) to be sent.
+ 
+ @param qos The QoS value to use when publishing (optional, default AWSIoTMQTTQoSAtMostOnce).
+ 
+ @param topic The topic for publish to.
+ 
+ @param ackCallback the callback for ack if QoS > 0.
+ 
+ @return Boolean value indicating success or failure.
+ 
+ */
+- (BOOL) publishData:(NSData *)data
+             onTopic:(NSString *)topic
+                 QoS:(AWSIoTMQTTQoS)qos
+         ackCallback:(AWSIoTMQTTAckBlock)ackCallback;
+
 /**
  Subscribes to a topic at a specific QoS level
 
@@ -364,7 +612,7 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 
  @param qos Specifies the QoS Level of the subscription: AWSIoTMQTTQoSAtMostOnce or AWSIoTMQTTQoSAtLeastOnce
 
- @param block Reference to AWSIOTMQTTNewMessageBlock. When new message is received the block will be invoked.
+ @param callback Reference to AWSIOTMQTTNewMessageBlock. When new message is received the callback will be invoked.
  
  @return Boolean value indicating success or failure.
 
@@ -380,7 +628,24 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
  
  @param qos Specifies the QoS Level of the subscription: AWSIoTMQTTQoSAtMostOnce or AWSIoTMQTTQoSAtLeastOnce
  
- @param block Reference to AWSIOTMQTTExtendedNewMessageBlock. When new message is received the block will be invoked.
+ @param callback Reference to AWSIOTMQTTNewMessageBlock. When new message is received the callback will be invoked.
+ 
+ @return Boolean value indicating success or failure.
+ 
+ */
+- (BOOL) subscribeToTopic:(NSString *)topic
+                      QoS:(AWSIoTMQTTQoS)qos
+          messageCallback:(AWSIoTMQTTNewMessageBlock)callback
+              ackCallback:(AWSIoTMQTTAckBlock)ackCallback;
+
+/**
+ Subscribes to a topic at a specific QoS level
+ 
+ @param topic The Topic to subscribe to.
+ 
+ @param qos Specifies the QoS Level of the subscription: AWSIoTMQTTQoSAtMostOnce or AWSIoTMQTTQoSAtLeastOnce
+ 
+ @param callback Reference to AWSIOTMQTTExtendedNewMessageBlock. When new message is received the callback will be invoked.
  
  @return Boolean value indicating success or failure.
  
@@ -388,6 +653,25 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 - (BOOL) subscribeToTopic:(NSString *)topic
                       QoS:(AWSIoTMQTTQoS)qos
           extendedCallback:(AWSIoTMQTTExtendedNewMessageBlock)callback;
+
+/**
+ Subscribes to a topic at a specific QoS level
+ 
+ @param topic The Topic to subscribe to.
+ 
+ @param qos Specifies the QoS Level of the subscription: AWSIoTMQTTQoSAtMostOnce or AWSIoTMQTTQoSAtLeastOnce
+ 
+ @param callback Reference to AWSIOTMQTTExtendedNewMessageBlock. When new message is received the callback will be invoked.
+ 
+ @param ackCallback the callback for ack if QoS > 0.
+ 
+ @return Boolean value indicating success or failure.
+ 
+ */
+- (BOOL) subscribeToTopic:(NSString *)topic
+                      QoS:(AWSIoTMQTTQoS)qos
+         extendedCallback:(AWSIoTMQTTExtendedNewMessageBlock)callback
+              ackCallback:(AWSIoTMQTTAckBlock)ackCallback;
 
 
 /**
@@ -402,6 +686,7 @@ typedef void(^AWSIoTMQTTExtendedNewMessageBlock)(NSObject *mqttClient, NSString 
 typedef NS_ENUM(NSInteger, AWSIoTShadowOperationType) {
     //
     // NOTE: the first 4 values in this enum may not be re-ordered.
+    // It must align with the same order in AWSIoTShadowOperationTypeStrings
     // An internal array in the implementation depends on their
     // values and order.
     //
@@ -414,31 +699,19 @@ typedef NS_ENUM(NSInteger, AWSIoTShadowOperationType) {
 
 typedef NS_ENUM(NSInteger, AWSIoTShadowOperationStatusType) {
     //
-    // NOTE: the first 4 values in this enum may not be re-ordered.
+    // NOTE: the first 5 values in this enum may not be re-ordered.
+    // It must align with the same order in AWSIoTShadowOperationStatusTypeStrings
     // An internal array in the implementation depends on their
     // values and order.
     //
     AWSIoTShadowOperationStatusTypeAccepted,
     AWSIoTShadowOperationStatusTypeRejected,
     AWSIoTShadowOperationStatusTypeDelta,
+    AWSIoTShadowOperationStatusTypeDocuments,
     AWSIoTShadowOperationStatusTypeCount, // Internal class use only
     AWSIoTShadowOperationStatusTypeForeignUpdate,
     AWSIoTShadowOperationStatusTypeTimeout
 };
-
-/**
- Register for updates on a device shadow
- 
- @param name The device shadow to register for updates on.
- 
- @param eventCallback The function to call when updates are received for the device shadow.
- 
- @return Boolean value indicating success or failure.
- 
- */
-
-- (BOOL) registerWithShadow:(NSString *)name
-              eventCallback:(void(^)(NSString *name, AWSIoTShadowOperationType operation, AWSIoTShadowOperationStatusType status, NSString *clientToken, NSData *payload))callback;
 
 /**
  Register for updates on a device shadow
@@ -455,14 +728,14 @@ enableIgnoreDeltas: BOOL, set to YES to disable delta updates (default NO)
 QoS: AWSIoTMQTTQoS (default AWSIoTMQTTQoSMessageDeliveryAttemptedAtMostOnce)
 shadowOperationTimeoutSeconds: double, device shadow operation timeout (default 10.0)
  
- @param eventCallback The function to call when updates are received for the device shadow.
+ @param callback The function to call when updates are received for the device shadow.
  
  @return Boolean value indicating success or failure.
  
  */
 
 - (BOOL) registerWithShadow:(NSString *)name
-                    options:(NSDictionary *)options
+                    options:(NSDictionary<NSString *, NSNumber *> * _Nullable)options
               eventCallback:(void(^)(NSString *name, AWSIoTShadowOperationType operation, AWSIoTShadowOperationStatusType status, NSString *clientToken, NSData *payload))callback;
 
 
@@ -490,20 +763,25 @@ shadowOperationTimeoutSeconds: double, device shadow operation timeout (default 
            jsonString:(NSString *)jsonString;
 
 /**
- Update a device shadow
- 
- @param name The device shadow to update.
- 
- @param jsonString The JSON string to update the device shadow with.
- 
- @param clientToken A client token value to use when updating the device shadow.
+ Update a device shadow with json data and client token.
+ If the json data is not valid, it returns false, and no update message
+ will be published. If the json data is valid, it publishes the data on
+ $aws/things/thingName/shadow/update topic, then return true.
 
- @return Boolean value indicating success or failure.
- 
+ @param name The name of the device shadow to be updated
+
+ @param jsonString The shadow state in format of JSON string
+
+ @param clientToken The client id to use when upadating the shadow
+
+ @return True if json string is valid and can be serialized successfully;
+ False if it cannot be serialized successfully.
+
  */
+
 - (BOOL) updateShadow:(NSString *)name
            jsonString:(NSString *)jsonString
-          clientToken:(NSString *)clientToken;
+          clientToken:(NSString  * _Nullable)clientToken;
 
 /**
  Get a device shadow
@@ -526,7 +804,7 @@ shadowOperationTimeoutSeconds: double, device shadow operation timeout (default 
 
  */
 - (BOOL) getShadow:(NSString *)name
-       clientToken:(NSString *)clientToken;
+       clientToken:(NSString * _Nullable)clientToken;
 
 /**
  Delete a device shadow
@@ -549,7 +827,9 @@ shadowOperationTimeoutSeconds: double, device shadow operation timeout (default 
  
  */
 - (BOOL) deleteShadow:(NSString *)name
-          clientToken:(NSString *)clientToken;
+          clientToken:(NSString * _Nullable)clientToken;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

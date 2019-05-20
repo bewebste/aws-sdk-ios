@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //
 
 #import "AmazonInsightsSDKTests.h"
-#import <objc/objc-class.h>
+#import <objc/objc.h>
 #import "AWSMockFileManager.h"
 #define methodSwizzle(class, original, swizzle) (method_exchangeImplementations(\
 class_getInstanceMethod(class, original), class_getInstanceMethod(class, swizzle)))

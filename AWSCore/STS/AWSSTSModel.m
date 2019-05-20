@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -25,11 +25,16 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
              @"durationSeconds" : @"DurationSeconds",
              @"externalId" : @"ExternalId",
              @"policy" : @"Policy",
+             @"policyArns" : @"PolicyArns",
              @"roleArn" : @"RoleArn",
              @"roleSessionName" : @"RoleSessionName",
              @"serialNumber" : @"SerialNumber",
              @"tokenCode" : @"TokenCode",
              };
+}
+
++ (NSValueTransformer *)policyArnsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSPolicyDescriptorType class]];
 }
 
 @end
@@ -45,11 +50,11 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 }
 
 + (NSValueTransformer *)assumedRoleUserJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSAssumedRoleUser class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSAssumedRoleUser class]];
 }
 
 + (NSValueTransformer *)credentialsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
 }
 
 @end
@@ -60,10 +65,15 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 	return @{
              @"durationSeconds" : @"DurationSeconds",
              @"policy" : @"Policy",
+             @"policyArns" : @"PolicyArns",
              @"principalArn" : @"PrincipalArn",
              @"roleArn" : @"RoleArn",
              @"SAMLAssertion" : @"SAMLAssertion",
              };
+}
+
++ (NSValueTransformer *)policyArnsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSPolicyDescriptorType class]];
 }
 
 @end
@@ -84,11 +94,11 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 }
 
 + (NSValueTransformer *)assumedRoleUserJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSAssumedRoleUser class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSAssumedRoleUser class]];
 }
 
 + (NSValueTransformer *)credentialsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
 }
 
 @end
@@ -99,11 +109,16 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 	return @{
              @"durationSeconds" : @"DurationSeconds",
              @"policy" : @"Policy",
+             @"policyArns" : @"PolicyArns",
              @"providerId" : @"ProviderId",
              @"roleArn" : @"RoleArn",
              @"roleSessionName" : @"RoleSessionName",
              @"webIdentityToken" : @"WebIdentityToken",
              };
+}
+
++ (NSValueTransformer *)policyArnsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSPolicyDescriptorType class]];
 }
 
 @end
@@ -122,11 +137,11 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 }
 
 + (NSValueTransformer *)assumedRoleUserJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSAssumedRoleUser class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSAssumedRoleUser class]];
 }
 
 + (NSValueTransformer *)credentialsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
 }
 
 @end
@@ -154,10 +169,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 }
 
 + (NSValueTransformer *)expirationJSONTransformer {
-	return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
         return [NSDate aws_dateFromString:str];
     } reverseBlock:^id(NSDate *date) {
-        return [date aws_stringValue:AWSDateISO8601DateFormat1];
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
     }];
 }
 
@@ -217,7 +232,12 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
              @"durationSeconds" : @"DurationSeconds",
              @"name" : @"Name",
              @"policy" : @"Policy",
+             @"policyArns" : @"PolicyArns",
              };
+}
+
++ (NSValueTransformer *)policyArnsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSPolicyDescriptorType class]];
 }
 
 @end
@@ -233,11 +253,11 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 }
 
 + (NSValueTransformer *)credentialsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
 }
 
 + (NSValueTransformer *)federatedUserJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSFederatedUser class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSFederatedUser class]];
 }
 
 @end
@@ -263,7 +283,17 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 }
 
 + (NSValueTransformer *)credentialsJSONTransformer {
-	return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSSTSCredentials class]];
+}
+
+@end
+
+@implementation AWSSTSPolicyDescriptorType
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"arn" : @"arn",
+             };
 }
 
 @end

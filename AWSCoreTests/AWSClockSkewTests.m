@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -24,6 +24,11 @@
 @implementation AWSClockSkewTests
 
 static NSString *AWSClockSkewTestsSTSKey = @"AWSClockSkewTestsSTSKey";
+
++ (void)setUp {
+    [super setUp];
+    [AWSTestUtility setupCognitoIdentityService];
+}
 
 - (void)setUp {
     [super setUp];
@@ -144,7 +149,7 @@ static NSString *AWSClockSkewTestsSTSKey = @"AWSClockSkewTestsSTSKey";
     XCTAssertFalse([NSDate aws_getRuntimeClockSkew], @"current RunTimeClockSkew is not zero!");
     [AWSTestUtility setMockDate:[NSDate dateWithTimeIntervalSince1970:3600]];
 
-    AWSCognitoIdentity *cib = [AWSCognitoIdentity defaultCognitoIdentity];
+    AWSCognitoIdentity *cib = [AWSCognitoIdentity CognitoIdentityForKey:AWSTestUtilityCognitoIdentityServiceKey];
     XCTAssertNotNil(cib);
 
     AWSCognitoIdentityListIdentityPoolsInput *listPools = [AWSCognitoIdentityListIdentityPoolsInput new];
