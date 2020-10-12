@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -232,6 +232,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"launchConfigurationName" : @"LaunchConfigurationName",
              @"launchTemplate" : @"LaunchTemplate",
              @"loadBalancerNames" : @"LoadBalancerNames",
+             @"maxInstanceLifetime" : @"MaxInstanceLifetime",
              @"maxSize" : @"MaxSize",
              @"minSize" : @"MinSize",
              @"mixedInstancesPolicy" : @"MixedInstancesPolicy",
@@ -316,10 +317,12 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"availabilityZone" : @"AvailabilityZone",
              @"healthStatus" : @"HealthStatus",
              @"instanceId" : @"InstanceId",
+             @"instanceType" : @"InstanceType",
              @"launchConfigurationName" : @"LaunchConfigurationName",
              @"launchTemplate" : @"LaunchTemplate",
              @"lifecycleState" : @"LifecycleState",
              @"protectedFromScaleIn" : @"ProtectedFromScaleIn",
+             @"weightedCapacity" : @"WeightedCapacity",
              };
 }
 
@@ -415,6 +418,26 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @end
 
+@implementation AWSAutoScalingCancelInstanceRefreshAnswer
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"instanceRefreshId" : @"InstanceRefreshId",
+             };
+}
+
+@end
+
+@implementation AWSAutoScalingCancelInstanceRefreshType
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"autoScalingGroupName" : @"AutoScalingGroupName",
+             };
+}
+
+@end
+
 @implementation AWSAutoScalingCompleteLifecycleActionAnswer
 
 @end
@@ -448,6 +471,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"launchTemplate" : @"LaunchTemplate",
              @"lifecycleHookSpecificationList" : @"LifecycleHookSpecificationList",
              @"loadBalancerNames" : @"LoadBalancerNames",
+             @"maxInstanceLifetime" : @"MaxInstanceLifetime",
              @"maxSize" : @"MaxSize",
              @"minSize" : @"MinSize",
              @"mixedInstancesPolicy" : @"MixedInstancesPolicy",
@@ -496,6 +520,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"kernelId" : @"KernelId",
              @"keyName" : @"KeyName",
              @"launchConfigurationName" : @"LaunchConfigurationName",
+             @"metadataOptions" : @"MetadataOptions",
              @"placementTenancy" : @"PlacementTenancy",
              @"ramdiskId" : @"RamdiskId",
              @"securityGroups" : @"SecurityGroups",
@@ -510,6 +535,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 + (NSValueTransformer *)instanceMonitoringJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMonitoring class]];
+}
+
++ (NSValueTransformer *)metadataOptionsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMetadataOptions class]];
 }
 
 @end
@@ -699,6 +728,34 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"autoScalingNotificationTypes" : @"AutoScalingNotificationTypes",
+             };
+}
+
+@end
+
+@implementation AWSAutoScalingDescribeInstanceRefreshesAnswer
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"instanceRefreshes" : @"InstanceRefreshes",
+             @"nextToken" : @"NextToken",
+             };
+}
+
++ (NSValueTransformer *)instanceRefreshesJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSAutoScalingInstanceRefresh class]];
+}
+
+@end
+
+@implementation AWSAutoScalingDescribeInstanceRefreshesType
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"autoScalingGroupName" : @"AutoScalingGroupName",
+             @"instanceRefreshIds" : @"InstanceRefreshIds",
+             @"maxRecords" : @"MaxRecords",
+             @"nextToken" : @"NextToken",
              };
 }
 
@@ -1123,10 +1180,12 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"availabilityZone" : @"AvailabilityZone",
              @"healthStatus" : @"HealthStatus",
              @"instanceId" : @"InstanceId",
+             @"instanceType" : @"InstanceType",
              @"launchConfigurationName" : @"LaunchConfigurationName",
              @"launchTemplate" : @"LaunchTemplate",
              @"lifecycleState" : @"LifecycleState",
              @"protectedFromScaleIn" : @"ProtectedFromScaleIn",
+             @"weightedCapacity" : @"WeightedCapacity",
              };
 }
 
@@ -1212,12 +1271,140 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @end
 
+@implementation AWSAutoScalingInstanceMetadataOptions
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"httpEndpoint" : @"HttpEndpoint",
+             @"httpPutResponseHopLimit" : @"HttpPutResponseHopLimit",
+             @"httpTokens" : @"HttpTokens",
+             };
+}
+
++ (NSValueTransformer *)httpEndpointJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"disabled"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceMetadataEndpointStateDisabled);
+        }
+        if ([value caseInsensitiveCompare:@"enabled"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceMetadataEndpointStateEnabled);
+        }
+        return @(AWSAutoScalingInstanceMetadataEndpointStateUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSAutoScalingInstanceMetadataEndpointStateDisabled:
+                return @"disabled";
+            case AWSAutoScalingInstanceMetadataEndpointStateEnabled:
+                return @"enabled";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)httpTokensJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"optional"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceMetadataHttpTokensStateOptional);
+        }
+        if ([value caseInsensitiveCompare:@"required"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceMetadataHttpTokensStateRequired);
+        }
+        return @(AWSAutoScalingInstanceMetadataHttpTokensStateUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSAutoScalingInstanceMetadataHttpTokensStateOptional:
+                return @"optional";
+            case AWSAutoScalingInstanceMetadataHttpTokensStateRequired:
+                return @"required";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
 @implementation AWSAutoScalingInstanceMonitoring
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"enabled" : @"Enabled",
              };
+}
+
+@end
+
+@implementation AWSAutoScalingInstanceRefresh
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"autoScalingGroupName" : @"AutoScalingGroupName",
+             @"endTime" : @"EndTime",
+             @"instanceRefreshId" : @"InstanceRefreshId",
+             @"instancesToUpdate" : @"InstancesToUpdate",
+             @"percentageComplete" : @"PercentageComplete",
+             @"startTime" : @"StartTime",
+             @"status" : @"Status",
+             @"statusReason" : @"StatusReason",
+             };
+}
+
++ (NSValueTransformer *)endTimeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+        return [NSDate aws_dateFromString:str];
+    } reverseBlock:^id(NSDate *date) {
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
+    }];
+}
+
++ (NSValueTransformer *)startTimeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSString *str) {
+        return [NSDate aws_dateFromString:str];
+    } reverseBlock:^id(NSDate *date) {
+return [date aws_stringValue:AWSDateISO8601DateFormat1];
+    }];
+}
+
++ (NSValueTransformer *)statusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"Pending"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceRefreshStatusPending);
+        }
+        if ([value caseInsensitiveCompare:@"InProgress"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceRefreshStatusInProgress);
+        }
+        if ([value caseInsensitiveCompare:@"Successful"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceRefreshStatusSuccessful);
+        }
+        if ([value caseInsensitiveCompare:@"Failed"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceRefreshStatusFailed);
+        }
+        if ([value caseInsensitiveCompare:@"Cancelling"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceRefreshStatusCancelling);
+        }
+        if ([value caseInsensitiveCompare:@"Cancelled"] == NSOrderedSame) {
+            return @(AWSAutoScalingInstanceRefreshStatusCancelled);
+        }
+        return @(AWSAutoScalingInstanceRefreshStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSAutoScalingInstanceRefreshStatusPending:
+                return @"Pending";
+            case AWSAutoScalingInstanceRefreshStatusInProgress:
+                return @"InProgress";
+            case AWSAutoScalingInstanceRefreshStatusSuccessful:
+                return @"Successful";
+            case AWSAutoScalingInstanceRefreshStatusFailed:
+                return @"Failed";
+            case AWSAutoScalingInstanceRefreshStatusCancelling:
+                return @"Cancelling";
+            case AWSAutoScalingInstanceRefreshStatusCancelled:
+                return @"Cancelled";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end
@@ -1255,6 +1442,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"keyName" : @"KeyName",
              @"launchConfigurationARN" : @"LaunchConfigurationARN",
              @"launchConfigurationName" : @"LaunchConfigurationName",
+             @"metadataOptions" : @"MetadataOptions",
              @"placementTenancy" : @"PlacementTenancy",
              @"ramdiskId" : @"RamdiskId",
              @"securityGroups" : @"SecurityGroups",
@@ -1277,6 +1465,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 + (NSValueTransformer *)instanceMonitoringJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMonitoring class]];
+}
+
++ (NSValueTransformer *)metadataOptionsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingInstanceMetadataOptions class]];
 }
 
 @end
@@ -1342,6 +1534,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"instanceType" : @"InstanceType",
+             @"weightedCapacity" : @"WeightedCapacity",
              };
 }
 
@@ -1613,6 +1806,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"adjustmentType" : @"AdjustmentType",
              @"autoScalingGroupName" : @"AutoScalingGroupName",
              @"cooldown" : @"Cooldown",
+             @"enabled" : @"Enabled",
              @"estimatedInstanceWarmup" : @"EstimatedInstanceWarmup",
              @"metricAggregationType" : @"MetricAggregationType",
              @"minAdjustmentMagnitude" : @"MinAdjustmentMagnitude",
@@ -1694,6 +1888,17 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @end
 
+@implementation AWSAutoScalingRefreshPreferences
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"instanceWarmup" : @"InstanceWarmup",
+             @"minHealthyPercentage" : @"MinHealthyPercentage",
+             };
+}
+
+@end
+
 @implementation AWSAutoScalingScalingPolicy
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -1702,6 +1907,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"alarms" : @"Alarms",
              @"autoScalingGroupName" : @"AutoScalingGroupName",
              @"cooldown" : @"Cooldown",
+             @"enabled" : @"Enabled",
              @"estimatedInstanceWarmup" : @"EstimatedInstanceWarmup",
              @"metricAggregationType" : @"MetricAggregationType",
              @"minAdjustmentMagnitude" : @"MinAdjustmentMagnitude",
@@ -1870,6 +2076,48 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @end
 
+@implementation AWSAutoScalingStartInstanceRefreshAnswer
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"instanceRefreshId" : @"InstanceRefreshId",
+             };
+}
+
+@end
+
+@implementation AWSAutoScalingStartInstanceRefreshType
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"autoScalingGroupName" : @"AutoScalingGroupName",
+             @"preferences" : @"Preferences",
+             @"strategy" : @"Strategy",
+             };
+}
+
++ (NSValueTransformer *)preferencesJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSAutoScalingRefreshPreferences class]];
+}
+
++ (NSValueTransformer *)strategyJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"Rolling"] == NSOrderedSame) {
+            return @(AWSAutoScalingRefreshStrategyRolling);
+        }
+        return @(AWSAutoScalingRefreshStrategyUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSAutoScalingRefreshStrategyRolling:
+                return @"Rolling";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
 @implementation AWSAutoScalingStepAdjustment
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -1980,6 +2228,7 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"healthCheckType" : @"HealthCheckType",
              @"launchConfigurationName" : @"LaunchConfigurationName",
              @"launchTemplate" : @"LaunchTemplate",
+             @"maxInstanceLifetime" : @"MaxInstanceLifetime",
              @"maxSize" : @"MaxSize",
              @"minSize" : @"MinSize",
              @"mixedInstancesPolicy" : @"MixedInstancesPolicy",

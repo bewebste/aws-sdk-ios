@@ -1,9 +1,10 @@
 # AWS SDK for iOS
 
 [![Release](https://img.shields.io/github/release/aws/aws-sdk-ios.svg)](../../releases)
-[![CocoaPods](https://img.shields.io/cocoapods/v/AWSiOSSDKv2.svg)](https://cocoapods.org/pods/AWSiOSSDKv2)
+[![CocoaPods](https://img.shields.io/cocoapods/v/AWSCore.svg)](https://cocoapods.org/pods/AWSCore)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![CircleCI](https://circleci.com/gh/aws-amplify/aws-sdk-ios.svg?style=svg)](https://circleci.com/gh/aws-amplify/aws-sdk-ios)
+[![Discord](https://img.shields.io/discord/308323056592486420?logo=discord)](https://discord.gg/jWVbPfC) 
 
 The AWS SDK for iOS provides a library and documentation for developers to build connected mobile applications using AWS.
 
@@ -29,18 +30,20 @@ To get started with the AWS SDK for iOS, check out the [Developer Guide for iOS]
 
 To use the AWS SDK for iOS, you will need the following installed on your development machine:
 
-* Xcode 9.2 or later
-* iOS 8 or later
+* Xcode 11.0 or later
+* Most SDKs require iOS 8 or later. AWSCognitoAuth, AWSMobileClient, and AWSTranscribeStreaming require iOS 9.
 
 ## Include the SDK for iOS in an Existing Application
 
-The [samples](https://github.com/awslabs/aws-sdk-ios-samples) included with the SDK for iOS are standalone projects that are already set up for you. You can also integrate the SDK for iOS with your own existing project. There are three ways to import the AWS Mobile SDK for iOS into your project:
+We have a couple [samples](https://github.com/awslabs/aws-sdk-ios-samples) applications which showcase how to use the AWS SDK for iOS.  Please note that the code in these sample applications is not of production quality, and should be considered as exactly what we called them: samples.
+
+There are three ways to integrate the AWS Mobile SDK for iOS into your own project:
 
 * [CocoaPods](https://cocoapods.org/)
 * [Carthage](https://github.com/Carthage/Carthage)
 * [Dynamic Frameworks](https://aws.amazon.com/mobile/sdk/)
 
-You should use one of these three ways to import the AWS Mobile SDK but not multiple. Importing the SDK in multiple ways loads duplicate copies of the SDK into the project and causes compiler errors.
+You should use ONE and only one of these ways to import the AWS Mobile SDK. Importing the SDK in multiple ways loads duplicate copies of the SDK into the project and causes compiler/linker errors.
 
 ### CocoaPods
 
@@ -54,44 +57,29 @@ You should use one of these three ways to import the AWS Mobile SDK but not mult
         $ sudo gem install cocoapods
         $ pod setup
 
-2. In your project directory (the directory where your `*.xcodeproj` file is), create a plain text file named `Podfile` (without any file extension) and add the lines below. Replace `YourTarget` with your actual target name.
+2. In your project directory (the directory where your `*.xcodeproj` file is), run the following to create a `Podfile` in your project.
 
-        source 'https://github.com/CocoaPods/Specs.git'
-        
-        platform :ios, '8.0'
-        use_frameworks!
-        
-        target :'YourTarget' do
-            pod 'AWSAutoScaling'
-            pod 'AWSCloudWatch'
-            pod 'AWSCognito'
-            pod 'AWSCognitoIdentityProvider'
-            pod 'AWSDynamoDB'
-            pod 'AWSEC2'
-            pod 'AWSElasticLoadBalancing'
-            pod 'AWSIoT'
-            pod 'AWSKinesis'
-            pod 'AWSLambda'
-            pod 'AWSMachineLearning'
-            pod 'AWSMobileAnalytics'
-            pod 'AWSS3'
-            pod 'AWSSES'
-            pod 'AWSSimpleDB'
-            pod 'AWSSNS'
-            pod 'AWSSQS'
-        end
-        
-    ![image](readme-images/cocoapods-setup-01.png?raw=true)
-        
+        $ pod init
+
+3. Edit the podfile to include the pods you want to integrate into your project.  For example, if you need auth, you can use AWSMobileClient, and if you need analytics, you add AWSPinpoint.  As a result, your podfile might look something like this:
+```
+target 'YourTarget' do
+    pod 'AWSMobileClient'
+    pod 'AWSPinpoint'
+end
+```
+
+For a complete list of our pods, check out the .podspec files in the root directory of this project.
+
 3. Then run the following command:
     
-        $ pod install
+        $ pod install --repo-update
 
-4. Open up `*.xcworkspace` with Xcode and start using the SDK.
+4. To open your project, open the newly generated `*.xcworkspace` file in your project's directory with XCode.  You can do this by issuing the following command in your project folder:
 
-    ![image](readme-images/cocoapods-setup-02.png?raw=true)
+        $ xed .
 
-    **Note**: Do **NOT** use `*.xcodeproj`. If you open up a project file instead of a workspace, you receive an error:
+    **Note**: Do **NOT** use `*.xcodeproj`. If you open up a project file instead of a workspace, you may receive the following error:
 
         ld: library not found for -lPods-AWSCore
         clang: error: linker command failed with exit code 1 (use -v to see invocation)
@@ -108,28 +96,16 @@ You should use one of these three ways to import the AWS Mobile SDK but not mult
     
         $ carthage update
 
-4. With your project open in Xcode, select your **Target**. Under **General** tab, find **Embedded Binaries** and then click the **+** button.
+4. With your project open in Xcode, select your **Target**. Under **General** tab, find **Frameworks, Libraries, and Embedded Content** and then click the **+** button.
 
-5. Click the **Add Other...** button, navigate to the `AWS<#ServiceName#>.framework` files under `Carthage` > `Build` > `iOS` and select them. Do not check the **Destination: Copy items if needed** checkbox when prompted.
+5. Click the **Add Other...** button, then "Add Files..." in the popup menu, then navigate to the `AWS<#ServiceName#>.framework` files under `Carthage` > `Build` > `iOS` and select them. Do not check the **Destination: Copy items if needed** checkbox if prompted.  Add the frameworks that you need for you specific use case.  For example, if you are using AWSMobileClient and AWSPinpoint, you will want to add the following frameworks:
 
-    * `AWSCore.framework`
-    * `AWSAutoScaling.framework`
-    * `AWSCloudWatch.framework`
-    * `AWSCognito.framework`
+    * `AWSAuthCore.framework`
     * `AWSCognitoIdentityProvider.framework`
-    * `AWSDynamoDB.framework`
-    * `AWSEC2.framework`
-    * `AWSElasticLoadBalancing.framework`
-    * `AWSIoT.framework`
-    * `AWSKinesis.framework`
-    * `AWSLambda.framework`
-    * `AWSMachineLearning.framework`
-    * `AWSMobileAnalytics.framework`
-    * `AWSS3.framework`
-    * `AWSSES.framework`
-    * `AWSSimpleDB.framework`
-    * `AWSSNS.framework`
-    * `AWSSQS.framework`
+    * `AWSCognitoIdentityProviderASF.framework`
+    * `AWSCore.framework`
+    * `AWSMobileClient.framework`
+    * `AWSPinpoint.framework`
 
 6. Under the **Build Phases** tab in your **Target**, click the **+** button on the top left and then select **New Run Script Phase**. Then setup the build phase as follows. Make sure this phase is below the `Embed Frameworks` phase.
 
@@ -143,34 +119,22 @@ You should use one of these three ways to import the AWS Mobile SDK but not mult
         Input Files: Empty
         Output Files: Empty
 
-> Note: Currently, the AWS SDK for iOS builds the Carthage binaries using Xcode 10.1.0. To consume the pre-built binaries your Xcode version needs to be the same, else you have to build the frameworks on your machine by passing `--no-use-binaries` flag to `carthage update` command.
+> Note: Currently, the AWS SDK for iOS builds the Carthage binaries using the latest released version of Xcode. To consume the pre-built binaries your Xcode version needs to be the same, else you have to build the frameworks on your machine by passing `--no-use-binaries` flag to `carthage update` command.
 
 ### Frameworks
 
-1. Download the SDK from our [AWS Mobile SDK](http://aws.amazon.com/mobile/sdk) page. The SDK is stored in a compressed file archive named `aws-ios-sdk-#.#.#` (where `#.#.#` represents the version number, so for version 2.7.0, the filename is `aws-ios-sdk-2.7.0`).
+1. Download the [latest SDK](https://sdk-for-ios.amazonwebservices.com/latest/aws-ios-sdk.zip). Older SDK versions can be downloaded from `https://sdk-for-ios.amazonwebservices.com/aws-ios-sdk-#.#.#.zip`, where `#.#.#` represents the version number. So for version 2.10.2, the download link is [https://sdk-for-ios.amazonwebservices.com/aws-ios-sdk-2.10.2.zip](https://sdk-for-ios.amazonwebservices.com/aws-ios-sdk-2.10.2.zip).
 
 2. With your project open in Xcode, select your **Target**. Under **General** tab, find **Embedded Binaries** and then click the **+** button.
 
-3. Click the **Add Other...** button, navigate to the `AWS<#ServiceName#>.framework` files and select them. Check the **Destination: Copy items if needed** checkbox when prompted.
+3. Click the **Add Other...** button, navigate to the `AWS<#ServiceName#>.framework` files and select them. Check the **Destination: Copy items if needed** checkbox when prompted.  Add the frameworks that you need for you specific use case.  For example, if you are using AWSMobileClient and AWSPinpoint, you will want to add the following frameworks:
 
-    * `AWSCore.framework`
-    * `AWSAutoScaling.framework`
-    * `AWSCloudWatch.framework`
-    * `AWSCognito.framework`
+    * `AWSAuthCore.framework`
     * `AWSCognitoIdentityProvider.framework`
-    * `AWSDynamoDB.framework`
-    * `AWSEC2.framework`
-    * `AWSElasticLoadBalancing.framework`
-    * `AWSIoT.framework`
-    * `AWSKinesis.framework`
-    * `AWSLambda.framework`
-    * `AWSMachineLearning.framework`
-    * `AWSMobileAnalytics.framework`
-    * `AWSS3.framework`
-    * `AWSSES.framework`
-    * `AWSSimpleDB.framework`
-    * `AWSSNS.framework`
-    * `AWSSQS.framework`
+    * `AWSCognitoIdentityProviderASF.framework`
+    * `AWSCore.framework`
+    * `AWSMobileClient.framework`
+    * `AWSPinpoint.framework`
 
 4. Under the **Build Phases** tab in your **Target**, click the **+** button on the top left and then select **New Run Script Phase**. Then setup the build phase as follows. Make sure this phase is below the `Embed Frameworks` phase.
 
@@ -206,26 +170,14 @@ When we release a new version of the SDK, you can pick up the changes as describ
 
 ### Frameworks
 
-1. In Xcode select the following frameworks in **Project Navigator** and hit **delete** on your keyboard. Then select **Move to Trash**:
+1. In Xcode's **Project Navigator**, type "AWS" to find the AWS frameworks that were manually added to your project.  Manually select all of the AWS frameworks and hit **delete** on your keyboard. Then select **Move to Trash**.  If you were following the example from above which uses AWSMobileClient and AWSPinpoint, you would remove:
 
-    * `AWSCore.framework`
-    * `AWSAutoScaling.framework`
-    * `AWSCloudWatch.framework`
-    * `AWSCognito.framework`
+    * `AWSAuthCore.framework`
     * `AWSCognitoIdentityProvider.framework`
-    * `AWSDynamoDB.framework`
-    * `AWSEC2.framework`
-    * `AWSElasticLoadBalancing.framework`
-    * `AWSIoT.framework`
-    * `AWSKinesis.framework`
-    * `AWSLambda.framework`
-    * `AWSMachineLearning.framework`
-    * `AWSMobileAnalytics.framework`
-    * `AWSS3.framework`
-    * `AWSSES.framework`
-    * `AWSSimpleDB.framework`
-    * `AWSSNS.framework`
-    * `AWSSQS.framework`
+    * `AWSCognitoIdentityProviderASF.framework`
+    * `AWSCore.framework`
+    * `AWSMobileClient.framework`
+    * `AWSPinpoint.framework`
 
 2. Follow the installation process above to include the new version of the SDK.
 
@@ -401,7 +353,7 @@ To initialize logging to your Xcode console, use the following code:
 **Swift**
 
 ```swift
-AWSDDLog.add(AWSDDTTYLogger.sharedInstance()) // TTY = Xcode console
+AWSDDLog.add(AWSDDTTYLogger.sharedInstance) // TTY = Xcode console
 ```
 
 **Objective-C**
@@ -410,25 +362,9 @@ AWSDDLog.add(AWSDDTTYLogger.sharedInstance()) // TTY = Xcode console
 [AWSDDLog addLogger:[AWSDDTTYLogger sharedInstance]]; // TTY = Xcode console
 ```
 
-## Install the Reference Documentation in Xcode
+## Open Source Contributions
 
-The AWS Mobile SDK for iOS zip file includes documentation in the DocSets format that you can view within Xcode. The easiest way to install the documentation is to use the Mac OS X terminal.
-
-1. Open the Mac OS X terminal and go to the directory containing the expanded archive. For example:
-
-        $ cd ~/Downloads/aws-ios-sdk-2.7.0
-
-    **Note**: Remember to replace 2.7.0 in the example above with the actual version number of the AWS SDK for iOS that you downloaded.
-
-2. Create a directory called `~/Library/Developer/Shared/Documentation/DocSets`:
-
-        $ mkdir -p ~/Library/Developer/Shared/Documentation/DocSets
-
-3. Copy (or move) `Documentation/com.amazon.aws.ios.docset` from the SDK installation files to the directory you created in the previous step:
-
-        $ mv Documentation/com.amazon.aws.ios.docset ~/Library/Developer/Shared/Documentation/DocSets/
-
-4. If Xcode was running during this procedure, restart Xcode. To browse the documentation, go to **Help**, click **Documentation and API Reference**, and select **AWS Mobile SDK for iOS v2.7.0 Documentation** (where '2.7.0' is the appropriate version number).
+We welcome any and all contributions from the community! Make sure you read through our contribution guide [here](./CONTRIBUTING.md) before submitting any PR's. Thanks! <3
 
 ## Talk to Us
 

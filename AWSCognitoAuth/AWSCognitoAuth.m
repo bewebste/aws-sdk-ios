@@ -18,6 +18,7 @@
 #import <SafariServices/SafariServices.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonHMAC.h>
+#import <AWSCore/AWSCore.h>
 
 NSString *const AWSCognitoAuthErrorDomain = @"com.amazon.cognito.AWSCognitoAuthErrorDomain";
 
@@ -63,12 +64,13 @@ API_AVAILABLE(ios(11.0))
 @property (nonatomic, readwrite) NSDictionary<NSString *, NSString *> * tokensUriQueryParameters;
 @property (nonatomic, readwrite) NSDictionary<NSString *, NSString *> * signOutUriQueryParameters;
 @property (nonatomic) BOOL isAuthProviderExternal;
+@property (nonatomic) AWSServiceConfiguration * userPoolConfig;
 
 @end
 
 @implementation AWSCognitoAuth
 
-NSString *const AWSCognitoAuthSDKVersion = @"2.9.8";
+NSString *const AWSCognitoAuthSDKVersion = @"2.17.0";
 
 
 static NSMutableDictionary *_instanceDictionary = nil;
@@ -336,12 +338,16 @@ static NSString * AWSCognitoAuthAsfDeviceId = @"asf.device.id";
         if(expirationDate && scopes != nil && [scopes isEqualToString:[self normalizeScopes]]){
             NSDate *expiration = [self dateFromString:expirationDate];
             NSString * refreshToken = [self refreshTokenFromKeyChain:keyChainNamespace];
+            NSString * accessTokenKey = [self keyChainKey:keyChainNamespace key:AWSCognitoAuthUserAccessToken];
+            NSString * accessToken = self.keychain[accessTokenKey];
 
             //if the session expires > 5 minutes return it.
-            if(expiration && [expiration compare:[NSDate dateWithTimeIntervalSinceNow:5 * 60]] == NSOrderedDescending){
+            if(expiration && [expiration compare:[NSDate dateWithTimeIntervalSinceNow:5 * 60]] == NSOrderedDescending && accessToken){
                 NSString * idTokenKey = [self keyChainKey:keyChainNamespace key:AWSCognitoAuthUserIdToken];
-                NSString * accessTokenKey = [self keyChainKey:keyChainNamespace key:AWSCognitoAuthUserAccessToken];
-                AWSCognitoAuthUserSession * session = [[AWSCognitoAuthUserSession alloc] initWithIdToken:self.keychain[idTokenKey] accessToken:self.keychain[accessTokenKey] refreshToken:refreshToken expirationTime:expiration];
+                AWSCognitoAuthUserSession * session = [[AWSCognitoAuthUserSession alloc] initWithIdToken:self.keychain[idTokenKey]
+                                                                                             accessToken:accessToken
+                                                                                            refreshToken:refreshToken
+                                                                                          expirationTime:expiration];
                 [self dismissSafariViewControllerAndCompleteGetSession:session error:nil];
                 return;
             }
@@ -737,7 +743,7 @@ static NSString * AWSCognitoAuthAsfDeviceId = @"asf.device.id";
         value = [NSString stringWithFormat: @"Basic %@", value];
         [request setValue:value forHTTPHeaderField:@"Authorization"];
     }
-    [request setValue: [AWSCognitoAuth userAgent] forHTTPHeaderField:@"User-Agent"];
+    [request setValue: [self fetchBaseUserAgent] forHTTPHeaderField:@"User-Agent"];
 }
 
 /**
@@ -751,7 +757,7 @@ static NSString * AWSCognitoAuthAsfDeviceId = @"asf.device.id";
                 //clean up vc
                 self.svc = nil;
             }];
-        }else {
+        } else {
             dismissBlock();
         }
     });
@@ -960,7 +966,12 @@ static NSString * AWSCognitoAuthAsfDeviceId = @"asf.device.id";
     });
 }
 
-
+- (NSString *)fetchBaseUserAgent {
+    if (self.authConfiguration.userPoolConfig == nil) {
+        return [AWSCognitoAuth userAgent];
+    }
+    return [self.authConfiguration.userPoolConfig userAgent];
+}
 /**
  Generate the user agent string
  */
@@ -1141,6 +1152,45 @@ static NSString * AWSCognitoAuthAsfDeviceId = @"asf.device.id";
                   signOutUriQueryParameters:(NSDictionary<NSString *, NSString *> *) signOutUriQueryParameters
                     tokenUriQueryParameters:(NSDictionary<NSString *, NSString *> *) tokenUriQueryParameters
                          isProviderExternal:(BOOL) isProviderExternal {
+
+    return [self initWithAppClientIdInternal:appClientId
+                             appClientSecret:appClientSecret
+                                      scopes:scopes
+                           signInRedirectUri:signInRedirectUri
+                          signOutRedirectUri:signOutRedirectUri
+                                   webDomain:webDomain
+                            identityProvider:identityProvider
+                               idpIdentifier:idpIdentifier
+                    userPoolIdForEnablingASF:userPoolIdForEnablingASF
+              enableSFAuthSessionIfAvailable:enableSFAuthSession
+                                   signInUri:signInUri
+                                  signOutUri:signOutUri
+                                   tokensUri:tokensUri
+                    signInUriQueryParameters:signInUriQueryParameters
+                   signOutUriQueryParameters:signOutUriQueryParameters
+                     tokenUriQueryParameters:tokenUriQueryParameters
+                          isProviderExternal:isProviderExternal
+                cognitoUserPoolServiceConfig: nil];
+}
+
+- (instancetype)initWithAppClientIdInternal:(NSString *) appClientId
+                            appClientSecret:(nullable NSString *)appClientSecret
+                                     scopes:(NSSet<NSString *> *) scopes
+                          signInRedirectUri:(NSString *) signInRedirectUri
+                         signOutRedirectUri:(NSString *) signOutRedirectUri
+                                  webDomain:(NSString *) webDomain
+                           identityProvider:(nullable NSString *) identityProvider
+                              idpIdentifier:(nullable NSString *) idpIdentifier
+                   userPoolIdForEnablingASF:(nullable NSString *) userPoolIdForEnablingASF
+             enableSFAuthSessionIfAvailable:(BOOL) enableSFAuthSession
+                                  signInUri:(NSString *) signInUri
+                                 signOutUri:(NSString *) signOutUri
+                                  tokensUri:(NSString *) tokensUri
+                   signInUriQueryParameters:(NSDictionary<NSString *, NSString *> *) signInUriQueryParameters
+                  signOutUriQueryParameters:(NSDictionary<NSString *, NSString *> *) signOutUriQueryParameters
+                    tokenUriQueryParameters:(NSDictionary<NSString *, NSString *> *) tokenUriQueryParameters
+                         isProviderExternal:(BOOL) isProviderExternal
+               cognitoUserPoolServiceConfig:(nullable AWSServiceConfiguration *) serviceConfig {
     if (self = [super init]) {
         
         if (!isProviderExternal) {
@@ -1168,6 +1218,7 @@ static NSString * AWSCognitoAuthAsfDeviceId = @"asf.device.id";
         _signInUriQueryParameters = signInUriQueryParameters;
         _tokensUriQueryParameters = tokenUriQueryParameters;
         _isAuthProviderExternal = isProviderExternal;
+        _userPoolConfig = serviceConfig;
     }
     
     return self;

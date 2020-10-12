@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -125,6 +125,26 @@ NSString *const AWSLogsErrorDomain = @"com.amazonaws.AWSLogsErrorDomain";
 	return @{
              @"filterName" : @"filterName",
              @"logGroupName" : @"logGroupName",
+             };
+}
+
+@end
+
+@implementation AWSLogsDeleteQueryDefinitionRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"queryDefinitionId" : @"queryDefinitionId",
+             };
+}
+
+@end
+
+@implementation AWSLogsDeleteQueryDefinitionResponse
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"success" : @"success",
              };
 }
 
@@ -425,6 +445,33 @@ NSString *const AWSLogsErrorDomain = @"com.amazonaws.AWSLogsErrorDomain";
 
 + (NSValueTransformer *)queriesJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSLogsQueryInfo class]];
+}
+
+@end
+
+@implementation AWSLogsDescribeQueryDefinitionsRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"maxResults" : @"maxResults",
+             @"nextToken" : @"nextToken",
+             @"queryDefinitionNamePrefix" : @"queryDefinitionNamePrefix",
+             };
+}
+
+@end
+
+@implementation AWSLogsDescribeQueryDefinitionsResponse
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"nextToken" : @"nextToken",
+             @"queryDefinitions" : @"queryDefinitions",
+             };
+}
+
++ (NSValueTransformer *)queryDefinitionsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSLogsQueryDefinition class]];
 }
 
 @end
@@ -1004,6 +1051,29 @@ NSString *const AWSLogsErrorDomain = @"com.amazonaws.AWSLogsErrorDomain";
 
 @end
 
+@implementation AWSLogsPutQueryDefinitionRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"logGroupNames" : @"logGroupNames",
+             @"name" : @"name",
+             @"queryDefinitionId" : @"queryDefinitionId",
+             @"queryString" : @"queryString",
+             };
+}
+
+@end
+
+@implementation AWSLogsPutQueryDefinitionResponse
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"queryDefinitionId" : @"queryDefinitionId",
+             };
+}
+
+@end
+
 @implementation AWSLogsPutResourcePolicyRequest
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -1097,6 +1167,20 @@ NSString *const AWSLogsErrorDomain = @"com.amazonaws.AWSLogsErrorDomain";
 	return @{
              @"endCharOffset" : @"endCharOffset",
              @"startCharOffset" : @"startCharOffset",
+             };
+}
+
+@end
+
+@implementation AWSLogsQueryDefinition
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"lastModified" : @"lastModified",
+             @"logGroupNames" : @"logGroupNames",
+             @"name" : @"name",
+             @"queryDefinitionId" : @"queryDefinitionId",
+             @"queryString" : @"queryString",
              };
 }
 
@@ -1217,6 +1301,7 @@ NSString *const AWSLogsErrorDomain = @"com.amazonaws.AWSLogsErrorDomain";
              @"endTime" : @"endTime",
              @"limit" : @"limit",
              @"logGroupName" : @"logGroupName",
+             @"logGroupNames" : @"logGroupNames",
              @"queryString" : @"queryString",
              @"startTime" : @"startTime",
              };

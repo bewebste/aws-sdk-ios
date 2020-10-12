@@ -15,17 +15,14 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <AWSCore/AWSCore.h>
 
 @interface CognitoTestUtils : NSObject
 
-+ (void)createFBAccount;
-+ (void)createIdentityPool;
-+ (void)deleteFBAccount;
-+ (void)deleteIdentityPool;
 + (NSString *) accountId;
 + (NSString *) unauthRoleArn;
 + (NSString *) authRoleArn;
 + (NSString *) identityPoolId;
-+ (NSString *) facebookToken;
++ (AWSRegionType) region;
 
 @end

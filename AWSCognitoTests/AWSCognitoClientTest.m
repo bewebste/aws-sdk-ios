@@ -41,6 +41,8 @@ NSDate *_swizzledLastModified;
 Method _originalMethod;
 Method _mockMethod;
 
+NSString *_identityId;
+
 @implementation AWSCognitoSQLiteManager(FailureInjection)
 
 #pragma mark - Mock/Failure Injection
@@ -92,23 +94,24 @@ Method _mockMethod;
 
 @implementation AWSCognitoClientTest
 + (void)setUp {
-    [CognitoTestUtils createFBAccount];
-    [CognitoTestUtils createIdentityPool];
+    AWSCognitoCredentialsProvider *provider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:[CognitoTestUtils region]
+                                                                                         identityPoolId:[CognitoTestUtils identityPoolId]
+                                                                                          unauthRoleArn:[CognitoTestUtils unauthRoleArn]
+                                                                                            authRoleArn:[CognitoTestUtils authRoleArn]
+                                                                                identityProviderManager:nil];
+    [[provider getIdentityId] waitUntilFinished];
+    _identityId = provider.identityId;
 
-
-    AWSCognitoCredentialsProvider *provider = [[AWSCognitoCredentialsProvider alloc] initWithRegionType:AWSRegionUSEast1
-                                                                                         identityPoolId:[CognitoTestUtils identityPoolId]];
-
-
-    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:provider];
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:[CognitoTestUtils region] credentialsProvider:provider];
 
     [AWSServiceManager defaultServiceManager].defaultServiceConfiguration = configuration;
+
+    [AWSCognitoSync registerCognitoSyncWithConfiguration:configuration
+                                                  forKey:@"AWSCognitoSyncTests"];
 }
 
 + (void)tearDown {
     [[AWSCognito defaultCognito] wipe];
-    [CognitoTestUtils deleteFBAccount];
-    [CognitoTestUtils deleteIdentityPool];
 }
 
 - (void)forceUpdate:(NSString *)datasetName withKey:(NSString *)key {
@@ -484,60 +487,6 @@ synchronizeAlreadyInProgressDataset = [[AWSCognito defaultCognito] openOrCreateD
 }
 
 
-- (void)testSyncNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncStartNotification:) name:AWSCognitoDidStartSynchronizeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncEndNotification:) name:AWSCognitoDidEndSynchronizeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncRemoteChangedNotification:) name:AWSCognitoDidChangeRemoteValueNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncLocalChangedNotification:) name:AWSCognitoDidChangeLocalValueFromRemoteNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncFailedNotification:) name:AWSCognitoDidFailToSynchronizeNotification object:nil];
-
-    // create a dataset
-    AWSCognitoDataset* dataset = [[AWSCognito defaultCognito] openOrCreateDataset:_notificationDataset];
-    [dataset setString:@"old" forKey:_notificationKey];
-
-    // call a sync
-    [[dataset synchronize] waitUntilFinished];
-
-    // Runs the run loop for 5 sec to receive all notifications.
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:5]];
-
-    XCTAssertTrue(_startReceived, @"Did not get start notification");
-    XCTAssertTrue(_endReceived, @"Did not get end notification");
-    XCTAssertTrue(_remoteChangeReceived, @"Did not get remote changed notification");
-
-    [self forceUpdate:_notificationDataset withKey:_notificationKey];
-
-    [[dataset synchronize] waitUntilFinished];
-
-    XCTAssertTrue(_localChangeReceived, @"Did not get local changed notification");
-
-    // reset the value
-    [dataset setString:@"old" forKey:_notificationKey];
-    [[dataset synchronize] waitUntilFinished];
-
-    // set a conflict handler to force a sync failure
-    dataset.conflictHandler = ^AWSCognitoResolvedConflict* (NSString *datasetName, AWSCognitoConflict *conflict) {
-        return nil;
-    };
-
-    // create a conflict
-    [dataset setString:@"new" forKey:_notificationKey];
-    [self forceUpdate:_notificationDataset withKey:_notificationKey];
-
-    // this should fail
-    [[dataset synchronize] waitUntilFinished];
-
-    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:5.0]];
-
-    XCTAssertTrue(_failedReceived, @"Did not get sync failed notification");
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    // delete the dataset
-    [dataset clear];
-    [[dataset synchronize] waitUntilFinished];
-}
-
 - (void)testConflictHandler {
     __block BOOL handlerCalled = NO;
     NSString *myDataset = @"testconflict";
@@ -787,6 +736,90 @@ synchronizeAlreadyInProgressDataset = [[AWSCognito defaultCognito] openOrCreateD
 
 -(void)testDatasetMergedHandlerRemote {
     // TODO: can we test the mergedatasets from the service?
+}
+
+- (void)testListRecords {
+    AWSCognitoSyncListRecordsRequest *request = [AWSCognitoSyncListRecordsRequest new];
+    request.datasetName = @"mydataset";
+    request.identityPoolId = [CognitoTestUtils identityPoolId];
+    request.identityId = _identityId;
+
+    [[[[AWSCognitoSync CognitoSyncForKey:@"AWSCognitoSyncTests"] listRecords:request] continueWithBlock:^id(AWSTask *task) {
+        AWSCognitoSyncListRecordsResponse *response = task.result;
+        XCTAssertNotNil(response, @"response should not be nil");
+        return nil;
+    }] waitUntilFinished];
+}
+
+- (void)testInvalidDatasetNameFails {
+    AWSServiceConfiguration *configuration = [AWSServiceManager defaultServiceManager].defaultServiceConfiguration;
+    [AWSCognitoSync registerCognitoSyncWithConfiguration:configuration forKey:@"testExampleFailed"];
+    AWSCognitoSync *client = [AWSCognitoSync CognitoSyncForKey:@"testExampleFailed"];
+
+    AWSCognitoSyncDescribeDatasetRequest *request = [AWSCognitoSyncDescribeDatasetRequest new];
+    request.datasetName = @"wrongname"; //Wrong DatasetName
+    request.identityPoolId = [CognitoTestUtils identityPoolId];
+    request.identityId = _identityId;
+
+    [[[client describeDataset:request] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error,@"expected error but got nil");
+        XCTAssertEqual(AWSCognitoSyncErrorResourceNotFound, task.error.code, @"expected AWSCognitoSyncErrorResourceNotFound Error but got: %ld; error=%@", (long)task.error.code, task.error);
+        return nil;
+    }] waitUntilFinished];
+
+    [AWSCognitoSync removeCognitoSyncForKey:@"testExampleFailed"];
+}
+
+- (void)testSyncSessionToken {
+    // Do any initial list to get a token
+    AWSCognitoSyncListRecordsRequest *listRequest = [AWSCognitoSyncListRecordsRequest new];
+    listRequest.datasetName = @"tokentest";
+    listRequest.identityPoolId = [CognitoTestUtils identityPoolId];
+    listRequest.identityId = _identityId;
+    listRequest.lastSyncCount = @0;
+
+    __block NSString *_sessionToken = nil;
+    [[[[AWSCognitoSync CognitoSyncForKey:@"AWSCognitoSyncTests"] listRecords:listRequest] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNil(task.error, @"Error: [%@].", task.error);
+        AWSCognitoSyncListRecordsResponse *result = task.result;
+        _sessionToken = result.syncSessionToken;
+        return nil;
+    }] waitUntilFinished];
+
+    XCTAssertNotNil(_sessionToken, @"Couldn't get a session token");
+
+    // Retry the list with the token
+    listRequest.syncSessionToken = _sessionToken;
+
+    [[[[AWSCognitoSync CognitoSyncForKey:@"AWSCognitoSyncTests"] listRecords:listRequest] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNil(task.error, @"Error from list w/session token: %@", task.error);
+        return nil;
+    }] waitUntilFinished];
+
+    // Create an update request, use the token
+    AWSCognitoSyncRecordPatch *patch = [AWSCognitoSyncRecordPatch new];
+    patch.key = @"tokenkey";
+    patch.syncCount = [NSNumber numberWithInt:0];
+    patch.value = @"forced";
+    patch.op = AWSCognitoSyncOperationReplace;
+
+    AWSCognitoSyncUpdateRecordsRequest *updateRequest = [AWSCognitoSyncUpdateRecordsRequest new];
+    updateRequest.datasetName = @"tokentest";
+    updateRequest.identityPoolId = [CognitoTestUtils identityPoolId];
+    updateRequest.identityId = _identityId;
+    updateRequest.syncSessionToken = _sessionToken;
+    updateRequest.recordPatches = [NSArray arrayWithObject:patch];
+
+    [[[[AWSCognitoSync CognitoSyncForKey:@"AWSCognitoSyncTests"] updateRecords:updateRequest] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNil(task.error, @"Error from update w/session token: %@", task.error);
+        return nil;
+    }] waitUntilFinished];
+
+    // Now that the token was used to push, listing again should fail
+    [[[[AWSCognitoSync CognitoSyncForKey:@"AWSCognitoSyncTests"] listRecords:listRequest] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error, @"Should have gotten error");
+        return nil;
+    }] waitUntilFinished];
 }
 
 #pragma mark - Notifications

@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -29,12 +29,18 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
              @"roleArn" : @"RoleArn",
              @"roleSessionName" : @"RoleSessionName",
              @"serialNumber" : @"SerialNumber",
+             @"tags" : @"Tags",
              @"tokenCode" : @"TokenCode",
+             @"transitiveTagKeys" : @"TransitiveTagKeys",
              };
 }
 
 + (NSValueTransformer *)policyArnsJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSPolicyDescriptorType class]];
+}
+
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSTag class]];
 }
 
 @end
@@ -209,6 +215,26 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @end
 
+@implementation AWSSTSGetAccessKeyInfoRequest
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"accessKeyId" : @"AccessKeyId",
+             };
+}
+
+@end
+
+@implementation AWSSTSGetAccessKeyInfoResponse
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"account" : @"Account",
+             };
+}
+
+@end
+
 @implementation AWSSTSGetCallerIdentityRequest
 
 @end
@@ -233,11 +259,16 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"name" : @"Name",
              @"policy" : @"Policy",
              @"policyArns" : @"PolicyArns",
+             @"tags" : @"Tags",
              };
 }
 
 + (NSValueTransformer *)policyArnsJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSPolicyDescriptorType class]];
+}
+
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSTag class]];
 }
 
 @end
@@ -293,6 +324,17 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"arn" : @"arn",
+             };
+}
+
+@end
+
+@implementation AWSSTSTag
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"key" : @"Key",
+             @"value" : @"Value",
              };
 }
 
